@@ -5,16 +5,12 @@ plugins {
 
 android {
     namespace = "com.example.samplepandaai"
-    compileSdk {
-        version = release(36) {
-            minorApiLevel = 1
-        }
-    }
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.example.samplepandaai"
         minSdk = 33
-        targetSdk = 36
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
@@ -37,6 +33,22 @@ android {
     buildFeatures {
         compose = true
     }
+
+    testOptions {
+        unitTests.all {
+            it.systemProperty("org.slf4j.simpleLogger.defaultLogLevel", "debug")
+        }
+    }
+}
+
+// ユニットテスト実行時のSLF4Jバインディング競合を避けるため、logback-androidを除外する
+configurations {
+    testImplementation {
+        exclude(group = "com.github.tony19", module = "logback-android")
+    }
+    testRuntimeOnly {
+        exclude(group = "com.github.tony19", module = "logback-android")
+    }
 }
 
 dependencies {
@@ -48,6 +60,12 @@ dependencies {
     implementation(libs.androidx.compose.ui.graphics)
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.compose.material3)
+
+    // Logging
+    implementation(libs.slf4j.api)
+    implementation(libs.logback.android)
+    testImplementation(libs.slf4j.simple)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

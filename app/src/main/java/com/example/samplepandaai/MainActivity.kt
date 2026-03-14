@@ -12,10 +12,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.samplepandaai.ui.theme.SamplePandaAITheme
+import org.slf4j.LoggerFactory
 
 class MainActivity : ComponentActivity() {
+    private val logger = LoggerFactory.getLogger(MainActivity::class.java)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        logger.debug("MainActivity onCreate called")
         enableEdgeToEdge()
         setContent {
             SamplePandaAITheme {
