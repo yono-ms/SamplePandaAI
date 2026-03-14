@@ -23,6 +23,7 @@ google-services.json
 .idea/AndroidProjectSystem.xml
 .idea/deploymentTargetSelector.xml
 .idea/deploymentTargetDropDown.xml
+.idea/markdown.xml
 *.iws
 out/
 
