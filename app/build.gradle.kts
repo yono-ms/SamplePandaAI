@@ -1,19 +1,22 @@
+import org.openapitools.generator.gradle.plugin.tasks.GenerateTask
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.openapi.generator)
 }
 
 android {
     namespace = "com.example.samplepandaai"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.example.samplepandaai"
         minSdk = 33
-        targetSdk = 35
+        targetSdk = 36
         versionCode = 1
         versionName = "1.0"
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -30,25 +33,49 @@ android {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
-    buildFeatures {
-        compose = true
-    }
+    buildFeatures { compose = true }
 
     testOptions {
         unitTests.all {
             it.systemProperty("org.slf4j.simpleLogger.defaultLogLevel", "debug")
         }
     }
+
+    sourceSets {
+        getByName("main") {
+            kotlin.srcDir("$buildDir/generate-resources/main/src/main/kotlin")
+        }
+    }
 }
 
-// ユニットテスト実行時のSLF4Jバインディング競合を避けるため、logback-androidを除外する
+val generateGitHubDto = tasks.register<GenerateTask>("generateGitHubDto") {
+    generatorName.set("kotlin")
+    inputSpec.set("$projectDir/src/main/openapi/github_repos.yaml")
+
+    outputDir.set("$buildDir/generate-resources/main/src/main/kotlin")
+
+    packageName.set("com.example.samplepandaai.data.remote.dto")
+    modelPackage.set("com.example.samplepandaai.data.remote.dto")
+
+    generateApiTests.set(false)
+    generateModelTests.set(false)
+    configOptions.set(
+        mapOf(
+            "serializationLibrary" to "kotlinx_serialization",
+            "enumPropertyNaming" to "UPPERCASE",
+            "collectionType" to "list",
+            "useContextualSerialization" to "true"
+        )
+    )
+}
+
+tasks.named("preBuild") {
+    dependsOn(generateGitHubDto)
+}
+
 configurations {
-    testImplementation {
-        exclude(group = "com.github.tony19", module = "logback-android")
-    }
-    testRuntimeOnly {
-        exclude(group = "com.github.tony19", module = "logback-android")
-    }
+    testImplementation { exclude(group = "com.github.tony19", module = "logback-android") }
+    testRuntimeOnly { exclude(group = "com.github.tony19", module = "logback-android") }
 }
 
 dependencies {
@@ -61,11 +88,19 @@ dependencies {
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.compose.material3)
 
-    // Logging
     implementation(libs.slf4j.api)
     implementation(libs.logback.android)
     testImplementation(libs.slf4j.simple)
 
+    implementation(libs.ktor.client.core)
+    implementation(libs.ktor.client.okhttp)
+    implementation(libs.ktor.client.content.negotiation)
+    implementation(libs.ktor.serialization.kotlinx.json)
+    implementation(libs.ktor.client.logging)
+    implementation(libs.kotlinx.serialization.json)
+    implementation(libs.kotlinx.datetime) // 追加
+
+    testImplementation(libs.ktor.client.mock)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

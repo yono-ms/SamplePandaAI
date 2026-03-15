@@ -68,3 +68,17 @@ com.example.samplepandaai/
 └── util/
     └── logging/         # ログ関連のユーティリティ（必要な場合）
 ```
+
+## 懸念事項・技術的負債
+
+### ビルド構成における Deprecated 警告
+
+- **事象**: `app/build.gradle.kts` において、自動生成ソースの登録に使用している `srcDir` および
+  `buildDir` が Gradle 8.x 以降で非推奨（Deprecated）となっている。
+- **背景**: 最新の推奨 API (`layout.buildDirectory`, `androidComponents` 等) への移行を試みたが、OpenAPI
+  Generator プラグインのタスクプロパティ (`GenerateTask.outputDir`) が `Property<String>` であること、および
+  Gradle のタスク依存関係の厳格化により、遅延評価（Lazy Evaluation）の連鎖においてビルドエラー（Provider
+  解決ループ）が発生する。
+- **現状の対策**:
+  現時点ではビルドの安定性を最優先し、非推奨警告を許容した上で、最もシンプルで確実なパス文字列指定による構成を採用している。将来的にプラグインの型定義が改善される、あるいは
+  AGP 側の API がより柔軟になるまで継続的な監視が必要。
