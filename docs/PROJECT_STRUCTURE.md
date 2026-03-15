@@ -14,9 +14,17 @@ SamplePandaAI/
 │       │   ├── AndroidManifest.xml
 │       │   ├── java/com/example/samplepandaai/
 │       │   │   ├── data/
-│       │   │   │   └── remote/
-│       │   │   │       ├── GitHubApiService.kt  # API通信サービス
-│       │   │   │       └── HttpClientFactory.kt # Ktorクライアント設定
+│       │   │   │   ├── remote/
+│       │   │   │   │   ├── dto/                # OpenAPI 生成された DTO (ビルド後に生成)
+│       │   │   │   │   ├── GitHubApiService.kt  # API通信サービス
+│       │   │   │   │   └── HttpClientFactory.kt # Ktorクライアント設定
+│       │   │   │   └── repository/
+│       │   │   │       └── GitHubRepositoryImpl.kt # Repository 実装
+│       │   │   ├── domain/
+│       │   │   │   ├── model/
+│       │   │   │   │   └── GitHubRepo.kt        # ドメインモデル
+│       │   │   │   └── repository/
+│       │   │   │       └── GitHubRepository.kt  # Repository インターフェース
 │       │   │   ├── ui/theme/            # テーマ定義
 │       │   │   │   ├── Color.kt
 │       │   │   │   ├── Theme.kt
@@ -31,9 +39,12 @@ SamplePandaAI/
 │       │   └── res/                     # リソース
 │       ├── test/                        # ユニットテスト
 │       │   └── java/com/example/samplepandaai/
+│       │       ├── data/
+│       │       │   └── repository/
+│       │       │       └── GitHubRepositoryImplTest.kt # リポジトリのテスト
 │       │       ├── data/remote/
-│       │       │   └── GitHubApiServiceTest.kt # API通信テスト
-│       │       └── LoggingTest.kt              # ログ出力テスト
+│       │       │   └── GitHubApiServiceTest.kt         # API通信テスト
+│       │       └── LoggingTest.kt                      # ログ出力テスト
 │       └── androidTest/                 # インストゥルメントテスト
 ├── docs/
 │   ├── AGENTS.md              # AIエージェント活用指針

@@ -8,27 +8,30 @@
 - [x] DTO の自動生成設定 (OpenAPI Generator)
 - [x] カスタムシリアライザーの実装 (`URI`, `OffsetDateTime`)
 - [x] `GitHubApiService` の実装と `MockEngine` によるユニットテストの成功
+- [x] **ドメイン層 (Domain Layer) の構築** (`GitHubRepo`, `GitHubRepository`)
+- [x] **データ層 (Data Layer) の実装** (`GitHubRepositoryImpl` + Mapper)
+- [x] **リポジトリの単体テスト完了** (`MockEngine` による正常系・異常系の検証)
 
 ## 次回のタスク
 
-### 1. ドメイン層 (Domain Layer) の構築
+### 1. Flavor による接続環境の構築
 
-- **Domain Model の定義**: アプリ内で扱う純粋なデータクラスを `domain/model/` に作成。
-- **Repository Interface の定義**: `domain/repository/` にインターフェースを定義。
+- **Flavor 定義**: `app/build.gradle.kts` に `dev`, `prod` などの Flavor を追加。
+- **BuildConfig の活用**: Flavor ごとに `BASE_URL` を切り替えられるように設定し、ハードコードを排除する。
 
-### 2. データ層 (Data Layer) の実装
+### 2. プレゼンテーション層 (Presentation Layer) への接続
 
-- **Repository Implementation**: `data/repository/` に `GitHubRepositoryImpl` を実装。
-- **Mapper の作成**: 自動生成された DTO から Domain Model への変換ロジックを実装。
-- **Repository のテスト**: `MockEngine` を使い、Mapper を含めたデータ取得フローを検証。
+- **ViewModel の作成**: `GitHubRepository` を呼び出し、UI 状態（State）を管理。
+- **Compose UI の実装**: `LazyColumn` を用いたリポジトリ一覧表示画面の作成。
 
-### 3. プレゼンテーション層 (Presentation Layer) への接続
+### 3. モックサーバー対抗試験 (Optional/検証用)
 
-- **ViewModel の作成**: Repository を呼び出し、UI 状態を管理。
-- **Compose UI の実装**: リポジトリリストの表示画面を作成。
+- **実エンジンの検証**: `MockEngine` ではなく `OkHttp` エンジンを使用し、外部モックサーバー（WireMock
+  等）との接続を Flavor 経由で検証する。
 
 ## 技術的メモ
 
-- `app/build.gradle.kts` の `srcDir`/`buildDir` に関する非推奨警告は、現状「ビルドの安定性」のために許容している（詳細は
-  `ARCHITECTURE_DESIGN.md` を参照）。
-- ユニットテスト実行時は、引き続き DI フレームワークを使わず言語レベルでのコンストラクタ注入を優先する。
+- `GitHubRepositoryImplTest` において、`URI` および `OffsetDateTime` の `Contextual`
+  シリアライザーの登録が必要であることを確認済み。
+- リポジトリのマッピングロジックにおいて、`updatedAt` のパース失敗時のフォールバック処理を実装済み。
+- `app/build.gradle.kts` の非推奨警告については継続監視。
