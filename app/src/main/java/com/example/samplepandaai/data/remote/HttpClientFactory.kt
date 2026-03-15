@@ -1,14 +1,17 @@
 package com.example.samplepandaai.data.remote
 
+import com.example.samplepandaai.BuildConfig
 import com.example.samplepandaai.util.serialization.OffsetDateTimeKSerializer
 import com.example.samplepandaai.util.serialization.URIKSerializer
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.HttpClientEngine
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.client.plugins.defaultRequest
 import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logger
 import io.ktor.client.plugins.logging.Logging
 import io.ktor.serialization.kotlinx.json.json
+import io.ktor.http.URLProtocol
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.modules.SerializersModule
 import org.slf4j.LoggerFactory
@@ -23,14 +26,17 @@ object HttpClientFactory {
 
     fun create(engine: HttpClientEngine): HttpClient {
         return HttpClient(engine) {
+            // Flavor ごとに定義された BASE_URL をデフォルト設定として適用
+            defaultRequest {
+                url(BuildConfig.BASE_URL)
+            }
+
             // JSON変換の設定
             install(ContentNegotiation) {
                 json(Json {
-                    ignoreUnknownKeys = true // APIに未知のフィールドがあってもエラーにしない
+                    ignoreUnknownKeys = true
                     coerceInputValues = true
                     isLenient = true
-
-                    // カスタムシリアライザーの登録
                     serializersModule = SerializersModule {
                         contextual(URI::class, URIKSerializer)
                         contextual(OffsetDateTime::class, OffsetDateTimeKSerializer)

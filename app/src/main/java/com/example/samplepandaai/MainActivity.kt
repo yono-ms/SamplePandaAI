@@ -5,13 +5,16 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import com.example.samplepandaai.data.remote.GitHubApiService
+import com.example.samplepandaai.data.remote.HttpClientFactory
+import com.example.samplepandaai.data.repository.GitHubRepositoryImpl
+import com.example.samplepandaai.ui.features.RepoListScreen
 import com.example.samplepandaai.ui.theme.SamplePandaAITheme
+import com.example.samplepandaai.ui.viewmodel.GitHubRepoListViewModel
+import io.ktor.client.engine.okhttp.OkHttp
 import org.slf4j.LoggerFactory
 
 class MainActivity : ComponentActivity() {
@@ -20,32 +23,24 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         logger.debug("MainActivity onCreate called")
+
+        // 手動での依存関係構築（暫定的なDI）
+        val engine = OkHttp.create()
+        val httpClient = HttpClientFactory.create(engine)
+        val apiService = GitHubApiService(httpClient)
+        val repository = GitHubRepositoryImpl(apiService)
+        val viewModel = GitHubRepoListViewModel(repository)
+
         enableEdgeToEdge()
         setContent {
             SamplePandaAITheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colorScheme.background
+                ) {
+                    RepoListScreen(viewModel = viewModel)
                 }
             }
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    SamplePandaAITheme {
-        Greeting("Android")
     }
 }
