@@ -13,26 +13,49 @@ SamplePandaAI/
 │       ├── main/
 │       │   ├── AndroidManifest.xml
 │       │   ├── java/com/example/samplepandaai/
-│       │   │   ├── MainActivity.kt      # メイン画面 (Jetpack Compose)
-│       │   │   └── ui/theme/            # テーマ定義
-│       │   │       ├── Color.kt
-│       │   │       ├── Theme.kt
-│       │   │       └── Type.kt
-│       │   └── res/                     # リソース (drawable, mipmap, values, xml)
-│       ├── test/                        # ユニットテスト (ExampleUnitTest.kt)
-│       └── androidTest/                 # インストゥルメントテスト (ExampleInstrumentedTest.kt)
+│       │   │   ├── data/
+│       │   │   │   ├── remote/
+│       │   │   │   │   ├── dto/                # OpenAPI 生成された DTO (ビルド後に生成)
+│       │   │   │   │   ├── GitHubApiService.kt  # API通信サービス
+│       │   │   │   │   └── HttpClientFactory.kt # Ktorクライアント設定
+│       │   │   │   └── repository/
+│       │   │   │       └── GitHubRepositoryImpl.kt # Repository 実装
+│       │   │   ├── domain/
+│       │   │   │   ├── model/
+│       │   │   │   │   └── GitHubRepo.kt        # ドメインモデル
+│       │   │   │   └── repository/
+│       │   │   │       └── GitHubRepository.kt  # Repository インターフェース
+│       │   │   ├── ui/theme/            # テーマ定義
+│       │   │   │   ├── Color.kt
+│       │   │   │   ├── Theme.kt
+│       │   │   │   └── Type.kt
+│       │   │   ├── util/
+│       │   │   │   └── serialization/
+│       │   │   │       ├── OffsetDateTimeKSerializer.kt # 日付用シリアライザー
+│       │   │   │       └── URIKSerializer.kt            # URI用シリアライザー
+│       │   │   └── MainActivity.kt      # メイン画面 (Jetpack Compose)
+│       │   ├── openapi/
+│       │   │   └── github_repos.yaml    # GitHub API定義
+│       │   └── res/                     # リソース
+│       ├── test/                        # ユニットテスト
+│       │   └── java/com/example/samplepandaai/
+│       │       ├── data/
+│       │       │   └── repository/
+│       │       │       └── GitHubRepositoryImplTest.kt # リポジトリのテスト
+│       │       ├── data/remote/
+│       │       │   └── GitHubApiServiceTest.kt         # API通信テスト
+│       │       └── LoggingTest.kt                      # ログ出力テスト
+│       └── androidTest/                 # インストゥルメントテスト
 ├── docs/
 │   ├── AGENTS.md              # AIエージェント活用指針
+│   ├── ARCHITECTURE_DESIGN.md # 構成設計・技術的負債
 │   ├── GEMINI.md              # Gemini 固有ルール
 │   └── PROJECT_STRUCTURE.md    # 本ファイル（プロジェクト構造の定義）
-├── gradle/                    # Gradleラッパー関連
-├── build.gradle.kts           # プロジェクト全体のビルド設定
-├── settings.gradle.kts        # モジュール管理
-├── gradle.properties          # Gradleのプロパティ設定
-├── gradlew                    # Unix用Gradleラッパースクリプト
-├── gradlew.bat                # Windows用Gradleラッパースクリプト
-├── .gitignore                 # Git除外設定
-└── README.md                  # プロジェクト概要
+├── gradle/
+├── build.gradle.kts
+├── settings.gradle.kts
+├── README.md
+└── .gitignore
 ```
 
 ## パッケージ名
@@ -44,3 +67,6 @@ SamplePandaAI/
 - **UI**: Jetpack Compose
 - **Language**: Kotlin
 - **Build System**: Gradle Kotlin DSL (kts)
+- **Networking**: Ktor
+- **Serialization**: Kotlinx Serialization
+- **API Spec**: OpenAPI (DTO automated generation)
