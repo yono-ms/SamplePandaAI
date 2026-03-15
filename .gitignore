@@ -22,3 +22,6 @@ out/
 Thumbs.db
 
 *.log
+
+# OpenAPI generated code (stable path)
+app/src/main/kotlin-gen/

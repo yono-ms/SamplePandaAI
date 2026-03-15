@@ -1,20 +1,24 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.openapitools.generator.gradle.plugin.tasks.GenerateTask
 
 plugins {
     alias(libs.plugins.android.application)
+    alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.openapi.generator)
+    alias(libs.plugins.hilt)
+    alias(libs.plugins.ksp)
 }
 
 android {
     namespace = "com.example.samplepandaai"
-    compileSdk = 36
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.example.samplepandaai"
         minSdk = 33
-        targetSdk = 36
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -33,6 +37,11 @@ android {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
+    kotlin {
+        compilerOptions {
+            jvmTarget.set(JvmTarget.JVM_11)
+        }
+    }
     buildFeatures {
         compose = true
         buildConfig = true
@@ -43,7 +52,6 @@ android {
         create("dev") {
             dimension = "environment"
             applicationIdSuffix = ".dev"
-            versionNameSuffix = "-dev"
             buildConfigField("String", "BASE_URL", "\"https://api.github.com\"")
         }
         create("prod") {
@@ -60,7 +68,8 @@ android {
 
     sourceSets {
         getByName("main") {
-            kotlin.srcDir("$buildDir/generate-resources/main/src/main/kotlin")
+            // 生成された DTO のソースフォルダのみを登録
+            java.srcDir("$buildDir/generated/openapi/src/main/kotlin")
         }
     }
 }
@@ -69,7 +78,8 @@ val generateGitHubDto = tasks.register<GenerateTask>("generateGitHubDto") {
     generatorName.set("kotlin")
     inputSpec.set("$projectDir/src/main/openapi/github_repos.yaml")
 
-    outputDir.set("$buildDir/generate-resources/main/src/main/kotlin")
+    // 一時的なビルドフォルダに出力
+    outputDir.set("$buildDir/generated/openapi")
 
     packageName.set("com.example.samplepandaai.data.remote.dto")
     modelPackage.set("com.example.samplepandaai.data.remote.dto")
@@ -81,7 +91,10 @@ val generateGitHubDto = tasks.register<GenerateTask>("generateGitHubDto") {
             "serializationLibrary" to "kotlinx_serialization",
             "enumPropertyNaming" to "UPPERCASE",
             "collectionType" to "list",
-            "useContextualSerialization" to "true"
+            "useContextualSerialization" to "true",
+            // 不要な生成物を抑制する設定
+            "interfaceOnly" to "true",
+            "omitGradleWrapper" to "true"
         )
     )
 }
@@ -105,6 +118,8 @@ dependencies {
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.compose.material3)
 
+    implementation(libs.androidx.activity.ktx)
+
     implementation(libs.slf4j.api)
     implementation(libs.logback.android)
     testImplementation(libs.slf4j.simple)
@@ -116,6 +131,10 @@ dependencies {
     implementation(libs.ktor.client.logging)
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.kotlinx.datetime)
+
+    // Hilt
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.compiler)
 
     testImplementation(libs.ktor.client.mock)
     testImplementation(libs.junit)

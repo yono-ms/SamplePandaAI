@@ -4,11 +4,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.samplepandaai.domain.model.GitHubRepo
 import com.example.samplepandaai.domain.repository.GitHubRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import org.slf4j.LoggerFactory
+import javax.inject.Inject
 
 /**
  * リポジトリ一覧画面の状態を表す Sealed Interface
@@ -22,7 +24,8 @@ sealed interface GitHubRepoListUiState {
 /**
  * リポジトリ一覧の取得と状態管理を行う ViewModel
  */
-class GitHubRepoListViewModel(
+@HiltViewModel
+class GitHubRepoListViewModel @Inject constructor(
     private val repository: GitHubRepository
 ) : ViewModel() {
 
