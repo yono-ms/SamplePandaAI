@@ -11,7 +11,6 @@ import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logger
 import io.ktor.client.plugins.logging.Logging
 import io.ktor.serialization.kotlinx.json.json
-import io.ktor.http.URLProtocol
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.modules.SerializersModule
 import org.slf4j.LoggerFactory
@@ -48,10 +47,12 @@ object HttpClientFactory {
             install(Logging) {
                 logger = object : Logger {
                     override fun log(message: String) {
+                        // Ktor のログを slf4j の debug レベルで出力
                         HttpClientFactory.logger.debug(message)
                     }
                 }
-                level = LogLevel.INFO
+                // デバッグ時は全ログを出力、本番時は無効化
+                level = if (BuildConfig.DEBUG) LogLevel.ALL else LogLevel.NONE
             }
         }
     }

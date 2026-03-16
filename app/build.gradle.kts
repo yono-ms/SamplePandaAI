@@ -68,7 +68,6 @@ android {
 
     sourceSets {
         getByName("main") {
-            // 生成された DTO のソースフォルダのみを登録
             java.srcDir("$buildDir/generated/openapi/src/main/kotlin")
         }
     }
@@ -77,13 +76,9 @@ android {
 val generateGitHubDto = tasks.register<GenerateTask>("generateGitHubDto") {
     generatorName.set("kotlin")
     inputSpec.set("$projectDir/src/main/openapi/github_repos.yaml")
-
-    // 一時的なビルドフォルダに出力
     outputDir.set("$buildDir/generated/openapi")
-
     packageName.set("com.example.samplepandaai.data.remote.dto")
     modelPackage.set("com.example.samplepandaai.data.remote.dto")
-
     generateApiTests.set(false)
     generateModelTests.set(false)
     configOptions.set(
@@ -92,7 +87,6 @@ val generateGitHubDto = tasks.register<GenerateTask>("generateGitHubDto") {
             "enumPropertyNaming" to "UPPERCASE",
             "collectionType" to "list",
             "useContextualSerialization" to "true",
-            // 不要な生成物を抑制する設定
             "interfaceOnly" to "true",
             "omitGradleWrapper" to "true"
         )
@@ -117,7 +111,6 @@ dependencies {
     implementation(libs.androidx.compose.ui.graphics)
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.compose.material3)
-
     implementation(libs.androidx.activity.ktx)
 
     implementation(libs.slf4j.api)
@@ -132,11 +125,13 @@ dependencies {
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.kotlinx.datetime)
 
-    // Hilt
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
 
     testImplementation(libs.ktor.client.mock)
+    testImplementation(libs.okhttp.mockwebserver)
+    testImplementation(libs.mockk)
+    testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

@@ -3,7 +3,7 @@ package com.example.samplepandaai.ui.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.samplepandaai.domain.model.GitHubRepo
-import com.example.samplepandaai.domain.repository.GitHubRepository
+import com.example.samplepandaai.domain.usecase.GetGitHubReposUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -22,11 +22,12 @@ sealed interface GitHubRepoListUiState {
 }
 
 /**
- * リポジトリ一覧の取得と状態管理を行う ViewModel
+ * リポジトリ一覧の取得と状態管理を行う ViewModel。
+ * UseCase を介してドメインロジックを実行する。
  */
 @HiltViewModel
 class GitHubRepoListViewModel @Inject constructor(
-    private val repository: GitHubRepository
+    private val getGitHubReposUseCase: GetGitHubReposUseCase
 ) : ViewModel() {
 
     private val logger = LoggerFactory.getLogger(GitHubRepoListViewModel::class.java)
@@ -42,9 +43,10 @@ class GitHubRepoListViewModel @Inject constructor(
             logger.debug("Fetching repositories for user: {}", username)
             _uiState.value = GitHubRepoListUiState.Loading
             try {
-                val repos = repository.getUserRepositories(username)
+                // UseCase を呼び出し（ドメイン層でのソート済みリストが返る）
+                val repos = getGitHubReposUseCase(username)
                 _uiState.value = GitHubRepoListUiState.Success(repos)
-                logger.info("Successfully fetched {} repositories", repos.size)
+                logger.info("Successfully fetched {} repositories via UseCase", repos.size)
             } catch (e: Exception) {
                 logger.error("Failed to fetch repositories for user: $username", e)
                 _uiState.value = GitHubRepoListUiState.Error(e.message ?: "Unknown error occurred")
