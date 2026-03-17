@@ -11,28 +11,29 @@
 - [x] ドメイン層 (Domain Layer) の構築 (`GitHubRepo`, `GitHubRepository`)
 - [x] データ層 (Data Layer) の実装 (`GitHubRepositoryImpl` + Mapper)
 - [x] リポジトリの単体テスト完了
-- [x] **開発環境の安定化 (AGP 8.5.2 / Kotlin 2.0.21)**
-- [x] **Hilt による自動依存関係注入の導入**
-- [x] **Flavor (dev/prod) による接続環境の構築**
-- [x] **プレゼンテーション層の初期実装 (ViewModel + Compose UI)**
-- [x] **ドメイン層への UseCase 導入 (`GetGitHubReposUseCase`)**
-- [x] **UseCase の単体テスト完了 (MockK)**
-- [x] **ViewModel の単体テスト完了 (Coroutines Test)**
+- [x] 開発環境の安定化 (AGP 8.5.2 / Kotlin 2.0.21)
+- [x] Hilt による自動依存関係注入の導入
+- [x] Flavor (dev/prod) による接続環境の構築
+- [x] プレゼンテーション層の初期実装 (ViewModel + Compose UI)
+- [x] ドメイン層への UseCase 導入 (`GetGitHubReposUseCase`)
+- [x] UseCase の単体テスト完了 (MockK)
+- [x] ViewModel の単体テスト完了 (Coroutines Test)
+- [x] UI のブラッシュアップ (Error表示、リトライ処理の検証)
+- [x] **インストゥルメントテスト (androidTest) の実装完了**
+  - [x] `RepoListScreenTest` (UI単体)
+  - [x] `GitHubRepoIntegrationTest` (Hilt + MockEngine を用いた結合テスト)
 
 ## 次回のタスク
 
-### 1. UI のブラッシュアップ
-
-- **詳細表示・エラーハンドリングの強化**: テストで検証した `Error` 状態を、ユーザーに分かりやすく表示する
-  UI の実装。
-- **UI コンポーネントの共通化**: `RepoListComponents.kt` への抽出と整理。
-
-### 2. インストゥルメントテスト (androidTest) の検討
-
-- **Compose UI テスト**: 実際に画面にデータが表示されるか、ローディングが表示されるかの結合試験。
+- [ ] **テスト戦略ドキュメント (`docs/TEST_STRATEGY.md`) の作成**
+  - [ ] 品質担保のための「テスト観点」を定義する。
+  - [ ] 作成済みのテストコードと定義した観点の突き合わせを行う。
+  - [ ] 観点の過不足（ドキュメントにあるがテストがない、またはその逆）を抽出する。
+  - [ ] 現状のテスト関連作業（リファクタリングや追加ケース）をリストアップする。
 
 ## 技術的メモ
 
-- AGP 9.x 系プレビュー版での `srcDir` 問題を回避するため、AGP 8.5.2 安定版を維持すること。
-- `kotlinx-coroutines-test` を使用する際は `runTest` と `advanceUntilIdle` を組み合わせて時間制御を行う。
-- テスト用データは `src/test/resources` の JSON を活用し、一貫性を保つ。
+- テスト項目書は作成せず、テストコードを正として運用する。
+- テスト観点については `docs/TEST_STRATEGY.md`（新規作成予定）で管理し、品質担保の指針を明確にする。
+- UIテストでは `HiltAndroidRule` と `ComposeTestRule` の順序 (`order`) に注意すること。
+- ドキュメント作成時は `docs/PROJECT_STRUCTURE.md`, `docs/AGENTS.md`, `docs/GEMINI.md` の指針を遵守する。
