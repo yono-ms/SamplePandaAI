@@ -80,6 +80,35 @@ class GitHubRepoListViewModelTest {
         assertEquals(errorMessage, (currentState as GitHubRepoListUiState.Error).message)
     }
 
+    @Test
+    fun `fetchRepositories should update uiState to Success when retrying after a failure`() =
+        runTest {
+            // 1. 最初の呼び出しで失敗させる
+            val errorMessage = "Initial Failure"
+            coEvery { getGitHubReposUseCase("user") } throws Exception(errorMessage)
+
+            // Act: 最初の取得
+            viewModel.fetchRepositories("user")
+            advanceUntilIdle()
+
+            // Assert: エラー状態であることを確認
+            assertTrue(viewModel.uiState.value is GitHubRepoListUiState.Error)
+
+            // 2. 次の呼び出し（リトライ）で成功させる設定に変更
+            val mockRepos = listOf(createMockRepo(1, "repo1", 10))
+            coEvery { getGitHubReposUseCase("user") } returns mockRepos
+
+            // Act: リトライ実行
+            viewModel.fetchRepositories("user")
+            advanceUntilIdle()
+
+            // Assert: 最終的に成功状態に更新されたか確認
+            val currentState = viewModel.uiState.value
+            assertTrue(currentState is GitHubRepoListUiState.Success)
+            assertEquals(1, (currentState as GitHubRepoListUiState.Success).repos.size)
+            assertEquals("repo1", (currentState as GitHubRepoListUiState.Success).repos[0].name)
+        }
+
     private fun createMockRepo(id: Long, name: String, stars: Int): GitHubRepo {
         return GitHubRepo(
             id = id,

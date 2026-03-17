@@ -21,7 +21,7 @@ android {
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner = "com.example.samplepandaai.HiltTestRunner"
     }
 
     buildTypes {
@@ -100,6 +100,14 @@ tasks.named("preBuild") {
 configurations {
     testImplementation { exclude(group = "com.github.tony19", module = "logback-android") }
     testRuntimeOnly { exclude(group = "com.github.tony19", module = "logback-android") }
+
+    // 全てのソースセットで、Hilt が強制する古い monitor/core を新しいバージョンで上書きする
+    all {
+        resolutionStrategy {
+            force("androidx.test:monitor:1.6.1")
+            force("androidx.test:core:1.5.0")
+        }
+    }
 }
 
 dependencies {
@@ -128,7 +136,18 @@ dependencies {
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
 
+    // Hilt Testing
+    androidTestImplementation(libs.hilt.android.testing)
+    kspAndroidTest(libs.hilt.compiler)
+
+    // AndroidX Test Core & Runner
+    androidTestImplementation(libs.androidx.test.core)
+    androidTestImplementation(libs.androidx.test.runner)
+    androidTestImplementation(libs.androidx.test.rules)
+    androidTestImplementation(libs.androidx.test.monitor)
+
     testImplementation(libs.ktor.client.mock)
+    androidTestImplementation(libs.ktor.client.mock)
     testImplementation(libs.okhttp.mockwebserver)
     testImplementation(libs.mockk)
     testImplementation(libs.kotlinx.coroutines.test)

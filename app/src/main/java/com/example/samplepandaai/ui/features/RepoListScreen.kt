@@ -1,35 +1,69 @@
 package com.example.samplepandaai.ui.features
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.*
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.samplepandaai.domain.model.GitHubRepo
 import com.example.samplepandaai.ui.components.ErrorView
 import com.example.samplepandaai.ui.components.LoadingView
 import com.example.samplepandaai.ui.components.RepoListItem
+import com.example.samplepandaai.ui.theme.SamplePandaAITheme
 import com.example.samplepandaai.ui.viewmodel.GitHubRepoListUiState
 import com.example.samplepandaai.ui.viewmodel.GitHubRepoListViewModel
+import kotlinx.datetime.Instant
 
-@OptIn(ExperimentalMaterial3Api::class)
+/**
+ * ViewModel に依存する Stateful な Composable。
+ * 画面のエントリポイントとして使用する。
+ */
 @Composable
 fun RepoListScreen(
     viewModel: GitHubRepoListViewModel,
-    username: String = "google", // デフォルトで google のリポジトリを表示
+    username: String = "google",
     modifier: Modifier = Modifier
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
-    // 画面表示時にデータを取得する
     LaunchedEffect(username) {
         viewModel.fetchRepositories(username)
     }
 
+    RepoListContent(
+        uiState = uiState,
+        username = username,
+        onRetry = { viewModel.fetchRepositories(username) },
+        modifier = modifier
+    )
+}
+
+/**
+ * 状態 (UiState) にのみ依存する Stateless な Composable。
+ * Preview やテストでの利用が容易。
+ */
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun RepoListContent(
+    uiState: GitHubRepoListUiState,
+    username: String,
+    onRetry: () -> Unit,
+    modifier: Modifier = Modifier
+) {
     Scaffold(
         topBar = {
             TopAppBar(
@@ -43,7 +77,7 @@ fun RepoListScreen(
         modifier = modifier.fillMaxSize()
     ) { paddingValues ->
         Box(modifier = Modifier.padding(paddingValues)) {
-            when (val state = uiState) {
+            when (uiState) {
                 is GitHubRepoListUiState.Loading -> {
                     LoadingView()
                 }
@@ -52,18 +86,77 @@ fun RepoListScreen(
                         modifier = Modifier.fillMaxSize(),
                         contentPadding = PaddingValues(bottom = 16.dp)
                     ) {
-                        items(state.repos) { repo ->
+                        items(uiState.repos) { repo ->
                             RepoListItem(repo = repo)
                         }
                     }
                 }
                 is GitHubRepoListUiState.Error -> {
                     ErrorView(
-                        message = state.message,
-                        onRetry = { viewModel.fetchRepositories(username) }
+                        message = uiState.message,
+                        onRetry = onRetry
                     )
                 }
             }
         }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun RepoListPreview_Success() {
+    val mockRepos = listOf(
+        GitHubRepo(
+            id = 1,
+            name = "ComposeSample",
+            fullName = "google/ComposeSample",
+            description = "A sample project for Jetpack Compose.",
+            htmlUrl = "",
+            stars = 1234,
+            language = "Kotlin",
+            updatedAt = Instant.parse("2024-01-01T00:00:00Z")
+        ),
+        GitHubRepo(
+            id = 2,
+            name = "AndroidArchitecture",
+            fullName = "google/AndroidArchitecture",
+            description = "Best practices for Android app architecture.",
+            htmlUrl = "",
+            stars = 5678,
+            language = "Java",
+            updatedAt = Instant.parse("2024-02-01T00:00:00Z")
+        )
+    )
+
+    SamplePandaAITheme {
+        RepoListContent(
+            uiState = GitHubRepoListUiState.Success(mockRepos),
+            username = "google",
+            onRetry = {}
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun RepoListPreview_Loading() {
+    SamplePandaAITheme {
+        RepoListContent(
+            uiState = GitHubRepoListUiState.Loading,
+            username = "google",
+            onRetry = {}
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun RepoListPreview_Error() {
+    SamplePandaAITheme {
+        RepoListContent(
+            uiState = GitHubRepoListUiState.Error("Failed to fetch data"),
+            username = "google",
+            onRetry = {}
+        )
     }
 }
