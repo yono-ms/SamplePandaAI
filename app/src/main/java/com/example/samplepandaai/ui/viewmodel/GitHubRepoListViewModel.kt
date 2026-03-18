@@ -2,6 +2,7 @@ package com.example.samplepandaai.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.samplepandaai.domain.model.AppException
 import com.example.samplepandaai.domain.model.GitHubRepo
 import com.example.samplepandaai.domain.usecase.GetGitHubReposUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -47,9 +48,17 @@ class GitHubRepoListViewModel @Inject constructor(
                 val repos = getGitHubReposUseCase(username)
                 _uiState.value = GitHubRepoListUiState.Success(repos)
                 logger.info("Successfully fetched {} repositories via UseCase", repos.size)
+            } catch (e: AppException) {
+                logger.error("Domain error occurred: ${e.message}", e)
+                val errorMessage = when (e) {
+                    is AppException.NetworkException -> "Network error. Please check your connection."
+                    is AppException.ApiException -> "Server error (${e.code}). Please try again later."
+                    is AppException.UnknownException -> e.message ?: "An unknown error occurred."
+                }
+                _uiState.value = GitHubRepoListUiState.Error(errorMessage)
             } catch (e: Exception) {
-                logger.error("Failed to fetch repositories for user: $username", e)
-                _uiState.value = GitHubRepoListUiState.Error(e.message ?: "Unknown error occurred")
+                logger.error("Unexpected error occurred", e)
+                _uiState.value = GitHubRepoListUiState.Error("An unexpected error occurred.")
             }
         }
     }

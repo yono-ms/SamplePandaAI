@@ -1,6 +1,7 @@
 package com.example.samplepandaai.data.repository
 
 import com.example.samplepandaai.data.remote.GitHubApiService
+import com.example.samplepandaai.domain.model.AppException
 import com.example.samplepandaai.domain.repository.GitHubRepository
 import com.example.samplepandaai.util.serialization.OffsetDateTimeKSerializer
 import com.example.samplepandaai.util.serialization.URIKSerializer
@@ -208,5 +209,47 @@ class GitHubRepositoryImplTest {
 
         // Assert
         assertTrue(result.isEmpty())
+    }
+
+    @Test
+    fun `getUserRepositories should throw ApiException when API returns 404`() = runBlocking {
+        // Arrange
+        val errorMockEngine = MockEngine {
+            respond(
+                content = "Not Found",
+                status = HttpStatusCode.NotFound,
+                headers = headersOf(HttpHeaders.ContentType, ContentType.Text.Plain.toString())
+            )
+        }
+        val client = HttpClient(errorMockEngine) {
+            install(ContentNegotiation) { json() }
+        }
+        val repo = GitHubRepositoryImpl(GitHubApiService(client))
+
+        // Act & Assert
+        try {
+            repo.getUserRepositories("nonexistentuser")
+            org.junit.Assert.fail("Expected AppException.ApiException was not thrown")
+        } catch (e: AppException.ApiException) {
+            assertEquals(HttpStatusCode.NotFound.value, e.code)
+        }
+    }
+
+    @Test
+    fun `getUserRepositories should throw NetworkException when IO error occurs`() = runBlocking {
+        // Arrange
+        // MockEngine では IOException を直接シミュレートするのが難しいため、
+        // 意図的に不正なレスポンスを投げるか、Service 自体を MockK でモックする
+        val apiService = io.mockk.mockk<GitHubApiService>()
+        io.mockk.coEvery { apiService.listUserRepos(any()) } throws java.io.IOException("No internet")
+        val repo = GitHubRepositoryImpl(apiService)
+
+        // Act & Assert
+        try {
+            repo.getUserRepositories("testuser")
+            org.junit.Assert.fail("Expected AppException.NetworkException was not thrown")
+        } catch (e: AppException.NetworkException) {
+            assertEquals("Network connection error", e.message)
+        }
     }
 }

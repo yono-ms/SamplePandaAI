@@ -1,5 +1,6 @@
 package com.example.samplepandaai.ui.viewmodel
 
+import com.example.samplepandaai.domain.model.AppException
 import com.example.samplepandaai.domain.model.GitHubRepo
 import com.example.samplepandaai.domain.usecase.GetGitHubReposUseCase
 import io.mockk.coEvery
@@ -65,10 +66,51 @@ class GitHubRepoListViewModelTest {
     }
 
     @Test
-    fun `fetchRepositories should update uiState to Error when UseCase fails`() = runTest {
+    fun `fetchRepositories should update uiState to Error when UseCase fails with NetworkException`() =
+        runTest {
+            // Arrange
+            coEvery { getGitHubReposUseCase("user") } throws AppException.NetworkException("No connection")
+
+            // Act
+            viewModel.fetchRepositories("user")
+            advanceUntilIdle()
+
+            // Assert
+            val currentState = viewModel.uiState.value
+            assertTrue(currentState is GitHubRepoListUiState.Error)
+            assertEquals(
+                "Network error. Please check your connection.",
+                (currentState as GitHubRepoListUiState.Error).message
+            )
+        }
+
+    @Test
+    fun `fetchRepositories should update uiState to Error when UseCase fails with ApiException`() =
+        runTest {
+            // Arrange
+            coEvery { getGitHubReposUseCase("user") } throws AppException.ApiException(
+                404,
+                "Not Found"
+            )
+
+            // Act
+            viewModel.fetchRepositories("user")
+            advanceUntilIdle()
+
+            // Assert
+            val currentState = viewModel.uiState.value
+            assertTrue(currentState is GitHubRepoListUiState.Error)
+            assertEquals(
+                "Server error (404). Please try again later.",
+                (currentState as GitHubRepoListUiState.Error).message
+            )
+        }
+
+    @Test
+    fun `fetchRepositories should update uiState to Error when UseCase fails with unexpected exception`() =
+        runTest {
         // Arrange
-        val errorMessage = "Network Error"
-        coEvery { getGitHubReposUseCase("user") } throws Exception(errorMessage)
+            coEvery { getGitHubReposUseCase("user") } throws RuntimeException("Boom")
 
         // Act
         viewModel.fetchRepositories("user")
@@ -77,15 +119,17 @@ class GitHubRepoListViewModelTest {
         // Assert
         val currentState = viewModel.uiState.value
         assertTrue(currentState is GitHubRepoListUiState.Error)
-        assertEquals(errorMessage, (currentState as GitHubRepoListUiState.Error).message)
+            assertEquals(
+                "An unexpected error occurred.",
+                (currentState as GitHubRepoListUiState.Error).message
+            )
     }
 
     @Test
     fun `fetchRepositories should update uiState to Success when retrying after a failure`() =
         runTest {
             // 1. 最初の呼び出しで失敗させる
-            val errorMessage = "Initial Failure"
-            coEvery { getGitHubReposUseCase("user") } throws Exception(errorMessage)
+            coEvery { getGitHubReposUseCase("user") } throws AppException.NetworkException("Fail")
 
             // Act: 最初の取得
             viewModel.fetchRepositories("user")

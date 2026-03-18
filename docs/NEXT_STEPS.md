@@ -20,16 +20,18 @@
 - [x] ViewModel の単体テスト完了 (Coroutines Test)
 - [x] UI のブラッシュアップ (Error表示、リトライ処理の検証)
 - [x] **インストゥルメントテスト (androidTest) の実装完了**
-  - [x] `RepoListScreenTest` (UI単体)
-  - [x] `GitHubRepoIntegrationTest` (Hilt + MockEngine を用いた結合テスト)
 - [x] **テスト戦略ドキュメント (`docs/TEST_STRATEGY.md`) の作成**
-  - [x] テスト観点の定義と既存コードの対応付け完了
+- [x] **エラーハンドリングの強化とテスト追加**
+  - [x] 独自例外 `AppException` の導入とマッピングの実装
+  - [x] API エラー（404等）およびネットワークエラーの Repository テスト追加
+  - [x] ViewModel での例外捕捉と UI 状態への反映
 
 ## 次回のタスク
 
-- [ ] **エラーハンドリングの強化とテスト追加**
-  - [ ] API エラー（404, 500等）発生時の Repository の挙動検証テストを追加する。
-  - [ ] ネットワーク未接続時の例外処理が ViewModel まで正しく伝播するか確認する。
+- [ ] **テストコードのリファクタリング（テストデータの外部ファイル化）**
+  - [ ] `GitHubRepositoryImplTest` 等でハードコードされている JSON サンプルを、
+    `app/src/test/resources/github_repos_success.json` 等の外部ファイル参照に切り替える。
+  - [ ] `TestUtils.kt` にリソースファイルを読み込む共通関数を実装する。
 - [ ] **カバレッジの可視化検討**
   - [ ] Jacoco 等の導入によるテスト網羅率の計測。
 
@@ -39,3 +41,5 @@
 - テスト観点については `docs/TEST_STRATEGY.md` で管理し、品質担保の指針を明確にする。
 - UIテストでは `HiltAndroidRule` と `ComposeTestRule` の順序 (`order`) に注意すること。
 - ドキュメント作成時は `docs/PROJECT_STRUCTURE.md`, `docs/AGENTS.md`, `docs/GEMINI.md` の指針を遵守する。
+- Ktor の `HttpClient` はデフォルトで 404 等を例外として投げないため、`GitHubApiService` で明示的にチェックし
+  `ResponseException` を投げる構成としている。
