@@ -26,13 +26,13 @@
   - [x] API エラー（404等）およびネットワークエラーの Repository テスト追加
   - [x] ViewModel での例外捕捉と UI 状態への反映
 - [x] **設計・コスト検証ドキュメント (`docs/DESIGN_COST_VERIFICATION.md`) の作成**
+- [x] **テストコードのリファクタリング（テストデータの外部ファイル化）**
+  - [x] `GitHubRepositoryImplTest` 等でハードコードされている JSON サンプルを、
+    `app/src/test/resources/github_repos_success.json` 等の外部ファイル参照に切り替える。
+  - [x] `TestUtils.kt` にリソースファイルを読み込む共通関数を実装する。
 
 ## 次回のタスク
 
-- [ ] **テストコードのリファクタリング（テストデータの外部ファイル化）**
-  - [ ] `GitHubRepositoryImplTest` 等でハードコードされている JSON サンプルを、
-    `app/src/test/resources/github_repos_success.json` 等の外部ファイル参照に切り替える。
-  - [ ] `TestUtils.kt` にリソースファイルを読み込む共通関数を実装する。
 - [ ] **カバレッジの可視化検討**
   - [ ] Jacoco 等の導入によるテスト網羅率の計測。
 

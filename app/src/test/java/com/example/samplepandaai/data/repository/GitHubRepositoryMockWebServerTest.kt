@@ -50,10 +50,12 @@ class GitHubRepositoryMockWebServerTest {
 
     @Test
     fun `getUserRepositories should handle 404 Not Found`() = runBlocking {
+        val mockJson = TestUtils.readResourceFile("github_error_not_found.json")
         mockWebServer.enqueue(
             MockResponse()
                 .setResponseCode(404)
-                .setBody("""{"message": "Not Found"}""")
+                .addHeader("Content-Type", "application/json")
+                .setBody(mockJson)
         )
 
         try {
@@ -82,10 +84,12 @@ class GitHubRepositoryMockWebServerTest {
 
     @Test
     fun `getUserRepositories should handle malformed JSON`() = runBlocking {
+        val mockJson = TestUtils.readResourceFile("github_repos_malformed.json")
         mockWebServer.enqueue(
             MockResponse()
                 .setResponseCode(200)
-                .setBody("[{ \"id\": \"invalid_id_type\" }]")
+                .addHeader("Content-Type", "application/json")
+                .setBody(mockJson)
         )
 
         try {
