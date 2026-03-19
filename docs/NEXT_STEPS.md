@@ -25,6 +25,7 @@
   - [x] 独自例外 `AppException` の導入とマッピングの実装
   - [x] API エラー（404等）およびネットワークエラーの Repository テスト追加
   - [x] ViewModel での例外捕捉と UI 状態への反映
+- [x] **設計・コスト検証ドキュメント (`docs/DESIGN_COST_VERIFICATION.md`) の作成**
 
 ## 次回のタスク
 

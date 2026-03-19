@@ -52,6 +52,7 @@ SamplePandaAI/
 ├── docs/
 │   ├── AGENTS.md              # AIエージェント活用指針
 │   ├── ARCHITECTURE_DESIGN.md # 構成設計・技術的負債
+│   ├── DESIGN_COST_VERIFICATION.md # 設計・コスト検証ドキュメント
 │   ├── GEMINI.md              # Gemini 固有ルール
 │   ├── NEXT_STEPS.md          # 次回の作業予定
 │   └── PROJECT_STRUCTURE.md    # 本ファイル（プロジェクト構造の定義）
