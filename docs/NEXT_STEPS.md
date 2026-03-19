@@ -19,28 +19,26 @@
 - [x] UseCase の単体テスト完了 (MockK)
 - [x] ViewModel の単体テスト完了 (Coroutines Test)
 - [x] UI のブラッシュアップ (Error表示、リトライ処理の検証)
-- [x] **インストゥルメントテスト (androidTest) の実装完了**
-- [x] **テスト戦略ドキュメント (`docs/TEST_STRATEGY.md`) の作成**
-- [x] **エラーハンドリングの強化とテスト追加**
-  - [x] 独自例外 `AppException` の導入とマッピングの実装
-  - [x] API エラー（404等）およびネットワークエラーの Repository テスト追加
-  - [x] ViewModel での例外捕捉と UI 状態への反映
-- [x] **設計・コスト検証ドキュメント (`docs/DESIGN_COST_VERIFICATION.md`) の作成**
-- [x] **テストコードのリファクタリング（テストデータの外部ファイル化）**
-  - [x] `GitHubRepositoryImplTest` 等でハードコードされている JSON サンプルを、
-    `app/src/test/resources/github_repos_success.json` 等の外部ファイル参照に切り替える。
-  - [x] `TestUtils.kt` にリソースファイルを読み込む共通関数を実装する。
+- [x] インストゥルメントテスト (androidTest) の実装完了
+- [x] テスト戦略ドキュメント (`docs/TEST_STRATEGY.md`) の作成
+- [x] エラーハンドリングの強化とテスト追加
+- [x] 設計・コスト検証ドキュメント (`docs/DESIGN_COST_VERIFICATION.md`) の作成
+- [x] テストコードのリファクタリング（テストデータの外部ファイル化）完了
+- [x] テストカバレッジの確認（Android Studio 標準機能の活用）完了
 
 ## 次回のタスク
 
-- [ ] **カバレッジの可視化検討**
-  - [ ] Jacoco 等の導入によるテスト網羅率の計測。
+- [ ] **アプリ本体の機能追加**
+  - [ ] リポジトリ詳細画面の実装。
+  - [ ] WebView によるリポジトリ表示機能。
+- [ ] **テスト・デリバリー基盤の検討 (中長期)**
+  - [ ] GitHub Actions による自動テスト実行。
+  - [ ] スクリーンショットテストの導入（Git管理コストと合わせて検討）。
 
 ## 技術的メモ
 
 - テスト項目書は作成せず、テストコードを正として運用する。
 - テスト観点については `docs/TEST_STRATEGY.md` で管理し、品質担保の指針を明確にする。
+- カバレッジ確認は、Android Studio の **'Run with Coverage'** 機能を活用する（プロジェクト設定を汚さないため）。
 - UIテストでは `HiltAndroidRule` と `ComposeTestRule` の順序 (`order`) に注意すること。
 - ドキュメント作成時は `docs/PROJECT_STRUCTURE.md`, `docs/AGENTS.md`, `docs/GEMINI.md` の指針を遵守する。
-- Ktor の `HttpClient` はデフォルトで 404 等を例外として投げないため、`GitHubApiService` で明示的にチェックし
-  `ResponseException` を投げる構成としている。
