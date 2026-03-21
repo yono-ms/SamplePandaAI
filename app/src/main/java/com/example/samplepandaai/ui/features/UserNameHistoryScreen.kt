@@ -23,8 +23,10 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.samplepandaai.R
 import com.example.samplepandaai.ui.theme.SamplePandaAITheme
 import com.example.samplepandaai.ui.viewmodel.UserNameHistoryViewModel
 
@@ -55,12 +57,12 @@ fun UserNameHistoryContent(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("検索履歴") },
+                title = { Text(stringResource(R.string.history_title)) },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "戻る"
+                            contentDescription = stringResource(R.string.history_back_content_description)
                         )
                     }
                 }
@@ -75,7 +77,7 @@ fun UserNameHistoryContent(
                 contentAlignment = Alignment.Center
             ) {
                 Text(
-                    text = "履歴はありません",
+                    text = stringResource(R.string.history_empty),
                     style = MaterialTheme.typography.bodyLarge,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
@@ -93,7 +95,7 @@ fun UserNameHistoryContent(
                             IconButton(onClick = { onDeleteUserName(userName) }) {
                                 Icon(
                                     imageVector = Icons.Default.Delete,
-                                    contentDescription = "削除"
+                                    contentDescription = stringResource(R.string.history_delete_content_description)
                                 )
                             }
                         },

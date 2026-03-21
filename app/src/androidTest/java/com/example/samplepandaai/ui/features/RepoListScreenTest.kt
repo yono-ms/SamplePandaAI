@@ -40,6 +40,7 @@ class RepoListScreenTest {
                 RepoListContent(
                     uiState = GitHubRepoListUiState.Loading,
                     username = "google",
+                    onBack = {},
                     onRetry = {}
                 )
             }
@@ -54,6 +55,7 @@ class RepoListScreenTest {
                 RepoListContent(
                     uiState = GitHubRepoListUiState.Success(mockRepos),
                     username = "google",
+                    onBack = {},
                     onRetry = {}
                 )
             }
@@ -72,6 +74,7 @@ class RepoListScreenTest {
                 RepoListContent(
                     uiState = GitHubRepoListUiState.Error(errorMessage),
                     username = "google",
+                    onBack = {},
                     onRetry = { retryClicked = true } // コールバックが呼ばれたらフラグを立てる
                 )
             }

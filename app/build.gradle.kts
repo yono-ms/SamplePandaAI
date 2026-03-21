@@ -71,6 +71,12 @@ android {
             java.srcDir("$buildDir/generated/openapi/src/main/kotlin")
         }
     }
+
+    packaging {
+        resources {
+            excludes += "/META-INF/{AL2.0,LGPL2.1,LICENSE*,NOTICE*}"
+        }
+    }
 }
 
 val generateGitHubDto = tasks.register<GenerateTask>("generateGitHubDto") {

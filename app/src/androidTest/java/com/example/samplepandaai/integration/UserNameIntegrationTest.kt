@@ -1,12 +1,15 @@
 package com.example.samplepandaai.integration
 
+import android.content.Context
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
+import androidx.test.platform.app.InstrumentationRegistry
 import com.example.samplepandaai.MainActivity
+import com.example.samplepandaai.R
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import org.junit.Before
@@ -22,9 +25,12 @@ class UserNameIntegrationTest {
     @get:Rule(order = 1)
     val composeTestRule = createAndroidComposeRule<MainActivity>()
 
+    private lateinit var context: Context
+
     @Before
     fun init() {
         hiltRule.inject()
+        context = InstrumentationRegistry.getInstrumentation().targetContext
     }
 
     @Test
@@ -32,18 +38,23 @@ class UserNameIntegrationTest {
         val testUser = "panda-user"
 
         // 1. 入力画面の確認
-        composeTestRule.onNodeWithText("ユーザー名を入力してください").assertIsDisplayed()
+        composeTestRule.onNodeWithText(context.getString(R.string.user_name_input_instruction))
+            .assertIsDisplayed()
 
         // 2. 正常入力と遷移
-        composeTestRule.onNodeWithText("GitHub ユーザー名").performTextInput(testUser)
-        composeTestRule.onNodeWithText("リポジトリを取得する").performClick()
+        composeTestRule.onNodeWithText(context.getString(R.string.user_name_field_label))
+            .performTextInput(testUser)
+        composeTestRule.onNodeWithText(context.getString(R.string.user_name_submit_button))
+            .performClick()
 
         // 3. 一覧画面への到達確認
         composeTestRule.onNodeWithText("GitHub Repositories: $testUser").assertIsDisplayed()
 
-        // 4. 戻って履歴を確認
-        composeTestRule.onNodeWithContentDescription("Back").performClick()
-        composeTestRule.onNodeWithContentDescription("履歴を表示").performClick()
+        // 4. 戻って履歴を確認 (文字列リソースを参照)
+        composeTestRule.onNodeWithContentDescription(context.getString(R.string.back_button_content_description))
+            .performClick()
+        composeTestRule.onNodeWithContentDescription(context.getString(R.string.user_name_history_icon_content_description))
+            .performClick()
         composeTestRule.onNodeWithText(testUser).assertIsDisplayed()
     }
 
@@ -52,23 +63,25 @@ class UserNameIntegrationTest {
         val invalidUser = "-invalid-"
 
         // 1. 不正な入力
-        composeTestRule.onNodeWithText("GitHub ユーザー名").performTextInput(invalidUser)
-        composeTestRule.onNodeWithText("リポジトリを取得する").performClick()
+        composeTestRule.onNodeWithText(context.getString(R.string.user_name_field_label))
+            .performTextInput(invalidUser)
+        composeTestRule.onNodeWithText(context.getString(R.string.user_name_submit_button))
+            .performClick()
 
         // 2. エラーメッセージの表示確認
-        composeTestRule.onNodeWithText("GitHubのユーザー名形式が正しくありません")
+        composeTestRule.onNodeWithText(context.getString(R.string.error_invalid_user_name))
             .assertIsDisplayed()
 
-        // 3. 画面遷移が起きていない（まだ入力画面にいる）ことの確認
-        composeTestRule.onNodeWithText("ユーザー名を入力してください").assertIsDisplayed()
+        // 3. 画面遷移が起きていない
+        composeTestRule.onNodeWithText(context.getString(R.string.user_name_input_instruction))
+            .assertIsDisplayed()
     }
 
     @Test
     fun testUserNameFlow_emptyInput_showsError() {
-        // 1. 未入力でクリック
-        composeTestRule.onNodeWithText("リポジトリを取得する").performClick()
-
-        // 2. エラーメッセージの表示確認
-        composeTestRule.onNodeWithText("ユーザー名を入力してください").assertIsDisplayed()
+        composeTestRule.onNodeWithText(context.getString(R.string.user_name_submit_button))
+            .performClick()
+        composeTestRule.onNodeWithText(context.getString(R.string.error_empty_user_name))
+            .assertIsDisplayed()
     }
 }

@@ -79,7 +79,10 @@ fun SamplePandaApp() {
                 val viewModel: GitHubRepoListViewModel = hiltViewModel()
                 RepoListScreen(
                     viewModel = viewModel,
-                    username = repoListRoute.username
+                    username = repoListRoute.username,
+                    onBack = {
+                        navController.popBackStack()
+                    }
                 )
             }
         }

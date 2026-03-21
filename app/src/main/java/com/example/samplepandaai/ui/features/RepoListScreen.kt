@@ -6,7 +6,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -17,8 +21,10 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.samplepandaai.R
 import com.example.samplepandaai.domain.model.GitHubRepo
 import com.example.samplepandaai.ui.components.ErrorView
 import com.example.samplepandaai.ui.components.LoadingView
@@ -36,6 +42,7 @@ import kotlinx.datetime.Instant
 fun RepoListScreen(
     viewModel: GitHubRepoListViewModel,
     username: String = "google",
+    onBack: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     val uiState by viewModel.uiState.collectAsState()
@@ -47,6 +54,7 @@ fun RepoListScreen(
     RepoListContent(
         uiState = uiState,
         username = username,
+        onBack = onBack,
         onRetry = { viewModel.fetchRepositories(username) },
         modifier = modifier
     )
@@ -54,13 +62,13 @@ fun RepoListScreen(
 
 /**
  * 状態 (UiState) にのみ依存する Stateless な Composable。
- * Preview やテストでの利用が容易。
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RepoListContent(
     uiState: GitHubRepoListUiState,
     username: String,
+    onBack: () -> Unit,
     onRetry: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -68,6 +76,14 @@ fun RepoListContent(
         topBar = {
             TopAppBar(
                 title = { Text(text = "GitHub Repositories: $username") },
+                navigationIcon = {
+                    IconButton(onClick = onBack) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = stringResource(R.string.back_button_content_description)
+                        )
+                    }
+                },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = MaterialTheme.colorScheme.primaryContainer,
                     titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer
@@ -132,30 +148,7 @@ fun RepoListPreview_Success() {
         RepoListContent(
             uiState = GitHubRepoListUiState.Success(mockRepos),
             username = "google",
-            onRetry = {}
-        )
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun RepoListPreview_Loading() {
-    SamplePandaAITheme {
-        RepoListContent(
-            uiState = GitHubRepoListUiState.Loading,
-            username = "google",
-            onRetry = {}
-        )
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun RepoListPreview_Error() {
-    SamplePandaAITheme {
-        RepoListContent(
-            uiState = GitHubRepoListUiState.Error("Failed to fetch data"),
-            username = "google",
+            onBack = {},
             onRetry = {}
         )
     }

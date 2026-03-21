@@ -22,6 +22,9 @@ class UserNameHistoryViewModel @Inject constructor(
     val history: StateFlow<List<String>> = getUserNameHistoryUseCase()
         .stateIn(
             scope = viewModelScope,
+            // WhileSubscribed(5000) の理由:
+            // 画面回転時など、UIが一瞬だけ非アクティブになる際にストリームが即座に停止するのを防ぐ。
+            // 5秒の猶予（バッファ）を設けることで、回転後も即座に以前のキャッシュ状態を表示できる。
             started = SharingStarted.WhileSubscribed(5000),
             initialValue = emptyList()
         )

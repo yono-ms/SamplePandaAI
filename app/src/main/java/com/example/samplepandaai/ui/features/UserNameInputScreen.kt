@@ -23,10 +23,12 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.samplepandaai.R
 import com.example.samplepandaai.ui.theme.SamplePandaAITheme
 import com.example.samplepandaai.ui.viewmodel.UserNameInputViewModel
 
@@ -67,12 +69,12 @@ fun UserNameInputContent(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("GitHub Repo Explorer") },
+                title = { Text(stringResource(R.string.user_name_input_title)) },
                 actions = {
                     IconButton(onClick = onNavigateToHistory) {
                         Icon(
                             imageVector = Icons.Default.History,
-                            contentDescription = "履歴を表示"
+                            contentDescription = stringResource(R.string.user_name_history_icon_content_description)
                         )
                     }
                 }
@@ -88,38 +90,30 @@ fun UserNameInputContent(
             verticalArrangement = Arrangement.Center
         ) {
             Text(
-                text = "ユーザー名を入力してください",
+                text = stringResource(R.string.user_name_input_instruction),
                 style = MaterialTheme.typography.headlineSmall,
                 textAlign = TextAlign.Center
             )
 
             Spacer(modifier = Modifier.height(32.dp))
 
-            // フィールドの構成を修正: 
-            // 1. タイトルを Text として独立させ、線との重なりを回避。
-            // 2. label の代わりに入力中のみ表示される placeholder を使用。
-            Column(modifier = Modifier.fillMaxWidth()) {
-                Text(
-                    text = "GitHub ユーザー名",
-                    style = MaterialTheme.typography.labelLarge,
-                    color = if (errorMessage != null) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onSurfaceVariant
-                )
-                Spacer(modifier = Modifier.height(8.dp))
-                OutlinedTextField(
-                    value = userName,
-                    onValueChange = onUserNameChanged,
-                    placeholder = { Text("例: google") }, // 入力すると消えるヒント
-                    isError = errorMessage != null,
-                    modifier = Modifier.fillMaxWidth(),
-                    singleLine = true,
-                    supportingText = {
-                        // 公式推奨の supportingText を使用し、独立したメッセージ表示を行う
-                        if (errorMessage != null) {
-                            Text(text = errorMessage)
-                        }
+            // MD3 準拠: label を OutlinedTextField の引数として渡し、枠線上のアニメーションを有効にする。
+            // これにより androidTest の onNodeWithText("GitHub ユーザー名") が TextField を正しく見つけられるようになる。
+            OutlinedTextField(
+                value = userName,
+                onValueChange = onUserNameChanged,
+                label = { Text(stringResource(R.string.user_name_field_label)) },
+                placeholder = { Text(stringResource(R.string.user_name_field_placeholder)) },
+                isError = errorMessage != null,
+                modifier = Modifier.fillMaxWidth(),
+                singleLine = true,
+                supportingText = {
+                    // 公式推奨の supportingText を使用
+                    if (errorMessage != null) {
+                        Text(text = errorMessage)
                     }
-                )
-            }
+                }
+            )
 
             Spacer(modifier = Modifier.height(24.dp))
 
@@ -130,7 +124,7 @@ fun UserNameInputContent(
                     .height(56.dp),
                 shape = MaterialTheme.shapes.medium
             ) {
-                Text("リポジトリを取得する")
+                Text(stringResource(R.string.user_name_submit_button))
             }
         }
     }

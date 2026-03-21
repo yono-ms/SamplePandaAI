@@ -9,6 +9,7 @@ import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
@@ -47,12 +48,24 @@ class UserNameHistoryViewModelTest {
 
     @Test
     fun `history - 初期状態でリポジトリの履歴が反映されていること`() = runTest {
+        // WhileSubscribed(5000) を使用しているため、collect して Flow をアクティブにする必要がある
+        val collectJob = backgroundScope.launch(testDispatcher) {
+            viewModel.history.collect {}
+        }
+
         testDispatcher.scheduler.advanceUntilIdle()
         assertEquals(listOf("user1", "user2"), viewModel.history.value)
+
+        collectJob.cancel()
     }
 
     @Test
     fun `onDeleteUserName - 削除実行後、リストの状態が正しく更新されること`() = runTest {
+        // WhileSubscribed(5000) を使用しているため、collect して Flow をアクティブにする必要がある
+        val collectJob = backgroundScope.launch(testDispatcher) {
+            viewModel.history.collect {}
+        }
+
         val targetUser = "user1"
 
         // 削除 UseCase が呼ばれたら、fakeHistoryFlow の中身を更新するようにシミュレート
@@ -68,7 +81,9 @@ class UserNameHistoryViewModelTest {
         // 1. UseCase が呼ばれたことの検証
         coVerify { deleteUserNameFromHistoryUseCase(targetUser) }
 
-        // 2. 【重要】リストの内容が更新（user1が消えてuser2のみ）されていることの検証
+        // 2. リストの内容が更新されていることの検証
         assertEquals(listOf("user2"), viewModel.history.value)
+
+        collectJob.cancel()
     }
 }

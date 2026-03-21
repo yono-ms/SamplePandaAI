@@ -1,3 +1,22 @@
 <resources>
     <string name="app_name">SamplePandaAI</string>
+    <string name="user_name_input_title">GitHub Repo Explorer</string>
+    <string name="user_name_input_instruction">GitHub ユーザー名を入力してください</string>
+    <string name="user_name_field_label">GitHub ユーザー名</string>
+    <string name="user_name_field_placeholder">例: google</string>
+    <string name="user_name_submit_button">リポジトリを取得する</string>
+    <string name="user_name_history_icon_content_description">履歴を表示</string>
+
+    <!-- バリデーションエラー -->
+    <string name="error_empty_user_name">ユーザー名を入力してください</string>
+    <string name="error_invalid_user_name">GitHubのユーザー名形式が正しくありません</string>
+
+    <!-- 履歴画面 -->
+    <string name="history_title">入力履歴</string>
+    <string name="history_empty">履歴はありません</string>
+    <string name="history_delete_content_description">履歴を削除</string>
+    <string name="history_back_content_description">戻る</string>
+
+    <!-- 共通 -->
+    <string name="back_button_content_description">戻る</string>
 </resources>
