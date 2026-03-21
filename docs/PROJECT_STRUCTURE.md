@@ -50,6 +50,8 @@ SamplePandaAI/
 │               ├── integration/        # 結合テスト
 │               └── ui/features/        # UIテスト
 ├── docs/
+│   ├── features/              # 機能ごとの詳細設計・ドキュメント
+│   │   └── 01_USER_NAME_INPUT.md
 │   ├── AGENTS.md              # AIエージェント活用指針
 │   ├── ARCHITECTURE_DESIGN.md # 構成設計・技術的負債
 │   ├── DESIGN_COST_VERIFICATION.md # 設計・コスト検証ドキュメント

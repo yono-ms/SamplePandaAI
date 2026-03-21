@@ -15,8 +15,7 @@
 - [x] Hilt による自動依存関係注入の導入
 - [x] Flavor (dev/prod) による接続環境の構築
 - [x] プレゼンテーション層の初期実装 (ViewModel + Compose UI)
-- [x] ドメイン層への UseCase 導入 (`GetGitHubReposUseCase`)
-- [x] UseCase の単体テスト完了 (MockK)
+- [x] ドメイン層への UseCase 導入
 - [x] ViewModel の単体テスト完了 (Coroutines Test)
 - [x] UI のブラッシュアップ (Error表示、リトライ処理の検証)
 - [x] インストゥルメントテスト (androidTest) の実装完了
@@ -25,20 +24,30 @@
 - [x] 設計・コスト検証ドキュメント (`docs/DESIGN_COST_VERIFICATION.md`) の作成
 - [x] テストコードのリファクタリング（テストデータの外部ファイル化）完了
 - [x] テストカバレッジの確認（Android Studio 標準機能の活用）完了
+- [x] **機能追加 1: ユーザー名入力画面のコア実装完了**
+  - [x] 設計ドキュメント作成 (`docs/features/01_USER_NAME_INPUT.md`)
+  - [x] Type-safe Navigation への移行 (Serializable object/class)
+  - [x] バリデーションロジックの UseCase 移行 (`ValidateGitHubUserNameUseCase`)
+  - [x] `UserNameRepository` (DataStore) による履歴管理の実装
+  - [x] 2画面構成 (`UserNameInputScreen`, `UserNameHistoryScreen`) の実装
+  - [x] 両画面への Compose Preview 導入 (Stateless 化)
 
 ## 次回のタスク
 
-- [ ] **アプリ本体の機能追加**
+- [ ] **機能追加 1 の最終テスト実行・検証**
+  - [ ] 全ユニットテスト (`test`) の実行とパス確認。
+  - [ ] 画面遷移・履歴保存の結合テスト (`Integration Test`) の実行とパス確認。
+- [ ] **プロジェクト全体のリファクタリング（機能追加 1 完了に伴う整理）**
+  - [ ] **TextField/OutlinedTextField のデザインガイドライン確認**: 現在のラベル外部配置が Material
+    Design 3 の標準的なエラー表示方法（Supporting Text 等）と照らして妥当か検証し、必要に応じて修正。
+  - [ ] **文字列リソースの整理**: UI 上の固定文言やエラーメッセージを `strings.xml` または `object`
+    定義に集約し、ハードコードを排除。
+- [ ] **アプリ本体の次機能実装**
   - [ ] リポジトリ詳細画面の実装。
   - [ ] WebView によるリポジトリ表示機能。
-- [ ] **テスト・デリバリー基盤の検討 (中長期)**
-  - [ ] GitHub Actions による自動テスト実行。
-  - [ ] スクリーンショットテストの導入（Git管理コストと合わせて検討）。
 
 ## 技術的メモ
 
-- テスト項目書は作成せず、テストコードを正として運用する。
-- テスト観点については `docs/TEST_STRATEGY.md` で管理し、品質担保の指針を明確にする。
-- カバレッジ確認は、Android Studio の **'Run with Coverage'** 機能を活用する（プロジェクト設定を汚さないため）。
-- UIテストでは `HiltAndroidRule` と `ComposeTestRule` の順序 (`order`) に注意すること。
-- ドキュメント作成時は `docs/PROJECT_STRUCTURE.md`, `docs/AGENTS.md`, `docs/GEMINI.md` の指針を遵守する。
+- 画面遷移は Android 公式マニュアル推奨の Type-safe Navigation を使用すること。
+- バリデーション等のビジネスルールは ViewModel ではなく UseCase に集約すること。
+- テスト観点については `docs/TEST_STRATEGY.md` で管理し、品質担保の指針（Preview による視覚的検証含む）を明確にする。

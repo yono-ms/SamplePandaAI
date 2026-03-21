@@ -119,7 +119,13 @@ dependencies {
     implementation(libs.androidx.compose.ui.graphics)
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.compose.material3)
+    implementation(libs.androidx.compose.material.icons.extended)
     implementation(libs.androidx.activity.ktx)
+
+    // Navigation & DataStore
+    implementation(libs.androidx.navigation.compose)
+    implementation(libs.androidx.hilt.navigation.compose)
+    implementation(libs.androidx.datastore.preferences)
 
     implementation(libs.slf4j.api)
     implementation(libs.logback.android)
@@ -139,6 +145,9 @@ dependencies {
     // Hilt Testing
     androidTestImplementation(libs.hilt.android.testing)
     kspAndroidTest(libs.hilt.compiler)
+
+    // MockK for AndroidTest
+    androidTestImplementation(libs.mockk.android)
 
     // AndroidX Test Core & Runner
     androidTestImplementation(libs.androidx.test.core)

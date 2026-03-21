@@ -8,65 +8,87 @@
 - **レイヤー別検証**: クリーンアーキテクチャの各レイヤーにおいて、適切な粒度のテストを実施する。
 - **実データに近い検証**: Data層では `MockEngine` を用い、ネットワーク通信に近い形式でパースやシリアライズを検証する。
 - **信頼性の担保**: AI エージェントが生成したコードは、必ずこれらのテストをパスすることを条件とする。
-- **カバレッジの確認**: Android Studio 標準の **'Run with Coverage'** 機能を活用し、主要なロジックの網羅性を随時確認する。
+- **視覚的検証の活用**: Compose Preview を用い、UI のバリエーションを高速に検証する。
 
-## 2. テスト観点と対応状況
+## 2. UI Layer の検証手法 (Compose Preview)
 
-### A. Data Layer (Remote / Repository)
+Compose を用いた UI 開発では、以下の設計規約を遵守することで、テスト容易性と視覚的確認の効率を最大化します。
 
-API 通信、JSON パース、ドメインモデルへの変換を検証する。
+### A. Stateful / Stateless の分離
 
-| ID  | テスト観点                                       | 対応するテストコード (実在確認済み)        | ステータス |
-|:----|:--------------------------------------------|:---------------------------|:-----:|
-| D-1 | 正常な JSON レスポンスが正しく DTO にデプロイされるか            | `GitHubApiServiceTest`     |   ✅   |
-| D-2 | DTO からドメインモデルへのマッピングが正しいか                   | `GitHubRepositoryImplTest` |   ✅   |
-| D-3 | `URI` や `OffsetDateTime` のカスタムシリアライザーが動作するか | `GitHubRepositoryImplTest` |   ✅   |
-| D-4 | API が空配列を返した場合に空リストとして処理されるか                | `GitHubRepositoryImplTest` |   ✅   |
-| D-5 | ネットワークエラー発生時に適切に例外がスローされるか                  | `GitHubRepositoryImplTest` |   ✅   |
+- **Stateful Composable**: ViewModel に依存し、ナビゲーションやライフサイクルイベントをハンドルする。
+- **Stateless Composable**: 描画に必要なデータ（State）とイベント（Lambda）のみを受け取る。
+- **目的**: ロジックや DI に依存せず、UI コンポーネント単体での Preview 表示および UI テストを可能にする。
+
+### B. Preview による UI 単体確認
+
+- **役割**: 実機やエミュレータを起動せずに、UI のバリエーション（正常系、エラー、空状態、文字数超過など）を即座に視覚確認する「UI
+  単体テスト」としての役割を果たす。
+- **実装基準**: すべての画面 (Screen) および重要な共通コンポーネントに対して、主要な状態を網羅する
+  Preview を作成する。
+
+## 3. テスト観点と対応状況
+
+### A. Data Layer (Remote / Repository / Local)
+
+API 通信、JSON パース、ドメインモデルへの変換、およびローカル永続化を検証する。
+
+| ID  | テスト観点                                       | 対応するテストコード (実在確認済み)          | ステータス |
+|:----|:--------------------------------------------|:-----------------------------|:-----:|
+| D-1 | 正常な JSON レスポンスが正しく DTO にデプロイされるか            | `GitHubApiServiceTest`       |   ✅   |
+| D-2 | DTO からドメインモデルへのマッピングが正しいか                   | `GitHubRepositoryImplTest`   |   ✅   |
+| D-3 | `URI` や `OffsetDateTime` のカスタムシリアライザーが動作するか | `GitHubRepositoryImplTest`   |   ✅   |
+| D-4 | API が空配列を返した場合に空リストとして処理されるか                | `GitHubRepositoryImplTest`   |   ✅   |
+| D-5 | ネットワークエラー発生時に適切に例外がスローされるか                  | `GitHubRepositoryImplTest`   |   ✅   |
+| D-6 | 履歴データが `DataStore` に正しく保存・取得できるか            | `UserNameRepositoryImplTest` |   ⏳   |
+| D-7 | 履歴のソート順（新しい順）と最大件数(5件)が維持されるか               | `UserNameRepositoryImplTest` |   ⏳   |
 
 ### B. Domain Layer (UseCase)
 
-ビジネスロジック（データの加工・ソートなど）を検証する。
+ビジネスロジック（データの加工・ソート・バリデーションなど）を検証する。
 
-| ID  | テスト観点                       | 対応するテストコード (実在確認済み)         | ステータス |
-|:----|:----------------------------|:----------------------------|:-----:|
-| U-1 | 取得したリポジトリ一覧がスター数の降順でソートされるか | `GetGitHubReposUseCaseTest` |   ✅   |
-| U-2 | リポジトリが 0 件の場合に空リストを返すか      | `GetGitHubReposUseCaseTest` |   ✅   |
+| ID  | テスト観点                        | 対応するテストコード (実在確認済み)                 | ステータス |
+|:----|:-----------------------------|:------------------------------------|:-----:|
+| U-1 | 取得したリポジトリ一覧がスター数の降順でソートされるか  | `GetGitHubReposUseCaseTest`         |   ✅   |
+| U-2 | リポジトリが 0 件の場合に空リストを返すか       | `GetGitHubReposUseCaseTest`         |   ✅   |
+| U-3 | ユーザー名のバリデーション（命名規則）が正しく機能するか | `ValidateGitHubUserNameUseCaseTest` |   ⏳   |
 
 ### C. UI Layer (ViewModel)
 
 UI 状態（Loading, Success, Error）の遷移と、ユーザー操作によるイベントを検証する。
 
-| ID  | テスト観点                                 | 対応するテストコード (実在確認済み)           | ステータス |
-|:----|:--------------------------------------|:------------------------------|:-----:|
-| V-1 | 初期化時にデータ取得が開始され、Loading 状態になるか        | `GitHubRepoListViewModelTest` |   ✅   |
-| V-2 | データ取得成功時に Success 状態へ遷移し、データが保持されるか   | `GitHubRepoListViewModelTest` |   ✅   |
-| V-3 | データ取得失敗時に Error 状態へ遷移し、エラーメッセージを保持するか | `GitHubRepoListViewModelTest` |   ✅   |
-| V-4 | リトライ操作によって再取得が試行され、成功時に復帰するか          | `GitHubRepoListViewModelTest` |   ✅   |
+| ID  | テスト観点                                 | 対応するテストコード (実在確認済み)            | ステータス |
+|:----|:--------------------------------------|:-------------------------------|:-----:|
+| V-1 | 初期化時にデータ取得が開始され、Loading 状態になるか        | `GitHubRepoListViewModelTest`  |   ✅   |
+| V-2 | データ取得成功時に Success 状態へ遷移し、データが保持されるか   | `GitHubRepoListViewModelTest`  |   ✅   |
+| V-3 | データ取得失敗時に Error 状態へ遷移し、エラーメッセージを保持するか | `GitHubRepoListViewModelTest`  |   ✅   |
+| V-4 | リトライ操作によって再取得が試行され、成功時に復帰するか          | `GitHubRepoListViewModelTest`  |   ✅   |
+| V-5 | バリデーション結果に応じて ViewModel の状態が正しく更新されるか | `UserNameInputViewModelTest`   |   ⏳   |
+| V-6 | 履歴の削除アクションが UseCase に正しく伝播するか         | `UserNameHistoryViewModelTest` |   ⏳   |
 
 ### D. UI Layer (Compose Screen)
 
-Compose コンポーネントが UI 状態に応じて正しく描画されるかを検証する（UI 単体テスト）。
+Compose コンポーネントが UI 状態に応じて正しく描画されるかを検証する。
 
-| ID  | テスト観点                             | 対応するテストコード (実在確認済み)  | ステータス |
-|:----|:----------------------------------|:---------------------|:-----:|
-| S-1 | Loading 状態時にインジケータが表示されるか         | `RepoListScreenTest` |   ✅   |
-| S-2 | Success 状態時にリポジトリ一覧が表示されるか        | `RepoListScreenTest` |   ✅   |
-| S-3 | Error 状態時にエラーメッセージとリトライボタンが表示されるか | `RepoListScreenTest` |   ✅   |
-| S-4 | リトライボタン押下時に ViewModel の関数が呼ばれるか   | `RepoListScreenTest` |   ✅   |
+| ID  | テスト観点                      | 対応するテストコード (実在確認済み)         | ステータス |
+|:----|:---------------------------|:----------------------------|:-----:|
+| S-1 | Loading 状態時にインジケータが表示されるか  | `RepoListScreenTest`        |   ✅   |
+| S-2 | Success 状態時にリポジトリ一覧が表示されるか | `RepoListScreenTest`        |   ✅   |
+| S-3 | Error 状態時にエラーメッセージが表示されるか  | `UserNameInputScreenTest`   |   ⏳   |
+| S-4 | 履歴画面で項目が表示され、削除操作が可能か      | `UserNameHistoryScreenTest` |   ⏳   |
 
 ### E. Integration (結合テスト)
 
-DI (Hilt) を用い、実際の画面から MockEngine 経由でデータを取得する一連の流れを検証する。
+DI (Hilt) を用い、複数画面にまたがる一連の流れを検証する。
 
-| ID  | テスト観点                                 | 対応するテストコード (実在確認済み)         | ステータス |
-|:----|:--------------------------------------|:----------------------------|:-----:|
-| I-1 | アプリ起動後、実際の通信（Mock）を経てトップ画面にデータが表示されるか | `GitHubRepoIntegrationTest` |   ✅   |
+| ID  | テスト観点                                     | 対応するテストコード (実在確認済み)         | ステータス |
+|:----|:------------------------------------------|:----------------------------|:-----:|
+| I-1 | アプリ起動後、実際の通信（Mock）を経てトップ画面にデータが表示されるか     | `GitHubRepoIntegrationTest` |   ✅   |
+| I-2 | 名前入力 → 遷移 → 履歴保存 → 履歴から選択 という一連のフローが機能するか | `UserNameIntegrationTest`   |   ⏳   |
 
-## 3. 今後の課題・不足しているテスト
+## 4. 今後の課題・不足しているテスト
 
 1. **エッジケースの検証**:
-    - 通信タイムアウト時の挙動。
-    - リポジトリ名が極端に長い場合や、画像 URL が無効な場合の UI 崩れ（スクリーンショットテストの導入検討）。
+    - DataStore のマイグレーション（将来的にスキーマ変更があった場合）。
 2. **カバレッジの可視化**:
-   - 主要なパスは網羅しているが、CI/CD 等での自動計測は未導入（現在は Android Studio 標準機能で確認）。
+    - 現在は Android Studio 標準機能で確認。
