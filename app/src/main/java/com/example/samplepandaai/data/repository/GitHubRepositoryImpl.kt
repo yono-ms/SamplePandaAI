@@ -2,11 +2,14 @@ package com.example.samplepandaai.data.repository
 
 import com.example.samplepandaai.data.remote.GitHubApiService
 import com.example.samplepandaai.data.remote.dto.Repository
+import com.example.samplepandaai.domain.model.AppException
 import com.example.samplepandaai.domain.model.GitHubRepo
 import com.example.samplepandaai.domain.repository.GitHubRepository
+import io.ktor.client.plugins.ResponseException
 import kotlinx.datetime.Instant
 import kotlinx.datetime.toKotlinInstant
 import org.slf4j.LoggerFactory
+import java.io.IOException
 
 /**
  * GitHubRepository の実装クラス。
@@ -20,8 +23,24 @@ class GitHubRepositoryImpl(
 
     override suspend fun getUserRepositories(username: String): List<GitHubRepo> {
         logger.debug("Fetching repositories for user: {}", username)
-        val dtos = apiService.listUserRepos(username)
-        return dtos.map { it.toDomainModel() }
+        return try {
+            val dtos = apiService.listUserRepos(username)
+            dtos.map { it.toDomainModel() }
+        } catch (e: ResponseException) {
+            logger.error("API error occurred: ${e.response.status}", e)
+            throw AppException.ApiException(
+                code = e.response.status.value,
+                message = "API error: ${e.response.status.description}",
+                cause = e
+            )
+        } catch (e: IOException) {
+            logger.error("Network error occurred", e)
+            throw AppException.NetworkException("Network connection error", e)
+        } catch (e: Exception) {
+            if (e is AppException) throw e
+            logger.error("Unknown error occurred", e)
+            throw AppException.UnknownException(e.message ?: "Unknown error", e)
+        }
     }
 
     /**

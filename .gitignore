@@ -1,12 +1,6 @@
 *.iml
 .gradle
 /local.properties
-/.idea/caches
-/.idea/libraries
-/.idea/modules.xml
-/.idea/workspace.xml
-/.idea/navEditor.xml
-/.idea/assetWizardSettings.xml
 .DS_Store
 /build
 /captures
@@ -20,16 +14,14 @@ local.properties
 *.pem
 google-services.json
 
-.idea/AndroidProjectSystem.xml
-.idea/deploymentTargetSelector.xml
-.idea/deploymentTargetDropDown.xml
-.idea/markdown.xml
-.idea/inspectionProfiles/
-.idea/deviceManager.xml
-.idea/misc.xml
+# IDE settings
+.idea/
 *.iws
 out/
 
 Thumbs.db
 
 *.log
+
+# OpenAPI generated code (stable path)
+app/src/main/kotlin-gen/

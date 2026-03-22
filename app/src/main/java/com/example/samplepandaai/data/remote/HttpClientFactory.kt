@@ -1,10 +1,12 @@
 package com.example.samplepandaai.data.remote
 
+import com.example.samplepandaai.BuildConfig
 import com.example.samplepandaai.util.serialization.OffsetDateTimeKSerializer
 import com.example.samplepandaai.util.serialization.URIKSerializer
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.HttpClientEngine
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.client.plugins.defaultRequest
 import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logger
 import io.ktor.client.plugins.logging.Logging
@@ -23,14 +25,17 @@ object HttpClientFactory {
 
     fun create(engine: HttpClientEngine): HttpClient {
         return HttpClient(engine) {
+            // Flavor ごとに定義された BASE_URL をデフォルト設定として適用
+            defaultRequest {
+                url(BuildConfig.BASE_URL)
+            }
+
             // JSON変換の設定
             install(ContentNegotiation) {
                 json(Json {
-                    ignoreUnknownKeys = true // APIに未知のフィールドがあってもエラーにしない
+                    ignoreUnknownKeys = true
                     coerceInputValues = true
                     isLenient = true
-
-                    // カスタムシリアライザーの登録
                     serializersModule = SerializersModule {
                         contextual(URI::class, URIKSerializer)
                         contextual(OffsetDateTime::class, OffsetDateTimeKSerializer)
@@ -42,10 +47,12 @@ object HttpClientFactory {
             install(Logging) {
                 logger = object : Logger {
                     override fun log(message: String) {
+                        // Ktor のログを slf4j の debug レベルで出力
                         HttpClientFactory.logger.debug(message)
                     }
                 }
-                level = LogLevel.INFO
+                // デバッグ時は全ログを出力、本番時は無効化
+                level = if (BuildConfig.DEBUG) LogLevel.ALL else LogLevel.NONE
             }
         }
     }
