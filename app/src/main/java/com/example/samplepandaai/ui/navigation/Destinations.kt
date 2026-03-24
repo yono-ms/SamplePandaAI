@@ -20,3 +20,9 @@ object UserNameHistory
  */
 @Serializable
 data class RepoList(val username: String)
+
+/**
+ * ライセンス情報画面
+ */
+@Serializable
+object License

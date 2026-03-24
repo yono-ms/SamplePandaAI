@@ -17,6 +17,11 @@
     <string name="history_delete_content_description">履歴を削除</string>
     <string name="history_back_content_description">戻る</string>
 
+    <!-- ライセンス画面 -->
+    <string name="license_title">ライセンス</string>
+    <string name="license_dialog_close">閉じる</string>
+    <string name="license_menu_item">ライセンス情報</string>
+
     <!-- 共通 -->
     <string name="back_button_content_description">戻る</string>
 </resources>

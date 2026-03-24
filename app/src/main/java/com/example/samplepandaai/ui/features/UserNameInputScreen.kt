@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.History
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -40,6 +41,7 @@ import com.example.samplepandaai.ui.viewmodel.UserNameInputViewModel
 fun UserNameInputScreen(
     onNavigateToRepoList: (String) -> Unit,
     onNavigateToHistory: () -> Unit,
+    onNavigateToLicense: () -> Unit,
     viewModel: UserNameInputViewModel = hiltViewModel()
 ) {
     val userName by viewModel.userName.collectAsState()
@@ -50,7 +52,8 @@ fun UserNameInputScreen(
         errorMessage = errorMessage,
         onUserNameChanged = { viewModel.onUserNameChanged(it) },
         onSubmit = { viewModel.onSubmit(onNavigateToRepoList) },
-        onNavigateToHistory = onNavigateToHistory
+        onNavigateToHistory = onNavigateToHistory,
+        onNavigateToLicense = onNavigateToLicense
     )
 }
 
@@ -64,7 +67,8 @@ fun UserNameInputContent(
     errorMessage: String?,
     onUserNameChanged: (String) -> Unit,
     onSubmit: () -> Unit,
-    onNavigateToHistory: () -> Unit
+    onNavigateToHistory: () -> Unit,
+    onNavigateToLicense: () -> Unit
 ) {
     Scaffold(
         topBar = {
@@ -75,6 +79,12 @@ fun UserNameInputContent(
                         Icon(
                             imageVector = Icons.Default.History,
                             contentDescription = stringResource(R.string.user_name_history_icon_content_description)
+                        )
+                    }
+                    IconButton(onClick = onNavigateToLicense) {
+                        Icon(
+                            imageVector = Icons.Default.Info,
+                            contentDescription = stringResource(R.string.license_menu_item)
                         )
                     }
                 }
@@ -139,21 +149,8 @@ fun UserNameInputPreview() {
             errorMessage = null,
             onUserNameChanged = {},
             onSubmit = {},
-            onNavigateToHistory = {}
-        )
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun UserNameInputPreview_Error() {
-    SamplePandaAITheme {
-        UserNameInputContent(
-            userName = "invalid--name",
-            errorMessage = "GitHubのユーザー名形式が正しくありません",
-            onUserNameChanged = {},
-            onSubmit = {},
-            onNavigateToHistory = {}
+            onNavigateToHistory = {},
+            onNavigateToLicense = {}
         )
     }
 }
