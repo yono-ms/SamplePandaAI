@@ -17,6 +17,8 @@ import androidx.navigation.toRoute
 import com.example.samplepandaai.ui.features.RepoListScreen
 import com.example.samplepandaai.ui.features.UserNameHistoryScreen
 import com.example.samplepandaai.ui.features.UserNameInputScreen
+import com.example.samplepandaai.ui.features.license.LicenseScreen
+import com.example.samplepandaai.ui.navigation.License
 import com.example.samplepandaai.ui.navigation.RepoList
 import com.example.samplepandaai.ui.navigation.UserNameHistory
 import com.example.samplepandaai.ui.navigation.UserNameInput
@@ -61,6 +63,9 @@ fun SamplePandaApp() {
                     },
                     onNavigateToHistory = {
                         navController.navigate(UserNameHistory)
+                    },
+                    onNavigateToLicense = {
+                        navController.navigate(License)
                     }
                 )
             }
@@ -81,6 +86,13 @@ fun SamplePandaApp() {
                     viewModel = viewModel,
                     username = repoListRoute.username,
                     onBack = {
+                        navController.popBackStack()
+                    }
+                )
+            }
+            composable<License> {
+                LicenseScreen(
+                    onBackClick = {
                         navController.popBackStack()
                     }
                 )

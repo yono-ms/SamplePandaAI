@@ -40,6 +40,7 @@ class UserNameInputScreenTest {
                 UserNameInputScreen(
                     onNavigateToRepoList = {},
                     onNavigateToHistory = {},
+                    onNavigateToLicense = {},
                     viewModel = viewModel
                 )
             }
@@ -66,6 +67,7 @@ class UserNameInputScreenTest {
                 UserNameInputScreen(
                     onNavigateToRepoList = {},
                     onNavigateToHistory = {},
+                    onNavigateToLicense = {},
                     viewModel = viewModel
                 )
             }
@@ -85,6 +87,7 @@ class UserNameInputScreenTest {
                 UserNameInputScreen(
                     onNavigateToRepoList = {},
                     onNavigateToHistory = { historyClicked = true },
+                    onNavigateToLicense = {},
                     viewModel = viewModel
                 )
             }

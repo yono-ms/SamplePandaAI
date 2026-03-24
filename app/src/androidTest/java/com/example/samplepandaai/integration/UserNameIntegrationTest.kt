@@ -3,6 +3,7 @@ package com.example.samplepandaai.integration
 import android.content.Context
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
@@ -44,18 +45,42 @@ class UserNameIntegrationTest {
         // 2. 正常入力と遷移
         composeTestRule.onNodeWithText(context.getString(R.string.user_name_field_label))
             .performTextInput(testUser)
+
         composeTestRule.onNodeWithText(context.getString(R.string.user_name_submit_button))
             .performClick()
 
-        // 3. 一覧画面への到達確認
+        // 3. 一覧画面への到達確認 (遷移待ちを考慮)
+        composeTestRule.waitUntil(timeoutMillis = 5000) {
+            composeTestRule.onAllNodesWithText("GitHub Repositories: $testUser")
+                .fetchSemanticsNodes().isNotEmpty()
+        }
         composeTestRule.onNodeWithText("GitHub Repositories: $testUser").assertIsDisplayed()
 
-        // 4. 戻って履歴を確認 (文字列リソースを参照)
+        // 4. 戻って履歴を確認
         composeTestRule.onNodeWithContentDescription(context.getString(R.string.back_button_content_description))
             .performClick()
+
+        // 入力画面に戻ったことを確認
         composeTestRule.onNodeWithContentDescription(context.getString(R.string.user_name_history_icon_content_description))
             .performClick()
+
         composeTestRule.onNodeWithText(testUser).assertIsDisplayed()
+    }
+
+    @Test
+    fun testUserNameFlow_licenseNavigation() {
+        // 新しく追加したライセンス画面への遷移テスト
+        composeTestRule.onNodeWithContentDescription(context.getString(R.string.license_menu_item))
+            .performClick()
+
+        composeTestRule.onNodeWithText(context.getString(R.string.license_title))
+            .assertIsDisplayed()
+
+        composeTestRule.onNodeWithContentDescription(context.getString(R.string.back_button_content_description))
+            .performClick()
+
+        composeTestRule.onNodeWithText(context.getString(R.string.user_name_input_instruction))
+            .assertIsDisplayed()
     }
 
     @Test
