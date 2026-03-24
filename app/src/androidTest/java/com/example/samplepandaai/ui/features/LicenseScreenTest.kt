@@ -2,6 +2,7 @@ package com.example.samplepandaai.ui.features
 
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import com.example.samplepandaai.ui.features.license.LicenseScreen
@@ -40,7 +41,7 @@ class LicenseScreenTest {
 
         // 5. 戻るボタンの動作確認 (ContentDescription で探す)
         // strings.xml で back_button_content_description = "戻る"
-        composeTestRule.onNodeWithText("戻る").performClick()
+        composeTestRule.onNodeWithContentDescription("戻る").performClick()
         assert(backClicked)
     }
 }

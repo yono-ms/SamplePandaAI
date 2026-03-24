@@ -65,12 +65,9 @@ fun LicenseScreen(
     ) { innerPadding ->
         LazyColumn(contentPadding = innerPadding) {
             items(licenses) { item ->
-                ListItem(
-                    headlineContent = { Text(item.name) },
-                    supportingContent = { Text(item.licenseName) },
-                    modifier = Modifier
-                        .clickable { selectedLicense = item }
-                        .fillMaxWidth()
+                LicenseListItem(
+                    item = item,
+                    onClick = { selectedLicense = item }
                 )
                 HorizontalDivider()
             }
@@ -83,6 +80,21 @@ fun LicenseScreen(
             onDismissRequest = { selectedLicense = null }
         )
     }
+}
+
+@Composable
+fun LicenseListItem(
+    item: LicenseItem,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    ListItem(
+        headlineContent = { Text(item.name) },
+        supportingContent = { Text(item.licenseName) },
+        modifier = modifier
+            .clickable(onClick = onClick)
+            .fillMaxWidth()
+    )
 }
 
 @Composable
@@ -151,6 +163,17 @@ private fun getLicenses(): List<LicenseItem> {
 fun LicenseScreenPreview() {
     SamplePandaAITheme {
         LicenseScreen(onBackClick = {})
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun LicenseListItemPreview() {
+    SamplePandaAITheme {
+        LicenseListItem(
+            item = LicenseItem("Sample Library", "Apache 2.0", "Text"),
+            onClick = {}
+        )
     }
 }
 
