@@ -27,8 +27,12 @@ SamplePandaAI/
 │       │   │   │   └── usecase/        # UseCase クラス (ValidateGitHubUserNameUseCase 等)
 │       │   │   ├── ui/                 # UI Layer
 │       │   │   │   ├── components/     # 共通Composeコンポーネント
-│       │   │   │   ├── features/       # 各画面の実装 (UserNameInput, UserNameHistory, RepoList)
-│       │   │   │   ├── navigation/     # Type-safe Navigation の定義 (RepoList, UserNameInput 等)
+│       │   │   │   ├── features/       # 各画面の実装
+│       │   │   │   │   ├── license/    # ライセンス情報画面 (LicenseScreen, LicenseDataProvider)
+│       │   │   │   │   ├── RepoListScreen.kt
+│       │   │   │   │   ├── UserNameHistoryScreen.kt
+│       │   │   │   │   └── UserNameInputScreen.kt
+│       │   │   │   ├── navigation/     # Type-safe Navigation の定義 (Destinations.kt)
 │       │   │   │   ├── theme/          # Compose Theme (Color, Type, etc.)
 │       │   │   │   └── viewmodel/      # ViewModel (各画面に対応)
 │       │   │   └── util/               # Utilities (シリアライザー等)
@@ -41,14 +45,16 @@ SamplePandaAI/
 │       │   ├── java/com/example/samplepandaai/
 │       │   │   ├── data/
 │       │   │   ├── domain/usecase/     # UseCase 単体テスト
+│       │   │   ├── ui/navigation/      # Navigation シリアライズテスト (DestinationsTest.kt)
 │       │   │   └── ui/viewmodel/       # ViewModel 単体テスト
 │       └── androidTest/                # インストゥルメントテスト (結合/UIテスト)
 │           └── java/com/example/samplepandaai/
 │               ├── integration/        # 画面間遷移の結合テスト (UserNameIntegrationTest 等)
-│               └── ui/features/        # UI 単体テスト (各 ScreenTest)
+│               └── ui/features/        # UI 単体テスト (LicenseScreenTest 等)
 ├── docs/
 │   ├── features/              # 機能ごとの詳細設計・ドキュメント
-│   │   └── 01_USER_NAME_INPUT.md
+│   │   ├── 01_USER_NAME_INPUT.md
+│   │   └── 02_LICENSE_SCREEN.md
 │   ├── AGENTS.md              # AIエージェント活用指針
 │   ├── ARCHITECTURE_DESIGN.md # 構成設計・技術的負債
 │   ├── DESIGN_COST_VERIFICATION.md # 設計・コスト検証ドキュメント
