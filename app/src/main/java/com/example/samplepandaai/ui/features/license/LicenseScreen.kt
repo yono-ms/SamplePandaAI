@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.AlertDialog
@@ -44,7 +46,7 @@ fun LicenseScreen(
     onBackClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val licenses = remember { getLicenses() }
+    val licenses = remember { LicenseDataProvider.getLicenses() }
     var selectedLicense by remember { mutableStateOf<LicenseItem?>(null) }
 
     Scaffold(
@@ -106,7 +108,9 @@ fun LicenseDetailDialog(
         onDismissRequest = onDismissRequest,
         title = { Text(license.name) },
         text = {
-            Column {
+            Column(
+                modifier = Modifier.verticalScroll(rememberScrollState())
+            ) {
                 Text(
                     text = license.licenseName,
                     style = MaterialTheme.typography.labelLarge,
@@ -120,41 +124,6 @@ fun LicenseDetailDialog(
                 Text(stringResource(R.string.license_dialog_close))
             }
         }
-    )
-}
-
-private fun getLicenses(): List<LicenseItem> {
-    return listOf(
-        LicenseItem(
-            name = "Jetpack Compose",
-            licenseName = "Apache License 2.0",
-            text = "Copyright 2019 The Android Open Source Project..."
-        ),
-        LicenseItem(
-            name = "Hilt",
-            licenseName = "Apache License 2.0",
-            text = "Copyright 2020 Google Inc..."
-        ),
-        LicenseItem(
-            name = "Ktor",
-            licenseName = "Apache License 2.0",
-            text = "Copyright 2014-2024 JetBrains s.r.o..."
-        ),
-        LicenseItem(
-            name = "Kotlinx Serialization",
-            licenseName = "Apache License 2.0",
-            text = "Copyright 2017-2024 JetBrains s.r.o..."
-        ),
-        LicenseItem(
-            name = "MockK",
-            licenseName = "Apache License 2.0",
-            text = "Copyright 2017-2024 Oleksii Ivanchenko..."
-        ),
-        LicenseItem(
-            name = "SLF4J",
-            licenseName = "MIT License",
-            text = "Copyright (c) 2004-2022 QOS.ch..."
-        )
     )
 }
 
