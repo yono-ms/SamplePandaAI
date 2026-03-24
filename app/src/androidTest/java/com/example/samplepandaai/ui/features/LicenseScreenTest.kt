@@ -27,20 +27,21 @@ class LicenseScreenTest {
         // 1. タイトルの表示確認
         composeTestRule.onNodeWithText("ライセンス").assertIsDisplayed()
 
-        // 2. リストアイテムの表示確認 (主要なライブラリが1つはあるはず)
+        // 2. リストアイテムの表示確認
         composeTestRule.onNodeWithText("Jetpack Compose").assertIsDisplayed()
 
         // 3. アイテムタップでダイアログが表示されるか
         composeTestRule.onNodeWithText("Jetpack Compose").performClick()
-        composeTestRule.onNodeWithText("Apache License 2.0").assertIsDisplayed()
+
+        // ダイアログ固有の「閉じる」ボタンで、ダイアログが表示されたことを確認
+        // Apache License 2.0 は複数あるため、ダイアログが表示された状態で一意に特定できる「閉じる」を使用
         composeTestRule.onNodeWithText("閉じる").assertIsDisplayed()
 
         // 4. ダイアログを閉じる
         composeTestRule.onNodeWithText("閉じる").performClick()
         composeTestRule.onNodeWithText("閉じる").assertDoesNotExist()
 
-        // 5. 戻るボタンの動作確認 (ContentDescription で探す)
-        // strings.xml で back_button_content_description = "戻る"
+        // 5. 戻るボタンの動作確認
         composeTestRule.onNodeWithContentDescription("戻る").performClick()
         assert(backClicked)
     }
