@@ -123,6 +123,7 @@ fun UserNameHistoryPreview() {
     }
 }
 
+@MultiLanguagePreview
 @Preview(showBackground = true)
 @Composable
 fun UserNameHistoryPreview_Empty() {

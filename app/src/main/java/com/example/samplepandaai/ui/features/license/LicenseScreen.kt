@@ -137,6 +137,7 @@ fun LicenseScreenPreview() {
     }
 }
 
+@MultiLanguagePreview
 @Preview(showBackground = true)
 @Composable
 fun LicenseListItemPreview() {
@@ -148,6 +149,7 @@ fun LicenseListItemPreview() {
     }
 }
 
+@MultiLanguagePreview
 @Preview(showBackground = true)
 @Composable
 fun LicenseDetailDialogPreview() {

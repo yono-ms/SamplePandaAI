@@ -27,21 +27,27 @@
 - [x] **機能追加 1: ユーザー名入力画面のコア実装完了**
 - [x] **開発フローの策定完了** (`docs/DEVELOPMENT_FLOW.md`)
 - [x] **ライセンス情報画面の追加完了** (Compose Screen, Dialog, Navigation, Tests)
+- [x] **国際化 (i18n) の基本実装完了** (Resource files, UI migration, Multipreview)
+- [x] **国際化 (i18n) テストコード・レビュー完了 (Phase 3)**
 
 ## 現在の作業フェーズ (Current Phase)
 
 - **ターゲットタスク**: 国際化
-- **作業フェーズ**: フェーズ 2: 実装とビルド確認 (Implementation & Build)
+- **作業フェーズ**: フェーズ 4: テスト実行・不具合修正 (Test Execution & Bug Fix)
 - **現在のブランチ**: `feature/i18n`
-- **ステータス**: 設計書に基づき、リソースファイルの作成と UI コードの `stringResource` 化を実施中。
+- **ステータス**: フェーズ 3 のレビューで発覚した Preview の適用漏れを修正。テスト戦略ドキュメント (
+  TEST_STRATEGY.md) への i18n 観点の集約を完了。これから実機・エミュレータでのテスト実行と視覚的確認（長文・RTL）を開始する。
 
 ## TODO (今後のタスク)
 
 - [ ] **国際化 (i18n) の対応**
   - [x] 現在の `strings.xml` の内容を整理し、ハードコードされている文字列がないか確認。
-  - [ ] 各言語リソース (`en`, `zh-rCN`, `de`, `ar`) の作成。
-  - [ ] UI コンポーネントの `stringResource` 化とプレースホルダー対応。
-  - [ ] 全言語対応 Multipreview の実装。
+  - [x] 各言語リソース (`en`, `zh-rCN`, `de`, `ar`) の作成。
+  - [x] UI コンポーネントの `stringResource` 化とプレースホルダー対応。
+  - [x] 全言語対応 Multipreview の実装。
+  - [x] テストコードのレビューと品質担保 (Phase 3)
+  - [ ] **実機テスト実行とレイアウト崩れの修正 (Phase 4)**
+  - [ ] **リファクタリングと最終確認 (Phase 5)**
 - [ ] **アプリ本体の次機能実装**
   - [ ] リポジトリ詳細画面の実装。
   - [ ] WebView によるリポジトリ表示機能。

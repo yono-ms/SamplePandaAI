@@ -29,6 +29,7 @@ import com.example.samplepandaai.domain.model.GitHubRepo
 import com.example.samplepandaai.ui.components.ErrorView
 import com.example.samplepandaai.ui.components.LoadingView
 import com.example.samplepandaai.ui.components.RepoListItem
+import com.example.samplepandaai.ui.theme.MultiLanguagePreview
 import com.example.samplepandaai.ui.theme.SamplePandaAITheme
 import com.example.samplepandaai.ui.viewmodel.GitHubRepoListUiState
 import com.example.samplepandaai.ui.viewmodel.GitHubRepoListViewModel
@@ -120,6 +121,7 @@ fun RepoListContent(
     }
 }
 
+@MultiLanguagePreview
 @Preview(showBackground = true)
 @Composable
 fun RepoListPreview_Success() {
