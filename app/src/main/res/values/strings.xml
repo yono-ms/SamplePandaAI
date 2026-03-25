@@ -24,4 +24,8 @@
 
     <!-- 共通 -->
     <string name="back_button_content_description">戻る</string>
+    <string name="repo_list_title">GitHub リポジトリ: %s</string>
+    <string name="error_prefix">エラー: %s</string>
+    <string name="retry_button">再試行</string>
+    <string name="star_count">★ %d</string>
 </resources>

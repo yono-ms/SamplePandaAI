@@ -75,7 +75,9 @@ fun RepoListContent(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(text = "GitHub Repositories: $username") },
+                title = {
+                    Text(text = stringResource(id = R.string.repo_list_title, username))
+                },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
                         Icon(

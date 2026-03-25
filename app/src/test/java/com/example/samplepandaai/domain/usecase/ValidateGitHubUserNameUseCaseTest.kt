@@ -1,6 +1,5 @@
 package com.example.samplepandaai.domain.usecase
 
-import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
 
@@ -21,17 +20,13 @@ class ValidateGitHubUserNameUseCaseTest {
     }
 
     @Test
-    fun `invoke - 空文字のとき、適切なエラーメッセージを返すこと`() {
+    fun `invoke - 空文字のとき、Error_Emptyを返すこと`() {
         val result = useCase("")
-        assertTrue(result is ValidateGitHubUserNameUseCase.Result.Error)
-        assertEquals(
-            "ユーザー名を入力してください",
-            (result as ValidateGitHubUserNameUseCase.Result.Error).message
-        )
+        assertTrue(result is ValidateGitHubUserNameUseCase.Result.Error.Empty)
     }
 
     @Test
-    fun `invoke - 不正な形式のとき、適切なエラーメッセージを返すこと`() {
+    fun `invoke - 不正な形式のとき、Error_InvalidFormatを返すこと`() {
         val invalidNames = listOf(
             "-start-with-hyphen",
             "end-with-hyphen-",
@@ -45,12 +40,8 @@ class ValidateGitHubUserNameUseCaseTest {
         invalidNames.forEach { name ->
             val result = useCase(name)
             assertTrue(
-                "Should be Error for $name",
-                result is ValidateGitHubUserNameUseCase.Result.Error
-            )
-            assertEquals(
-                "GitHubのユーザー名形式が正しくありません",
-                (result as ValidateGitHubUserNameUseCase.Result.Error).message
+                "Should be Error.InvalidFormat for $name",
+                result is ValidateGitHubUserNameUseCase.Result.Error.InvalidFormat
             )
         }
     }

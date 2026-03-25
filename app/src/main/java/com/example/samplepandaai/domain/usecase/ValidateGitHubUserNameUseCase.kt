@@ -13,18 +13,21 @@ class ValidateGitHubUserNameUseCase @Inject constructor() {
      * バリデーション結果を表す sealed class
      */
     sealed class Result {
-        object Success : Result()
-        data class Error(val message: String) : Result()
+        data object Success : Result()
+        sealed class Error : Result() {
+            data object Empty : Error()
+            data object InvalidFormat : Error()
+        }
     }
 
     operator fun invoke(userName: String): Result {
         if (userName.isBlank()) {
-            return Result.Error("ユーザー名を入力してください")
+            return Result.Error.Empty
         }
 
         if (!githubUserNameRegex.matches(userName)) {
             // 漢字、絵文字、記号、不正なハイフン位置などはすべてここに含まれる
-            return Result.Error("GitHubのユーザー名形式が正しくありません")
+            return Result.Error.InvalidFormat
         }
 
         return Result.Success

@@ -30,6 +30,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.samplepandaai.R
+import com.example.samplepandaai.domain.usecase.ValidateGitHubUserNameUseCase
+import com.example.samplepandaai.ui.theme.MultiLanguagePreview
 import com.example.samplepandaai.ui.theme.SamplePandaAITheme
 import com.example.samplepandaai.ui.viewmodel.UserNameInputViewModel
 
@@ -45,11 +47,11 @@ fun UserNameInputScreen(
     viewModel: UserNameInputViewModel = hiltViewModel()
 ) {
     val userName by viewModel.userName.collectAsState()
-    val errorMessage by viewModel.errorMessage.collectAsState()
+    val errorType by viewModel.errorType.collectAsState()
 
     UserNameInputContent(
         userName = userName,
-        errorMessage = errorMessage,
+        errorType = errorType,
         onUserNameChanged = { viewModel.onUserNameChanged(it) },
         onSubmit = { viewModel.onSubmit(onNavigateToRepoList) },
         onNavigateToHistory = onNavigateToHistory,
@@ -64,7 +66,7 @@ fun UserNameInputScreen(
 @Composable
 fun UserNameInputContent(
     userName: String,
-    errorMessage: String?,
+    errorType: ValidateGitHubUserNameUseCase.Result.Error?,
     onUserNameChanged: (String) -> Unit,
     onSubmit: () -> Unit,
     onNavigateToHistory: () -> Unit,
@@ -114,12 +116,18 @@ fun UserNameInputContent(
                 onValueChange = onUserNameChanged,
                 label = { Text(stringResource(R.string.user_name_field_label)) },
                 placeholder = { Text(stringResource(R.string.user_name_field_placeholder)) },
-                isError = errorMessage != null,
+                isError = errorType != null,
                 modifier = Modifier.fillMaxWidth(),
                 singleLine = true,
                 supportingText = {
                     // 公式推奨の supportingText を使用
-                    if (errorMessage != null) {
+                    if (errorType != null) {
+                        val errorMessage = when (errorType) {
+                            ValidateGitHubUserNameUseCase.Result.Error.Empty -> stringResource(R.string.error_empty_user_name)
+                            ValidateGitHubUserNameUseCase.Result.Error.InvalidFormat -> stringResource(
+                                R.string.error_invalid_user_name
+                            )
+                        }
                         Text(text = errorMessage)
                     }
                 }
@@ -140,13 +148,14 @@ fun UserNameInputContent(
     }
 }
 
+@MultiLanguagePreview
 @Preview(showBackground = true)
 @Composable
 fun UserNameInputPreview() {
     SamplePandaAITheme {
         UserNameInputContent(
             userName = "",
-            errorMessage = null,
+            errorType = null,
             onUserNameChanged = {},
             onSubmit = {},
             onNavigateToHistory = {},

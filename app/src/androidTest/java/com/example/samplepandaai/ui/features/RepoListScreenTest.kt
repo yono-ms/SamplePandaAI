@@ -1,15 +1,19 @@
 package com.example.samplepandaai.ui.features
 
+import android.content.Context
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.platform.app.InstrumentationRegistry
+import com.example.samplepandaai.R
 import com.example.samplepandaai.domain.model.GitHubRepo
 import com.example.samplepandaai.ui.theme.SamplePandaAITheme
 import com.example.samplepandaai.ui.viewmodel.GitHubRepoListUiState
 import kotlinx.datetime.Instant
 import org.junit.Assert.assertTrue
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -19,6 +23,8 @@ class RepoListScreenTest {
 
     @get:Rule
     val composeTestRule = createComposeRule()
+
+    private lateinit var context: Context
 
     private val mockRepos = listOf(
         GitHubRepo(
@@ -33,19 +39,27 @@ class RepoListScreenTest {
         )
     )
 
+    @Before
+    fun setup() {
+        context = InstrumentationRegistry.getInstrumentation().targetContext
+    }
+
     @Test
     fun loadingState_showsLoadingIndicator() {
+        val username = "google"
         composeTestRule.setContent {
             SamplePandaAITheme {
                 RepoListContent(
                     uiState = GitHubRepoListUiState.Loading,
-                    username = "google",
+                    username = username,
                     onBack = {},
                     onRetry = {}
                 )
             }
         }
-        composeTestRule.onNodeWithText("GitHub Repositories: google").assertIsDisplayed()
+        // フォーマット済み文字列の確認
+        val expectedTitle = context.getString(R.string.repo_list_title, username)
+        composeTestRule.onNodeWithText(expectedTitle).assertIsDisplayed()
     }
 
     @Test
@@ -62,6 +76,10 @@ class RepoListScreenTest {
         }
         composeTestRule.onNodeWithText("ComposeSample").assertIsDisplayed()
         composeTestRule.onNodeWithText("A sample project for Jetpack Compose.").assertIsDisplayed()
+
+        // スター数のフォーマット確認
+        val expectedStars = context.getString(R.string.star_count, 1234)
+        composeTestRule.onNodeWithText(expectedStars).assertIsDisplayed()
     }
 
     @Test
@@ -75,18 +93,19 @@ class RepoListScreenTest {
                     uiState = GitHubRepoListUiState.Error(errorMessage),
                     username = "google",
                     onBack = {},
-                    onRetry = { retryClicked = true } // コールバックが呼ばれたらフラグを立てる
+                    onRetry = { retryClicked = true }
                 )
             }
         }
 
-        // エラーメッセージが表示されているか確認
-        composeTestRule.onNodeWithText("Error: $errorMessage").assertIsDisplayed()
+        // フォーマット済みエラーメッセージが表示されているか確認
+        val expectedError = context.getString(R.string.error_prefix, errorMessage)
+        composeTestRule.onNodeWithText(expectedError).assertIsDisplayed()
 
         // リトライボタンをクリック
-        composeTestRule.onNodeWithText("Retry").performClick()
+        composeTestRule.onNodeWithText(context.getString(R.string.retry_button)).performClick()
 
-        // コールバックが実行された（フラグが true になった）ことを検証
+        // コールバックが実行されたことを検証
         assertTrue("Retry callback should be invoked", retryClicked)
     }
 }
