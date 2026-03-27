@@ -22,14 +22,14 @@ class UserNameInputViewModel @Inject constructor(
     private val _userName = MutableStateFlow("")
     val userName: StateFlow<String> = _userName.asStateFlow()
 
-    private val _errorMessage = MutableStateFlow<String?>(null)
-    val errorMessage: StateFlow<String?> = _errorMessage.asStateFlow()
+    private val _errorType = MutableStateFlow<ValidateGitHubUserNameUseCase.Result.Error?>(null)
+    val errorType: StateFlow<ValidateGitHubUserNameUseCase.Result.Error?> = _errorType.asStateFlow()
 
     fun onUserNameChanged(newName: String) {
         _userName.value = newName
         // 入力中のリアルタイムバリデーション（エラーメッセージのクリアのみを担当）
         if (newName.isEmpty() || validateGitHubUserNameUseCase(newName) is ValidateGitHubUserNameUseCase.Result.Success) {
-            _errorMessage.value = null
+            _errorType.value = null
         }
     }
 
@@ -39,11 +39,11 @@ class UserNameInputViewModel @Inject constructor(
         // UseCase を呼び出してバリデーションを実行
         when (val result = validateGitHubUserNameUseCase(currentName)) {
             is ValidateGitHubUserNameUseCase.Result.Error -> {
-                _errorMessage.value = result.message
+                _errorType.value = result
             }
 
             ValidateGitHubUserNameUseCase.Result.Success -> {
-                _errorMessage.value = null
+                _errorType.value = null
                 viewModelScope.launch {
                     try {
                         addUserNameToHistoryUseCase(currentName)

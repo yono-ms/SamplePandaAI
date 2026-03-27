@@ -1,0 +1,35 @@
+<resources>
+    <string name="app_name">SamplePandaAI</string>
+    <string name="user_name_input_title">GitHub Repo Explorer</string>
+    <string name="user_name_input_instruction">Bitte geben Sie einen GitHub-Benutzernamen ein</string>
+    <string name="user_name_field_label">GitHub-Benutzername</string>
+    <string name="user_name_field_placeholder">z.B. google</string>
+    <string name="user_name_submit_button">Repositories abrufen</string>
+    <string name="user_name_history_icon_content_description">Verlauf anzeigen</string>
+
+    <!-- Validierungsfehler -->
+    <string name="error_empty_user_name">Bitte geben Sie einen Benutzernamen ein</string>
+    <string name="error_invalid_user_name">Ungültiges GitHub-Benutzernamenformat</string>
+
+    <!-- Verlauf-Bildschirm -->
+    <string name="history_title">Eingabeverlauf</string>
+    <string name="history_empty">Kein Verlauf verfügbar</string>
+    <string name="history_delete_content_description">Verlauf löschen</string>
+    <string name="history_back_content_description">Zurück</string>
+
+    <!-- Lizenz-Bildschirm -->
+    <string name="license_title">Lizenzen</string>
+    <string name="license_dialog_close">Schließen</string>
+    <string name="license_menu_item">Lizenzinformationen</string>
+
+    <!-- Allgemein -->
+    <string name="back_button_content_description">Zurück</string>
+    <string name="repo_list_title">GitHub-Repositories: %1$s</string>
+    <string name="error_prefix">Fehler: %1$s</string>
+    <string name="retry_button">Wiederholen</string>
+
+    <plurals name="star_count">
+        <item quantity="one">&#9733; %1$d Stern</item>
+        <item quantity="other">&#9733; %1$d Sterne</item>
+    </plurals>
+</resources>

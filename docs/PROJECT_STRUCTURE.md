@@ -27,20 +27,29 @@ SamplePandaAI/
 │       │   │   │   └── usecase/        # UseCase クラス (ValidateGitHubUserNameUseCase 等)
 │       │   │   ├── ui/                 # UI Layer
 │       │   │   │   ├── components/     # 共通Composeコンポーネント
+│       │   │   │   │   └── RepoListComponents.kt # i18n 対応済み共通パーツ
 │       │   │   │   ├── features/       # 各画面の実装
 │       │   │   │   │   ├── license/    # ライセンス情報画面 (LicenseScreen, LicenseDataProvider)
 │       │   │   │   │   ├── RepoListScreen.kt
 │       │   │   │   │   ├── UserNameHistoryScreen.kt
 │       │   │   │   │   └── UserNameInputScreen.kt
 │       │   │   │   ├── navigation/     # Type-safe Navigation の定義 (Destinations.kt)
-│       │   │   │   ├── theme/          # Compose Theme (Color, Type, etc.)
+│       │   │   │   ├── theme/          # Compose Theme (MultiLanguagePreview 定義含む)
 │       │   │   │   └── viewmodel/      # ViewModel (各画面に対応)
 │       │   │   └── util/               # Utilities (シリアライザー等)
 │       │   ├── openapi/
 │       │   │   └── github_repos.yaml   # GitHub API定義 (OpenAPI)
 │       │   └── res/                    # アプリ本番用リソース
-│       │       └── values/
-│       │           └── strings.xml     # アプリ内の全文字列リソース
+│       │       ├── values/
+│       │       │   └── strings.xml     # デフォルト (日本語)
+│       │       ├── values-en/
+│       │       │   └── strings.xml     # 英語
+│       │       ├── values-zh-rCN/
+│       │       │   └── strings.xml     # 中国語 (簡体字)
+│       │       ├── values-de/
+│       │       │   └── strings.xml     # ドイツ語 (長文検証用)
+│       │       └── values-ar/
+│       │           └── strings.xml     # アラビア語 (RTL検証用)
 │       ├── test/                       # ユニットテスト (JUnit4, MockK)
 │       │   ├── java/com/example/samplepandaai/
 │       │   │   ├── data/
@@ -49,12 +58,13 @@ SamplePandaAI/
 │       │   │   └── ui/viewmodel/       # ViewModel 単体テスト
 │       └── androidTest/                # インストゥルメントテスト (結合/UIテスト)
 │           └── java/com/example/samplepandaai/
-│               ├── integration/        # 画面間遷移の結合テスト (UserNameIntegrationTest 等)
-│               └── ui/features/        # UI 単体テスト (LicenseScreenTest 等)
+│               ├── integration/        # 結合テスト (i18n 観点追加済み)
+│               └── ui/features/        # UI 単体テスト (i18n 観点追加済み)
 ├── docs/
 │   ├── features/              # 機能ごとの詳細設計・ドキュメント
 │   │   ├── 01_USER_NAME_INPUT.md
-│   │   └── 02_LICENSE_SCREEN.md
+│   │   ├── 02_LICENSE_SCREEN.md
+│   │   └── 03_I18N.md         # 国際化対応の設計
 │   ├── AGENTS.md              # AIエージェント活用指針
 │   ├── ARCHITECTURE_DESIGN.md # 構成設計・技術的負債
 │   ├── DESIGN_COST_VERIFICATION.md # 設計・コスト検証ドキュメント
@@ -82,3 +92,4 @@ SamplePandaAI/
 - **Networking**: Ktor
 - **Testing**: JUnit4, MockK, Compose Test
 - **API Spec**: OpenAPI (DTO automated generation)
+- **i18n**: Android String Resources (ja, en, zh, de, ar)

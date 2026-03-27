@@ -1,12 +1,28 @@
 package com.example.samplepandaai.ui.components
 
-import androidx.compose.foundation.layout.*
-import androidx.compose.material3.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Button
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.pluralStringResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.example.samplepandaai.R
 import com.example.samplepandaai.domain.model.GitHubRepo
 
 @Composable
@@ -47,7 +63,11 @@ fun RepoListItem(repo: GitHubRepo, modifier: Modifier = Modifier) {
                     color = MaterialTheme.colorScheme.primary
                 )
                 Text(
-                    text = "★ ${repo.stars}",
+                    text = pluralStringResource(
+                        id = R.plurals.star_count,
+                        count = repo.stars,
+                        repo.stars
+                    ),
                     style = MaterialTheme.typography.labelMedium
                 )
             }
@@ -74,10 +94,13 @@ fun ErrorView(message: String, onRetry: () -> Unit, modifier: Modifier = Modifie
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        Text(text = "Error: $message", color = MaterialTheme.colorScheme.error)
+        Text(
+            text = stringResource(id = R.string.error_prefix, message),
+            color = MaterialTheme.colorScheme.error
+        )
         Spacer(modifier = Modifier.height(16.dp))
         Button(onClick = onRetry) {
-            Text(text = "Retry")
+            Text(text = stringResource(id = R.string.retry_button))
         }
     }
 }

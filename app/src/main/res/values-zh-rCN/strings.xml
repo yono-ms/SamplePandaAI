@@ -1,0 +1,34 @@
+<resources>
+    <string name="app_name">SamplePandaAI</string>
+    <string name="user_name_input_title">GitHub Repo Explorer</string>
+    <string name="user_name_input_instruction">请输入 GitHub 用户名</string>
+    <string name="user_name_field_label">GitHub 用户名</string>
+    <string name="user_name_field_placeholder">例如: google</string>
+    <string name="user_name_submit_button">获取仓库</string>
+    <string name="user_name_history_icon_content_description">显示历史</string>
+
+    <!-- 验证错误 -->
+    <string name="error_empty_user_name">请输入用户名</string>
+    <string name="error_invalid_user_name">GitHub 用户名格式无效</string>
+
+    <!-- 历史记录页面 -->
+    <string name="history_title">输入历史</string>
+    <string name="history_empty">没有历史记录</string>
+    <string name="history_delete_content_description">删除历史</string>
+    <string name="history_back_content_description">返回</string>
+
+    <!-- 许可证页面 -->
+    <string name="license_title">许可证</string>
+    <string name="license_dialog_close">关闭</string>
+    <string name="license_menu_item">许可证信息</string>
+
+    <!-- 通用 -->
+    <string name="back_button_content_description">返回</string>
+    <string name="repo_list_title">GitHub 仓库: %1$s</string>
+    <string name="error_prefix">错误: %1$s</string>
+    <string name="retry_button">重试</string>
+
+    <plurals name="star_count">
+        <item quantity="other">&#9733; %1$d</item>
+    </plurals>
+</resources>

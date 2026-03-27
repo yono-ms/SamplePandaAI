@@ -1,0 +1,39 @@
+<resources>
+    <string name="app_name">SamplePandaAI</string>
+    <string name="user_name_input_title">GitHub Repo Explorer</string>
+    <string name="user_name_input_instruction">يرجى إدخال اسم مستخدم GitHub</string>
+    <string name="user_name_field_label">اسم مستخدم GitHub</string>
+    <string name="user_name_field_placeholder">مثال: google</string>
+    <string name="user_name_submit_button">الحصول على المستودعات</string>
+    <string name="user_name_history_icon_content_description">عرض السجل</string>
+
+    <!-- أخطاء التحقق -->
+    <string name="error_empty_user_name">يرجى إدخال اسم مستخدم</string>
+    <string name="error_invalid_user_name">تنسيق اسم مستخدم GitHub غير صالح</string>
+
+    <!-- شاشة السجل -->
+    <string name="history_title">سجل الإدخال</string>
+    <string name="history_empty">لا يوجد سجل متاح</string>
+    <string name="history_delete_content_description">حذف السجل</string>
+    <string name="history_back_content_description">رجوع</string>
+
+    <!-- شاشة الترخيص -->
+    <string name="license_title">التراخيص</string>
+    <string name="license_dialog_close">إغلاق</string>
+    <string name="license_menu_item">معلومات الترخيص</string>
+
+    <!-- عام -->
+    <string name="back_button_content_description">رجوع</string>
+    <string name="repo_list_title">مستودعات GitHub: %1$s</string>
+    <string name="error_prefix">خطأ: %1$s</string>
+    <string name="retry_button">إعادة المحاولة</string>
+
+    <plurals name="star_count">
+        <item quantity="zero">&#9733; %1$d نجمة</item>
+        <item quantity="one">&#9733; %1$d نجمة</item>
+        <item quantity="two">&#9733; %1$d نجمتان</item>
+        <item quantity="few">&#9733; %1$d نجوم</item>
+        <item quantity="many">&#9733; %1$d نجمة</item>
+        <item quantity="other">&#9733; %1$d نجمة</item>
+    </plurals>
+</resources>

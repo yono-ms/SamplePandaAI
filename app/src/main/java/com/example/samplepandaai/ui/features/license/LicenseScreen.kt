@@ -32,6 +32,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.samplepandaai.R
+import com.example.samplepandaai.ui.theme.MultiLanguagePreview
 import com.example.samplepandaai.ui.theme.SamplePandaAITheme
 
 data class LicenseItem(
@@ -127,6 +128,7 @@ fun LicenseDetailDialog(
     )
 }
 
+@MultiLanguagePreview
 @Preview(showBackground = true)
 @Composable
 fun LicenseScreenPreview() {
@@ -135,6 +137,7 @@ fun LicenseScreenPreview() {
     }
 }
 
+@MultiLanguagePreview
 @Preview(showBackground = true)
 @Composable
 fun LicenseListItemPreview() {
@@ -146,6 +149,7 @@ fun LicenseListItemPreview() {
     }
 }
 
+@MultiLanguagePreview
 @Preview(showBackground = true)
 @Composable
 fun LicenseDetailDialogPreview() {

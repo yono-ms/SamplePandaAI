@@ -27,6 +27,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.samplepandaai.R
+import com.example.samplepandaai.ui.theme.MultiLanguagePreview
 import com.example.samplepandaai.ui.theme.SamplePandaAITheme
 import com.example.samplepandaai.ui.viewmodel.UserNameHistoryViewModel
 
@@ -108,6 +109,7 @@ fun UserNameHistoryContent(
     }
 }
 
+@MultiLanguagePreview
 @Preview(showBackground = true)
 @Composable
 fun UserNameHistoryPreview() {
@@ -121,6 +123,7 @@ fun UserNameHistoryPreview() {
     }
 }
 
+@MultiLanguagePreview
 @Preview(showBackground = true)
 @Composable
 fun UserNameHistoryPreview_Empty() {

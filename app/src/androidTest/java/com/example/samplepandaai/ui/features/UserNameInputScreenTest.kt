@@ -8,6 +8,7 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.test.platform.app.InstrumentationRegistry
 import com.example.samplepandaai.R
+import com.example.samplepandaai.domain.usecase.ValidateGitHubUserNameUseCase
 import com.example.samplepandaai.ui.theme.SamplePandaAITheme
 import com.example.samplepandaai.ui.viewmodel.UserNameInputViewModel
 import io.mockk.every
@@ -33,7 +34,7 @@ class UserNameInputScreenTest {
     @Test
     fun userNameInputScreen_showsTitleAndInput() {
         every { viewModel.userName } returns MutableStateFlow("")
-        every { viewModel.errorMessage } returns MutableStateFlow(null)
+        every { viewModel.errorType } returns MutableStateFlow(null)
 
         composeTestRule.setContent {
             SamplePandaAITheme {
@@ -46,7 +47,7 @@ class UserNameInputScreenTest {
             }
         }
 
-        // リソースから文字列を取得して確認
+        // リソースID経由での表示確認（日本語・英語どちらの環境でも通る）
         composeTestRule.onNodeWithText(context.getString(R.string.user_name_input_instruction))
             .assertIsDisplayed()
         composeTestRule.onNodeWithText(context.getString(R.string.user_name_field_label))
@@ -57,10 +58,9 @@ class UserNameInputScreenTest {
 
     @Test
     fun userNameInputScreen_showsError_whenValidationFails() {
-        // ViewModelから返されるエラーメッセージ（通常はUseCaseから渡される）
-        val errorText = context.getString(R.string.error_invalid_user_name)
+        // errorType をモック
         every { viewModel.userName } returns MutableStateFlow("invalid--name")
-        every { viewModel.errorMessage } returns MutableStateFlow(errorText)
+        every { viewModel.errorType } returns MutableStateFlow(ValidateGitHubUserNameUseCase.Result.Error.InvalidFormat)
 
         composeTestRule.setContent {
             SamplePandaAITheme {
@@ -73,14 +73,16 @@ class UserNameInputScreenTest {
             }
         }
 
-        composeTestRule.onNodeWithText(errorText).assertIsDisplayed()
+        // 翻訳されたエラーメッセージが表示されているか確認
+        val expectedError = context.getString(R.string.error_invalid_user_name)
+        composeTestRule.onNodeWithText(expectedError).assertIsDisplayed()
     }
 
     @Test
     fun userNameInputScreen_callsNavigateToHistory_whenIconClicked() {
         var historyClicked = false
         every { viewModel.userName } returns MutableStateFlow("")
-        every { viewModel.errorMessage } returns MutableStateFlow(null)
+        every { viewModel.errorType } returns MutableStateFlow(null)
 
         composeTestRule.setContent {
             SamplePandaAITheme {
