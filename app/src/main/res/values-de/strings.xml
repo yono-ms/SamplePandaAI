@@ -24,7 +24,7 @@
 
     <!-- Allgemein -->
     <string name="back_button_content_description">Zurück</string>
-    <string name="repo_list_title">GitHub-Repositorys: %1$s</string>
+    <string name="repo_list_title">GitHub-Repositories: %1$s</string>
     <string name="error_prefix">Fehler: %1$s</string>
     <string name="retry_button">Wiederholen</string>
 
