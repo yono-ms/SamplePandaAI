@@ -4,7 +4,7 @@
     <string name="user_name_input_instruction">Please enter a GitHub username</string>
     <string name="user_name_field_label">GitHub Username</string>
     <string name="user_name_field_placeholder">e.g. google</string>
-    <string name="user_name_submit_button">Get Repositories</string>
+    <string name="user_name_submit_button">Fetch Repositories</string>
     <string name="user_name_history_icon_content_description">Show history</string>
 
     <!-- Validation Errors -->

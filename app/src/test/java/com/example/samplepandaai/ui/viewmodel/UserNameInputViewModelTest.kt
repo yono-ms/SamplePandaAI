@@ -38,15 +38,30 @@ class UserNameInputViewModelTest {
     }
 
     @Test
-    fun `onSubmit - UseCaseがエラーを返したとき、エラーメッセージがセットされること`() = runTest {
+    fun `onSubmit - UseCaseがInvalidFormatエラーを返したとき、errorTypeにInvalidFormatがセットされること`() =
+        runTest {
         val name = "invalid-name"
-        val errorMsg = "形式が不正です"
-        every { validateUseCase(name) } returns ValidateGitHubUserNameUseCase.Result.Error(errorMsg)
+            val expectedError = ValidateGitHubUserNameUseCase.Result.Error.InvalidFormat
+            every { validateUseCase(name) } returns expectedError
 
         viewModel.onUserNameChanged(name)
         viewModel.onSubmit { }
 
-        assertEquals(errorMsg, viewModel.errorMessage.value)
+            assertEquals(expectedError, viewModel.errorType.value)
+            coVerify(exactly = 0) { addHistoryUseCase(any()) }
+        }
+
+    @Test
+    fun `onSubmit - UseCaseがEmptyエラーを返したとき、errorTypeにEmptyがセットされること`() =
+        runTest {
+            val name = ""
+            val expectedError = ValidateGitHubUserNameUseCase.Result.Error.Empty
+            every { validateUseCase(name) } returns expectedError
+
+            viewModel.onUserNameChanged(name)
+            viewModel.onSubmit { }
+
+            assertEquals(expectedError, viewModel.errorType.value)
         coVerify(exactly = 0) { addHistoryUseCase(any()) }
     }
 
@@ -64,7 +79,7 @@ class UserNameInputViewModelTest {
             testDispatcher.scheduler.advanceUntilIdle()
 
             assertEquals(name, capturedName)
-            assertNull(viewModel.errorMessage.value)
+            assertNull(viewModel.errorType.value)
             coVerify { addHistoryUseCase(name) }
         }
 }

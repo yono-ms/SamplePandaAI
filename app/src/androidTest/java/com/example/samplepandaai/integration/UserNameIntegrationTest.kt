@@ -50,11 +50,12 @@ class UserNameIntegrationTest {
             .performClick()
 
         // 3. 一覧画面への到達確認 (遷移待ちを考慮)
+        val expectedTitle = context.getString(R.string.repo_list_title, testUser)
         composeTestRule.waitUntil(timeoutMillis = 5000) {
-            composeTestRule.onAllNodesWithText("GitHub Repositories: $testUser")
+            composeTestRule.onAllNodesWithText(expectedTitle)
                 .fetchSemanticsNodes().isNotEmpty()
         }
-        composeTestRule.onNodeWithText("GitHub Repositories: $testUser").assertIsDisplayed()
+        composeTestRule.onNodeWithText(expectedTitle).assertIsDisplayed()
 
         // 4. 戻って履歴を確認
         composeTestRule.onNodeWithContentDescription(context.getString(R.string.back_button_content_description))

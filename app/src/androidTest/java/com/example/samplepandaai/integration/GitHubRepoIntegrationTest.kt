@@ -51,6 +51,9 @@ class GitHubRepoIntegrationTest {
         // 3. 読み込みが完了した後の表示を確認
         composeTestRule.onNodeWithText("sample-repo").assertIsDisplayed()
         composeTestRule.onNodeWithText("This is a sample repository").assertIsDisplayed()
-        composeTestRule.onNodeWithText("★ 99").assertIsDisplayed()
+
+        // スター数の確認 (リソース経由でフォーマットされた文字列を確認)
+        composeTestRule.onNodeWithText(context.getString(R.string.star_count, 99))
+            .assertIsDisplayed()
     }
 }
