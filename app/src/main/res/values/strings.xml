@@ -24,8 +24,11 @@
 
     <!-- 共通 -->
     <string name="back_button_content_description">戻る</string>
-    <string name="repo_list_title">GitHub リポジトリ: %s</string>
-    <string name="error_prefix">エラー: %s</string>
+    <string name="repo_list_title">GitHub リポジトリ: %1$s</string>
+    <string name="error_prefix">エラー: %1$s</string>
     <string name="retry_button">再試行</string>
-    <string name="star_count">★ %d</string>
+
+    <plurals name="star_count">
+        <item quantity="other">&#9733; %1$d</item>
+    </plurals>
 </resources>

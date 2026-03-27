@@ -24,8 +24,12 @@
 
     <!-- Common -->
     <string name="back_button_content_description">Back</string>
-    <string name="repo_list_title">GitHub Repositories: %s</string>
-    <string name="error_prefix">Error: %s</string>
+    <string name="repo_list_title">GitHub Repositories: %1$s</string>
+    <string name="error_prefix">Error: %1$s</string>
     <string name="retry_button">Retry</string>
-    <string name="star_count">★ %d</string>
+
+    <plurals name="star_count">
+        <item quantity="one">&#9733; %1$d star</item>
+        <item quantity="other">&#9733; %1$d stars</item>
+    </plurals>
 </resources>

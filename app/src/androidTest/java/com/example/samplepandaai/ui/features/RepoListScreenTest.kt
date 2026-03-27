@@ -77,8 +77,8 @@ class RepoListScreenTest {
         composeTestRule.onNodeWithText("ComposeSample").assertIsDisplayed()
         composeTestRule.onNodeWithText("A sample project for Jetpack Compose.").assertIsDisplayed()
 
-        // スター数のフォーマット確認
-        val expectedStars = context.getString(R.string.star_count, 1234)
+        // スター数のフォーマット確認 (plurals 対応)
+        val expectedStars = context.resources.getQuantityString(R.plurals.star_count, 1234, 1234)
         composeTestRule.onNodeWithText(expectedStars).assertIsDisplayed()
     }
 

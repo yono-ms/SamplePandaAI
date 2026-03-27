@@ -24,8 +24,11 @@
 
     <!-- 通用 -->
     <string name="back_button_content_description">返回</string>
-    <string name="repo_list_title">GitHub 仓库: %s</string>
-    <string name="error_prefix">错误: %s</string>
+    <string name="repo_list_title">GitHub 仓库: %1$s</string>
+    <string name="error_prefix">错误: %1$s</string>
     <string name="retry_button">重试</string>
-    <string name="star_count">★ %d</string>
+
+    <plurals name="star_count">
+        <item quantity="other">&#9733; %1$d</item>
+    </plurals>
 </resources>

@@ -24,8 +24,16 @@
 
     <!-- عام -->
     <string name="back_button_content_description">رجوع</string>
-    <string name="repo_list_title">مستودعات GitHub: %s</string>
-    <string name="error_prefix">خطأ: %s</string>
+    <string name="repo_list_title">مستودعات GitHub: %1$s</string>
+    <string name="error_prefix">خطأ: %1$s</string>
     <string name="retry_button">إعادة المحاولة</string>
-    <string name="star_count">★ %d</string>
+
+    <plurals name="star_count">
+        <item quantity="zero">&#9733; %1$d نجمة</item>
+        <item quantity="one">&#9733; %1$d نجمة</item>
+        <item quantity="two">&#9733; %1$d نجمتان</item>
+        <item quantity="few">&#9733; %1$d نجوم</item>
+        <item quantity="many">&#9733; %1$d نجمة</item>
+        <item quantity="other">&#9733; %1$d نجمة</item>
+    </plurals>
 </resources>

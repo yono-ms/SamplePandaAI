@@ -18,6 +18,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -62,7 +63,11 @@ fun RepoListItem(repo: GitHubRepo, modifier: Modifier = Modifier) {
                     color = MaterialTheme.colorScheme.primary
                 )
                 Text(
-                    text = stringResource(id = R.string.star_count, repo.stars),
+                    text = pluralStringResource(
+                        id = R.plurals.star_count,
+                        count = repo.stars,
+                        repo.stars
+                    ),
                     style = MaterialTheme.typography.labelMedium
                 )
             }
