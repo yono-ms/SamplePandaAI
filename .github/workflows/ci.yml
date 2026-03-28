@@ -44,7 +44,7 @@ jobs:
 
   android-test:
     name: Android Test
-    runs-on: macos-13
+    runs-on: macos-latest
     needs: build
     steps:
       - uses: actions/checkout@v4
@@ -60,9 +60,8 @@ jobs:
       - name: Run Android Instrumented Tests
         uses: reactivecircus/android-emulator-runner@v2
         with:
-          api-level: 29
-          arch: x86_64
+          api-level: 34
+          arch: arm64-v8a
           disable-animations: true
-          emulator-boot-timeout: 20
           emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim
           script: ./gradlew connectedDevDebugAndroidTest
