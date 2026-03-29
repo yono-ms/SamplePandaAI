@@ -27,29 +27,25 @@
 - [x] **機能追加 1: ユーザー名入力画面のコア実装完了**
 - [x] **開発フローの策定完了** (`docs/DEVELOPMENT_FLOW.md`)
 - [x] **ライセンス情報画面の追加完了** (Compose Screen, Dialog, Navigation, Tests)
-- [x] **国際化 (i18n) の基本実装完了** (Resource files, UI migration, Multipreview)
-- [x] **国際化 (i18n) テストコード・レビュー完了 (Phase 3)**
-- [x] **国際化 (i18n) 実機テスト・視覚的確認完了 (Phase 4)**
+- [x] **国際化 (i18n) 対応完了** (Resource files, UI migration, Multipreview, Tests)
+- [x] **CI/CD 基盤の構築: フェーズ 1 (詳細設計) 完了** (`docs/features/04_CI_SETUP.md`)
+- [x] **CI/CD 基盤の構築: フェーズ 2 (実装) 完了** (`.github/workflows/ci.yml`)
 
 ## 現在の作業フェーズ (Current Phase)
 
-- **ターゲットタスク**: 国際化
-- **作業フェーズ**: フェーズ 5: ドキュメント最新化・外部レビュー対応 (Documentation & External
-  Review)
-- **現在のブランチ**: `feature/i18n`
-- **ステータス**: フェーズ 4 のテスト実施（全自動テスト・多言語プレビュー確認）が完了。これからフェーズ
-  5 として、i18n 対応に関する設計ドキュメントの作成と、既存ドキュメントの同期、PR 作成準備を行う。
+- **ターゲットタスク**: CI/CD 基盤の構築
+- **作業フェーズ**: フェーズ 4: テスト（GitHub Actions での動作確認）
+- **現在のブランチ**: `feature/ci-setup`
+- **ステータス**: `.github/workflows/ci.yml` の作成およびローカルでのビルドタスク検証が完了。GitHub
+  への push 後に Actions が正常に動作するかを確認する。
 
 ## TODO (今後のタスク)
 
-- [ ] **国際化 (i18n) の対応**
-  - [x] 現在の `strings.xml` の内容を整理し、ハードコードされている文字列がないか確認。
-  - [x] 各言語リソース (`en`, `zh-rCN`, `de`, `ar`) の作成。
-  - [x] UI コンポーネントの `stringResource` 化とプレースホルダー対応。
-  - [x] 全言語対応 Multipreview の実装。
-  - [x] テストコードのレビューと品質担保 (Phase 3)
-  - [x] 実機テスト実行とレイアウト崩れの修正 (Phase 4)
-  - [ ] **ドキュメント最新化と PR 作成 (Phase 5)**
+- [ ] **GitHub Actions による CI 構築 (Phase 6 計画分)**
+  - [x] PR 作成時および `main` ブランチへのプッシュ時の自動ビルド設計 (Phase 1)。
+  - [x] `.github/workflows/ci.yml` の実装 (Phase 2)。
+  - [ ] ビルド・テストの自動実行確認 (Phase 4)。
+  - [ ] ビルド失敗時にマージをブロックする仕組みの導入（GitHubリポジトリ設定のガイダンス）。
 - [ ] **アプリ本体の次機能実装**
   - [ ] リポジトリ詳細画面の実装。
   - [ ] WebView によるリポジトリ表示機能。
@@ -59,5 +55,6 @@
 ## 技術的メモ
 
 - 開発フローについては `docs/DEVELOPMENT_FLOW.md` を厳守すること。
-- 各フェーズの完了（コミット）ごとにセッションをリセットすることを推奨する。
-- 国際化にあたっては、Compose プレビューでの言語切り替え確認も併せて行う。
+- CI 設定ファイルは `.github/workflows/` 配下に配置する。
+- Android のビルドには `Setup Java` および Gradle Action を使用する。
+- Flavor 設定 (dev/prod) に対応するため、特定の Gradle Task (`testDevDebugUnitTest` 等) を指定している。
