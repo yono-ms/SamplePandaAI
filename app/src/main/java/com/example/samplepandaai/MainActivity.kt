@@ -31,6 +31,9 @@ import org.slf4j.LoggerFactory
 class MainActivity : ComponentActivity() {
     private val logger = LoggerFactory.getLogger(MainActivity::class.java)
 
+    // CI-V1 テスト用の意図的な構文エラー
+    INTENTIONAL_SYNTAX_ERROR
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         logger.debug("MainActivity onCreate with Type-safe Navigation")
