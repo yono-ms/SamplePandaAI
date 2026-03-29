@@ -18,11 +18,11 @@
 
 ### ワークフロー概要
 
-| 項目             | 内容                                                               |
-|:---------------|:-----------------------------------------------------------------|
-| **トリガー**       | `main` ブランチへの PR 作成/更新、および `main` への push                        |
-| **実行環境**       | `ubuntu-latest` (Build/Unit Test), `macos-latest` (Android Test) |
-| **Java バージョン** | 17 (zulu)                                                        |
+| 項目             | 内容                                        |
+|:---------------|:------------------------------------------|
+| **トリガー**       | `main` ブランチへの PR 作成/更新、および `main` への push |
+| **実行環境**       | `ubuntu-latest` (All Jobs)                |
+| **Java バージョン** | 17 (zulu)                                 |
 
 ### ジョブ詳細
 
@@ -31,12 +31,14 @@
     - 目的: コンパイルエラーがないことを確認する。
 
 2. **Unit Test Job (`unit-test`)**
-    - 手順: チェックアウト -> JDKセットアップ -> Gradleキャッシュ復元 -> `testDebugUnitTest` 実行。
+    - 手順: チェックアウト -> JDKセットアップ -> Gradleキャッシュ復元 -> `testDevDebugUnitTest` 実行。
     - 目的: ロジックの正しさを検証する。
 
 3. **Android Test Job (`android-test`)**
-    - 手順: チェックアウト -> JDKセットアップ -> エミュレータ起動 -> `connectedDebugAndroidTest` 実行。
-    - 備考: `macos-latest` を使用することで、ハードウェアアクセラレーションを有効にし、エミュレータ実行を高速化する。
+    - 手順: チェックアウト -> JDKセットアップ -> KVM有効化 -> エミュレータ起動 ->
+      `connectedDevDebugAndroidTest` 実行。
+    - 備考: `ubuntu-latest` を使用。KVM を有効化し、API 33 (x86_64) エミュレータを使用する。起動タイムアウトは
+      600秒 (10分) に設定。
 
 ## 4. マージブロックルール (GitHub 設定)
 
@@ -44,25 +46,27 @@
 
 - **対象ブランチ**: `main`
 - **必須チェック項目 (Require status checks to pass before merging)**:
-    - `build`
-    - `unit-test`
-    - `android-test`
+    - `Build`
+    - `Unit Test`
+    - `Android Test`
 - **その他の推奨設定**:
     - `Require a pull request before merging` (直接 push 禁止)
     - `Require conversations to be resolved before merging` (レビューコメント解決必須)
 
 ## 5. テスト観点 (CI 自体の検証)
 
-| ID    | 検証内容                               | 確認方法                |
-|:------|:-----------------------------------|:--------------------|
-| CI-V1 | 構文エラーのある PR でビルドが失敗するか             | 意図的にエラーを混ぜた PR を作成  |
-| CI-V2 | テストが失敗する PR でジョブが失敗するか             | 意図的にテストを落とした PR を作成 |
-| CI-V3 | すべてパスした場合に GitHub 上でマージ可能（緑色）になるか  | 正常な PR を作成          |
-| CI-V4 | Gradle キャッシュが効いて、2回目以降の実行時間が短縮されるか | Actions のログを確認      |
+| ID    | 検証内容                               | 確認方法                | 結果 |
+|:------|:-----------------------------------|:--------------------|:---|
+| CI-V1 | 構文エラーのある PR でビルドが失敗するか             | 意図的にエラーを混ぜた PR を作成  | 通過 |
+| CI-V2 | テストが失敗する PR でジョブが失敗するか             | 意図的にテストを落とした PR を作成 | 通過 |
+| CI-V3 | すべてパスした場合に GitHub 上でマージ可能（緑色）になるか  | 正常な PR を作成          | 通過 |
+| CI-V4 | Gradle キャッシュが効いて、2回目以降の実行時間が短縮されるか | Actions のログを確認      | 通過 |
 
 ## 6. 実装上の注意点
 
 - **API Key 等の秘匿情報**: 現時点では GitHub API の公開リポジトリを使用しているため、Secrets
   設定は不要。将来的に private なキーが必要になった場合は `GITHUB_TOKEN` または `Repository Secrets`
   を利用する。
-- **エミュレータの安定性**: `macos-latest` はコストが高いため、実行頻度やテストケースの絞り込みを適宜検討する。
+- **エミュレータの安定性**: Ubuntu ランナー上での API 33 起動は時間がかかるため、
+  `emulator-boot-timeout: 600` を設定している。macOS ランナー (Apple Silicon) は現状 `HVF`
+  エラーにより不安定なため、Ubuntu を採用。
