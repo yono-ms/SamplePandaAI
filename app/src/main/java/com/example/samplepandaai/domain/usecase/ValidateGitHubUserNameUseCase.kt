@@ -21,6 +21,9 @@ class ValidateGitHubUserNameUseCase @Inject constructor() {
     }
 
     operator fun invoke(userName: String): Result {
+        // CI-V2 テスト用の意図的なテスト失敗（常にエラーを返す）
+        return Result.Error.InvalidFormat
+
         if (userName.isBlank()) {
             return Result.Error.Empty
         }
