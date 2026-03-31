@@ -14,11 +14,13 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
+import com.example.samplepandaai.ui.features.RepoDetailScreen
 import com.example.samplepandaai.ui.features.RepoListScreen
 import com.example.samplepandaai.ui.features.UserNameHistoryScreen
 import com.example.samplepandaai.ui.features.UserNameInputScreen
 import com.example.samplepandaai.ui.features.license.LicenseScreen
 import com.example.samplepandaai.ui.navigation.License
+import com.example.samplepandaai.ui.navigation.RepoDetail
 import com.example.samplepandaai.ui.navigation.RepoList
 import com.example.samplepandaai.ui.navigation.UserNameHistory
 import com.example.samplepandaai.ui.navigation.UserNameInput
@@ -86,6 +88,19 @@ fun SamplePandaApp() {
                     viewModel = viewModel,
                     username = repoListRoute.username,
                     onBack = {
+                        navController.popBackStack()
+                    },
+                    onRepoClick = { repo ->
+                        navController.navigate(RepoDetail(url = repo.htmlUrl, title = repo.name))
+                    }
+                )
+            }
+            composable<RepoDetail> { backStackEntry ->
+                val detail: RepoDetail = backStackEntry.toRoute()
+                RepoDetailScreen(
+                    url = detail.url,
+                    title = detail.title,
+                    onBackClick = {
                         navController.popBackStack()
                     }
                 )

@@ -22,6 +22,14 @@ object UserNameHistory
 data class RepoList(val username: String)
 
 /**
+ * リポジトリ詳細画面
+ * @param url 表示対象の GitHub リポジトリ URL (html_url)
+ * @param title 画面上部に表示するリポジトリ名
+ */
+@Serializable
+data class RepoDetail(val url: String, val title: String)
+
+/**
  * ライセンス情報画面
  */
 @Serializable
