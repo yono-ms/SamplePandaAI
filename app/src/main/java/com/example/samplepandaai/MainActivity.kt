@@ -14,6 +14,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
+import com.example.samplepandaai.domain.usecase.IsGitHubDomainUseCase
 import com.example.samplepandaai.ui.features.RepoDetailScreen
 import com.example.samplepandaai.ui.features.RepoListScreen
 import com.example.samplepandaai.ui.features.UserNameHistoryScreen
@@ -102,7 +103,8 @@ fun SamplePandaApp() {
                     title = detail.title,
                     onBackClick = {
                         navController.popBackStack()
-                    }
+                    },
+                    isGitHubDomainUseCase = IsGitHubDomainUseCase()
                 )
             }
             composable<License> {
