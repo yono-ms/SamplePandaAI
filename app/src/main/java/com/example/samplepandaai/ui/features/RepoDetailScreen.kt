@@ -1,6 +1,7 @@
 package com.example.samplepandaai.ui.features
 
 import android.webkit.WebView
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -12,7 +13,9 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.viewinterop.AndroidView
 import com.example.samplepandaai.domain.usecase.IsGitHubDomainUseCase
 import com.example.samplepandaai.ui.theme.MultiLanguagePreview
@@ -71,28 +74,40 @@ fun RepoDetailContent(
             )
         }
     ) { innerPadding ->
-        AndroidView(
-            modifier = Modifier
-                .padding(innerPadding)
-                .fillMaxSize(),
-            factory = { ctx ->
-                WebView(ctx).apply {
-                    webViewClient = GitHubWebViewClient(
-                        context = ctx,
-                        isGitHubDomainUseCase = isGitHubDomainUseCase
-                    )
-                    settings.apply {
-                        javaScriptEnabled = true
-                        domStorageEnabled = true
-                        loadWithOverviewMode = true
-                        useWideViewPort = true
-                    }
-                }
-            },
-            update = { webView ->
-                webView.loadUrl(url)
+        if (LocalInspectionMode.current) {
+            // Preview モードでは WebView がクラッシュするため、プレースホルダーを表示する
+            Box(
+                modifier = Modifier
+                    .padding(innerPadding)
+                    .fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(text = "WebView Preview (URL: $url)")
             }
-        )
+        } else {
+            AndroidView(
+                modifier = Modifier
+                    .padding(innerPadding)
+                    .fillMaxSize(),
+                factory = { ctx ->
+                    WebView(ctx).apply {
+                        webViewClient = GitHubWebViewClient(
+                            context = ctx,
+                            isGitHubDomainUseCase = isGitHubDomainUseCase
+                        )
+                        settings.apply {
+                            javaScriptEnabled = true
+                            domStorageEnabled = true
+                            loadWithOverviewMode = true
+                            useWideViewPort = true
+                        }
+                    }
+                },
+                update = { webView ->
+                    webView.loadUrl(url)
+                }
+            )
+        }
     }
 }
 

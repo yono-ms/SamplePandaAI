@@ -1,11 +1,14 @@
 package com.example.samplepandaai.ui.features
 
 import android.content.Context
+import android.content.Intent
 import android.net.Uri
 import com.example.samplepandaai.domain.usecase.IsGitHubDomainUseCase
 import io.mockk.every
 import io.mockk.mockk
+import io.mockk.mockkConstructor
 import io.mockk.mockkStatic
+import io.mockk.unmockkConstructor
 import io.mockk.unmockkStatic
 import io.mockk.verify
 import org.junit.After
@@ -28,11 +31,15 @@ class GitHubWebViewClientTest {
 
         // Uri.parse を mockk するために static mock が必要
         mockkStatic(Uri::class)
+        // Intent の生成と addFlags を mockk するために constructor mock が必要
+        mockkConstructor(Intent::class)
+        every { anyConstructed<Intent>().addFlags(any()) } returns mockk()
     }
 
     @After
     fun tearDown() {
         unmockkStatic(Uri::class)
+        unmockkConstructor(Intent::class)
     }
 
     @Test

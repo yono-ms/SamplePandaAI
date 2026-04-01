@@ -53,6 +53,7 @@ class RepoListScreenTest {
                     uiState = GitHubRepoListUiState.Loading,
                     username = username,
                     onBack = {},
+                    onRepoClick = {},
                     onRetry = {}
                 )
             }
@@ -70,6 +71,7 @@ class RepoListScreenTest {
                     uiState = GitHubRepoListUiState.Success(mockRepos),
                     username = "google",
                     onBack = {},
+                    onRepoClick = {},
                     onRetry = {}
                 )
             }
@@ -93,6 +95,7 @@ class RepoListScreenTest {
                     uiState = GitHubRepoListUiState.Error(errorMessage),
                     username = "google",
                     onBack = {},
+                    onRepoClick = {},
                     onRetry = { retryClicked = true }
                 )
             }
