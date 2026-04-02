@@ -26,8 +26,13 @@ import com.example.samplepandaai.R
 import com.example.samplepandaai.domain.model.GitHubRepo
 
 @Composable
-fun RepoListItem(repo: GitHubRepo, modifier: Modifier = Modifier) {
+fun RepoListItem(
+    repo: GitHubRepo,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
     Card(
+        onClick = onClick,
         modifier = modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),

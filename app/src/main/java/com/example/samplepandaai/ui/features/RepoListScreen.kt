@@ -44,6 +44,7 @@ fun RepoListScreen(
     viewModel: GitHubRepoListViewModel,
     username: String = "google",
     onBack: () -> Unit = {},
+    onRepoClick: (GitHubRepo) -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     val uiState by viewModel.uiState.collectAsState()
@@ -56,6 +57,7 @@ fun RepoListScreen(
         uiState = uiState,
         username = username,
         onBack = onBack,
+        onRepoClick = onRepoClick,
         onRetry = { viewModel.fetchRepositories(username) },
         modifier = modifier
     )
@@ -70,6 +72,7 @@ fun RepoListContent(
     uiState: GitHubRepoListUiState,
     username: String,
     onBack: () -> Unit,
+    onRepoClick: (GitHubRepo) -> Unit,
     onRetry: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -106,7 +109,10 @@ fun RepoListContent(
                         contentPadding = PaddingValues(bottom = 16.dp)
                     ) {
                         items(uiState.repos) { repo ->
-                            RepoListItem(repo = repo)
+                            RepoListItem(
+                                repo = repo,
+                                onClick = { onRepoClick(repo) }
+                            )
                         }
                     }
                 }
@@ -153,6 +159,7 @@ fun RepoListPreview_Success() {
             uiState = GitHubRepoListUiState.Success(mockRepos),
             username = "google",
             onBack = {},
+            onRepoClick = {},
             onRetry = {}
         )
     }

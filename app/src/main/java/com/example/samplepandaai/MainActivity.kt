@@ -1,5 +1,6 @@
 package com.example.samplepandaai
 
+import android.net.Uri
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -14,11 +15,14 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
+import com.example.samplepandaai.domain.usecase.IsGitHubDomainUseCase
+import com.example.samplepandaai.ui.features.RepoDetailScreen
 import com.example.samplepandaai.ui.features.RepoListScreen
 import com.example.samplepandaai.ui.features.UserNameHistoryScreen
 import com.example.samplepandaai.ui.features.UserNameInputScreen
 import com.example.samplepandaai.ui.features.license.LicenseScreen
 import com.example.samplepandaai.ui.navigation.License
+import com.example.samplepandaai.ui.navigation.RepoDetail
 import com.example.samplepandaai.ui.navigation.RepoList
 import com.example.samplepandaai.ui.navigation.UserNameHistory
 import com.example.samplepandaai.ui.navigation.UserNameInput
@@ -87,7 +91,25 @@ fun SamplePandaApp() {
                     username = repoListRoute.username,
                     onBack = {
                         navController.popBackStack()
+                    },
+                    onRepoClick = { repo ->
+                        // URL 内に特殊文字 (/, ?, # 等) が含まれるため Uri.encode を行う
+                        val encodedUrl = Uri.encode(repo.htmlUrl)
+                        navController.navigate(RepoDetail(url = encodedUrl, title = repo.name))
                     }
+                )
+            }
+            composable<RepoDetail> { backStackEntry ->
+                val detail: RepoDetail = backStackEntry.toRoute()
+                // 受信側で復号して表示
+                val decodedUrl = Uri.decode(detail.url)
+                RepoDetailScreen(
+                    url = decodedUrl,
+                    title = detail.title,
+                    onBackClick = {
+                        navController.popBackStack()
+                    },
+                    isGitHubDomainUseCase = IsGitHubDomainUseCase()
                 )
             }
             composable<License> {
