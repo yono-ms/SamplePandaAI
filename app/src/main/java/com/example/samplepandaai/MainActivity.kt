@@ -1,5 +1,6 @@
 package com.example.samplepandaai
 
+import android.net.Uri
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -92,14 +93,18 @@ fun SamplePandaApp() {
                         navController.popBackStack()
                     },
                     onRepoClick = { repo ->
-                        navController.navigate(RepoDetail(url = repo.htmlUrl, title = repo.name))
+                        // URL 内に特殊文字 (/, ?, # 等) が含まれるため Uri.encode を行う
+                        val encodedUrl = Uri.encode(repo.htmlUrl)
+                        navController.navigate(RepoDetail(url = encodedUrl, title = repo.name))
                     }
                 )
             }
             composable<RepoDetail> { backStackEntry ->
                 val detail: RepoDetail = backStackEntry.toRoute()
+                // 受信側で復号して表示
+                val decodedUrl = Uri.decode(detail.url)
                 RepoDetailScreen(
-                    url = detail.url,
+                    url = decodedUrl,
                     title = detail.title,
                     onBackClick = {
                         navController.popBackStack()

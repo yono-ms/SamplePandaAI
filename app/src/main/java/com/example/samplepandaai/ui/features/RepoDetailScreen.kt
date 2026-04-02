@@ -96,8 +96,16 @@ fun RepoDetailContent(
                             isGitHubDomainUseCase = isGitHubDomainUseCase
                         )
                         settings.apply {
-                            javaScriptEnabled = true
+                            // セキュリティ設定: 必要最小限の権限のみ付与
+                            javaScriptEnabled = true // GitHub ページの正常な表示に必要
                             domStorageEnabled = true
+
+                            // ローカルファイルへのアクセスを禁止 (セキュリティ強化)
+                            allowFileAccess = false
+                            allowContentAccess = false
+                            allowFileAccessFromFileURLs = false
+                            allowUniversalAccessFromFileURLs = false
+
                             loadWithOverviewMode = true
                             useWideViewPort = true
                         }
