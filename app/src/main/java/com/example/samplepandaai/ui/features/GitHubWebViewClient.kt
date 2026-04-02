@@ -24,6 +24,7 @@ class GitHubWebViewClient(
 
     /**
      * URLのハンドリングロジック。
+     * UseCase を使用して判定を行い、許可されない場合は外部ブラウザを起動する。
      */
     fun handleUrl(url: Uri): Boolean {
         val urlStr = url.toString()
@@ -34,8 +35,12 @@ class GitHubWebViewClient(
             val intent = Intent(Intent.ACTION_VIEW, url).apply {
                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             }
-            context.startActivity(intent)
-            onExternalUrlLaunched()
+            try {
+                context.startActivity(intent)
+                onExternalUrlLaunched()
+            } catch (e: Exception) {
+                // インテント発行失敗時は何もしない（またはログ出力）
+            }
             true // 読み込みをキャンセル
         }
     }

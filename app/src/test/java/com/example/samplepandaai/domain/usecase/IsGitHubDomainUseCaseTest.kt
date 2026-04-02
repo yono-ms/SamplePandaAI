@@ -15,20 +15,29 @@ class IsGitHubDomainUseCaseTest {
     }
 
     @Test
-    fun `invoke returns true for github_com`() {
+    fun `invoke returns true for valid https github_com urls`() {
         assertTrue(useCase("https://github.com/example/repo"))
+        assertTrue(useCase("https://docs.github.com/en"))
     }
 
     @Test
-    fun `invoke returns true for subdomains of github_com`() {
-        assertTrue(useCase("https://docs.github.com/en"))
-        assertTrue(useCase("https://gist.github.com/user/123"))
+    fun `invoke returns false for non-https github urls`() {
+        // http は許可しない
+        assertFalse(useCase("http://github.com/example/repo"))
+        // スキームなしは許可しない
+        assertFalse(useCase("github.com/test"))
     }
 
     @Test
     fun `invoke returns false for other domains`() {
         assertFalse(useCase("https://google.com"))
         assertFalse(useCase("https://gitlab.com/example/repo"))
+    }
+
+    @Test
+    fun `invoke returns false for special schemes`() {
+        assertFalse(useCase("intent://github.com/example"))
+        assertFalse(useCase("file:///android_asset/test.html"))
     }
 
     @Test
@@ -39,14 +48,7 @@ class IsGitHubDomainUseCaseTest {
     }
 
     @Test
-    fun `invoke returns true for github urls without scheme`() {
-        // extractHost の現在の実装ではスキームがない場合も考慮している
-        assertTrue(useCase("github.com/test"))
-    }
-
-    @Test
     fun `invoke returns false for domains ending with github_com but not subdomains`() {
-        // mygithub.com は許可しない
         assertFalse(useCase("https://mygithub.com"))
     }
 }
