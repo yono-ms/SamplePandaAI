@@ -42,7 +42,7 @@ class RepoDetailScreenTest {
         composeTestRule.onNodeWithText(testTitle).assertIsDisplayed()
 
         // 2. 戻るボタンが機能するか確認
-        composeTestRule.onNodeWithContentDescription(context.getString(R.string.back))
+        composeTestRule.onNodeWithContentDescription(context.getString(R.string.back_button_content_description))
             .performClick()
         assertTrue("Back click should trigger onBackClick callback", backClicked)
     }

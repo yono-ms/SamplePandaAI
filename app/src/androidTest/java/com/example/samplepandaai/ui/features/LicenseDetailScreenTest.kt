@@ -42,7 +42,7 @@ class LicenseDetailScreenTest {
         composeTestRule.onNodeWithText(testTitle).assertIsDisplayed()
 
         // 2. 戻るボタンの表示と動作確認
-        composeTestRule.onNodeWithContentDescription(context.getString(R.string.back))
+        composeTestRule.onNodeWithContentDescription(context.getString(R.string.back_button_content_description))
             .assertIsDisplayed()
             .performClick()
 
