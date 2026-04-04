@@ -23,6 +23,7 @@
     <string name="license_menu_item">ライセンス情報</string>
 
     <!-- 共通 -->
+    <string name="back">戻る</string>
     <string name="back_button_content_description">戻る</string>
     <string name="repo_list_title">GitHub リポジトリ: %1$s</string>
     <string name="error_prefix">エラー: %1$s</string>

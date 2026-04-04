@@ -15,13 +15,15 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
-import com.example.samplepandaai.domain.usecase.IsGitHubDomainUseCase
+import com.example.samplepandaai.domain.usecase.IsSafeDomainUseCase
 import com.example.samplepandaai.ui.features.RepoDetailScreen
 import com.example.samplepandaai.ui.features.RepoListScreen
 import com.example.samplepandaai.ui.features.UserNameHistoryScreen
 import com.example.samplepandaai.ui.features.UserNameInputScreen
+import com.example.samplepandaai.ui.features.license.LicenseDetailScreen
 import com.example.samplepandaai.ui.features.license.LicenseScreen
 import com.example.samplepandaai.ui.navigation.License
+import com.example.samplepandaai.ui.navigation.LicenseDetail
 import com.example.samplepandaai.ui.navigation.RepoDetail
 import com.example.samplepandaai.ui.navigation.RepoList
 import com.example.samplepandaai.ui.navigation.UserNameHistory
@@ -51,6 +53,7 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun SamplePandaApp() {
     val navController = rememberNavController()
+    val isSafeDomainUseCase = IsSafeDomainUseCase()
 
     Surface(
         modifier = Modifier.fillMaxSize(),
@@ -93,7 +96,6 @@ fun SamplePandaApp() {
                         navController.popBackStack()
                     },
                     onRepoClick = { repo ->
-                        // URL 内に特殊文字 (/, ?, # 等) が含まれるため Uri.encode を行う
                         val encodedUrl = Uri.encode(repo.htmlUrl)
                         navController.navigate(RepoDetail(url = encodedUrl, title = repo.name))
                     }
@@ -101,7 +103,6 @@ fun SamplePandaApp() {
             }
             composable<RepoDetail> { backStackEntry ->
                 val detail: RepoDetail = backStackEntry.toRoute()
-                // 受信側で復号して表示
                 val decodedUrl = Uri.decode(detail.url)
                 RepoDetailScreen(
                     url = decodedUrl,
@@ -109,14 +110,35 @@ fun SamplePandaApp() {
                     onBackClick = {
                         navController.popBackStack()
                     },
-                    isGitHubDomainUseCase = IsGitHubDomainUseCase()
+                    isSafeDomainUseCase = isSafeDomainUseCase
                 )
             }
             composable<License> {
                 LicenseScreen(
                     onBackClick = {
                         navController.popBackStack()
+                    },
+                    onLicenseClick = { license ->
+                        val encodedUrl = Uri.encode(license.url)
+                        navController.navigate(
+                            LicenseDetail(
+                                url = encodedUrl,
+                                title = license.name
+                            )
+                        )
                     }
+                )
+            }
+            composable<LicenseDetail> { backStackEntry ->
+                val detail: LicenseDetail = backStackEntry.toRoute()
+                val decodedUrl = Uri.decode(detail.url)
+                LicenseDetailScreen(
+                    url = decodedUrl,
+                    title = detail.title,
+                    onBackClick = {
+                        navController.popBackStack()
+                    },
+                    isSafeDomainUseCase = isSafeDomainUseCase
                 )
             }
         }

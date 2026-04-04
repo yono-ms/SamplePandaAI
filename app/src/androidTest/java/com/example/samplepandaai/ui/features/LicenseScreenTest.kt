@@ -1,6 +1,5 @@
 package com.example.samplepandaai.ui.features
 
-import android.content.Context
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
@@ -8,9 +7,11 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.test.platform.app.InstrumentationRegistry
 import com.example.samplepandaai.R
+import com.example.samplepandaai.ui.features.license.LicenseItem
 import com.example.samplepandaai.ui.features.license.LicenseScreen
 import com.example.samplepandaai.ui.theme.SamplePandaAITheme
-import org.junit.Before
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 
@@ -19,19 +20,19 @@ class LicenseScreenTest {
     @get:Rule
     val composeTestRule = createComposeRule()
 
-    private lateinit var context: Context
-
-    @Before
-    fun setup() {
-        context = InstrumentationRegistry.getInstrumentation().targetContext
-    }
+    private val context = InstrumentationRegistry.getInstrumentation().targetContext
 
     @Test
-    fun licenseScreen_displaysListAndDialog() {
+    fun licenseScreen_displaysListAndNavigates() {
         var backClicked = false
+        var clickedItem: LicenseItem? = null
+
         composeTestRule.setContent {
             SamplePandaAITheme {
-                LicenseScreen(onBackClick = { backClicked = true })
+                LicenseScreen(
+                    onBackClick = { backClicked = true },
+                    onLicenseClick = { clickedItem = it }
+                )
             }
         }
 
@@ -39,25 +40,17 @@ class LicenseScreenTest {
         composeTestRule.onNodeWithText(context.getString(R.string.license_title))
             .assertIsDisplayed()
 
-        // 2. リストアイテムの表示確認 (データは固定なのでそのまま)
+        // 2. リストアイテムの表示確認
         composeTestRule.onNodeWithText("Jetpack Compose").assertIsDisplayed()
 
-        // 3. アイテムタップでダイアログが表示されるか
+        // 3. アイテムタップでコールバックが呼ばれるか (旧ダイアログ検証からの変更)
         composeTestRule.onNodeWithText("Jetpack Compose").performClick()
+        assertEquals("Jetpack Compose", clickedItem?.name)
+        assertEquals("https://www.apache.org/licenses/LICENSE-2.0", clickedItem?.url)
 
-        // ダイアログ固有の「閉じる」ボタンで、ダイアログが表示されたことを確認
-        composeTestRule.onNodeWithText(context.getString(R.string.license_dialog_close))
-            .assertIsDisplayed()
-
-        // 4. ダイアログを閉じる
-        composeTestRule.onNodeWithText(context.getString(R.string.license_dialog_close))
-            .performClick()
-        composeTestRule.onNodeWithText(context.getString(R.string.license_dialog_close))
-            .assertDoesNotExist()
-
-        // 5. 戻るボタンの動作確認
+        // 4. 戻るボタンの動作確認
         composeTestRule.onNodeWithContentDescription(context.getString(R.string.back_button_content_description))
             .performClick()
-        assert(backClicked)
+        assertTrue(backClicked)
     }
 }

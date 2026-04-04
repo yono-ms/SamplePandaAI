@@ -7,26 +7,18 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -38,17 +30,17 @@ import com.example.samplepandaai.ui.theme.SamplePandaAITheme
 data class LicenseItem(
     val name: String,
     val licenseName: String,
-    val text: String
+    val url: String
 )
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LicenseScreen(
     onBackClick: () -> Unit,
+    onLicenseClick: (LicenseItem) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val licenses = remember { LicenseDataProvider.getLicenses() }
-    var selectedLicense by remember { mutableStateOf<LicenseItem?>(null) }
 
     Scaffold(
         topBar = {
@@ -58,7 +50,7 @@ fun LicenseScreen(
                     IconButton(onClick = onBackClick) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = stringResource(R.string.back_button_content_description)
+                            contentDescription = stringResource(R.string.back)
                         )
                     }
                 }
@@ -66,97 +58,54 @@ fun LicenseScreen(
         },
         modifier = modifier.fillMaxSize()
     ) { innerPadding ->
-        LazyColumn(contentPadding = innerPadding) {
-            items(licenses) { item ->
+        LazyColumn(
+            modifier = Modifier
+                .padding(innerPadding)
+                .fillMaxSize()
+        ) {
+            items(licenses) { license ->
                 LicenseListItem(
-                    item = item,
-                    onClick = { selectedLicense = item }
+                    license = license,
+                    onClick = { onLicenseClick(license) }
                 )
                 HorizontalDivider()
             }
         }
     }
-
-    selectedLicense?.let { license ->
-        LicenseDetailDialog(
-            license = license,
-            onDismissRequest = { selectedLicense = null }
-        )
-    }
 }
 
 @Composable
 fun LicenseListItem(
-    item: LicenseItem,
+    license: LicenseItem,
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    ListItem(
-        headlineContent = { Text(item.name) },
-        supportingContent = { Text(item.licenseName) },
+    Column(
         modifier = modifier
-            .clickable(onClick = onClick)
             .fillMaxWidth()
-    )
-}
-
-@Composable
-fun LicenseDetailDialog(
-    license: LicenseItem,
-    onDismissRequest: () -> Unit
-) {
-    AlertDialog(
-        onDismissRequest = onDismissRequest,
-        title = { Text(license.name) },
-        text = {
-            Column(
-                modifier = Modifier.verticalScroll(rememberScrollState())
-            ) {
-                Text(
-                    text = license.licenseName,
-                    style = MaterialTheme.typography.labelLarge,
-                    modifier = Modifier.padding(bottom = 8.dp)
-                )
-                Text(license.text)
-            }
-        },
-        confirmButton = {
-            TextButton(onClick = onDismissRequest) {
-                Text(stringResource(R.string.license_dialog_close))
-            }
-        }
-    )
-}
-
-@MultiLanguagePreview
-@Preview(showBackground = true)
-@Composable
-fun LicenseScreenPreview() {
-    SamplePandaAITheme {
-        LicenseScreen(onBackClick = {})
-    }
-}
-
-@MultiLanguagePreview
-@Preview(showBackground = true)
-@Composable
-fun LicenseListItemPreview() {
-    SamplePandaAITheme {
-        LicenseListItem(
-            item = LicenseItem("Sample Library", "Apache 2.0", "Text"),
-            onClick = {}
+            .clickable(onClick = onClick)
+            .padding(16.dp)
+    ) {
+        Text(
+            text = license.name,
+            style = MaterialTheme.typography.titleMedium
+        )
+        Text(
+            text = license.licenseName,
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant
         )
     }
 }
 
-@MultiLanguagePreview
 @Preview(showBackground = true)
+@MultiLanguagePreview
 @Composable
-fun LicenseDetailDialogPreview() {
+fun LicenseScreenPreview() {
     SamplePandaAITheme {
-        LicenseDetailDialog(
-            license = LicenseItem("Sample Library", "Apache 2.0", "Full license text goes here."),
-            onDismissRequest = {}
+        LicenseScreen(
+            onBackClick = {},
+            onLicenseClick = {}
         )
     }
 }

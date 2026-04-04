@@ -30,7 +30,15 @@ data class RepoList(val username: String)
 data class RepoDetail(val url: String, val title: String)
 
 /**
- * ライセンス情報画面
+ * ライセンス情報一覧画面
  */
 @Serializable
 object License
+
+/**
+ * ライセンス詳細画面 (WebView)
+ * @param url 表示対象のライセンス URL
+ * @param title 画面上部に表示するライセンス名
+ */
+@Serializable
+data class LicenseDetail(val url: String, val title: String)
