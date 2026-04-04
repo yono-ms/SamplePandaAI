@@ -21,11 +21,11 @@ SamplePandaAI/
 │       │   │   ├── data/
 │       │   │   ├── domain/
 │       │   │   │   └── usecase/
-│       │   │   │       ├── IsGitHubDomainUseCase.kt   # NEW: URLドメイン判定
+│       │   │   │       ├── IsGitHubDomainUseCase.kt
 │       │   │   ├── ui/
 │       │   │   │   ├── features/
-│       │   │   │   │   ├── RepoDetailScreen.kt        # NEW: リポジトリ詳細画面
-│       │   │   │   │   └── GitHubWebViewClient.kt     # NEW: WebView制御
+│       │   │   │   │   ├── RepoDetailScreen.kt
+│       │   │   │   │   └── GitHubWebViewClient.kt
 │       │   │   └── util/
 │       │   ├── openapi/
 │       │   └── res/
@@ -36,8 +36,9 @@ SamplePandaAI/
 │   │   ├── 01_USER_NAME_INPUT.md
 │   │   ├── 02_LICENSE_SCREEN.md
 │   │   ├── 03_I18N.md
-│   │   ├── 04_CI_SETUP.md     # CI/CD 設定詳細 (GitHub Actions)
-│   │   └── 05_REPO_DETAIL.md  # NEW: リポジトリ詳細画面の実装詳細
+│   │   ├── 04_CI_SETUP.md
+│   │   ├── 05_REPO_DETAIL.md
+│   │   └── 06_ENHANCE_DEV_FLOW.md  # NEW: 開発プロセスの強化
 │   ├── AGENTS.md
 │   ├── ARCHITECTURE_DESIGN.md
 │   ├── DESIGN_COST_VERIFICATION.md
