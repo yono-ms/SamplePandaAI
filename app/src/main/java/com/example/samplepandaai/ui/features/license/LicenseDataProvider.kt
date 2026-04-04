@@ -6,32 +6,32 @@ object LicenseDataProvider {
             LicenseItem(
                 name = "Jetpack Compose",
                 licenseName = "Apache License 2.0",
-                text = "Copyright 2019 The Android Open Source Project..."
+                url = "https://www.apache.org/licenses/LICENSE-2.0"
             ),
             LicenseItem(
                 name = "Hilt",
                 licenseName = "Apache License 2.0",
-                text = "Copyright 2020 Google Inc..."
+                url = "https://www.apache.org/licenses/LICENSE-2.0"
             ),
             LicenseItem(
                 name = "Ktor",
                 licenseName = "Apache License 2.0",
-                text = "Copyright 2014-2024 JetBrains s.r.o..."
+                url = "https://ktor.io/docs/welcome.html"
             ),
             LicenseItem(
                 name = "Kotlinx Serialization",
                 licenseName = "Apache License 2.0",
-                text = "Copyright 2017-2024 JetBrains s.r.o..."
+                url = "https://kotlinlang.org/docs/home.html"
             ),
             LicenseItem(
                 name = "MockK",
                 licenseName = "Apache License 2.0",
-                text = "Copyright 2017-2024 Oleksii Ivanchenko..."
+                url = "https://www.apache.org/licenses/LICENSE-2.0"
             ),
             LicenseItem(
                 name = "SLF4J",
                 licenseName = "MIT License",
-                text = "Copyright (c) 2004-2022 QOS.ch..."
+                url = "https://opensource.org/licenses/MIT"
             )
         )
     }

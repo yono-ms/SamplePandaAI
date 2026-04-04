@@ -21,11 +21,15 @@ SamplePandaAI/
 │       │   │   ├── data/
 │       │   │   ├── domain/
 │       │   │   │   └── usecase/
-│       │   │   │       ├── IsGitHubDomainUseCase.kt
+│       │   │   │       ├── IsSafeDomainUseCase.kt  # 汎用化済み (旧 IsGitHubDomainUseCase)
 │       │   │   ├── ui/
 │       │   │   │   ├── features/
 │       │   │   │   │   ├── RepoDetailScreen.kt
-│       │   │   │   │   └── GitHubWebViewClient.kt
+│       │   │   │   │   ├── SafeWebViewClient.kt    # 汎用化済み (旧 GitHubWebViewClient)
+│       │   │   │   │   └── license/
+│       │   │   │   │       ├── LicenseScreen.kt        # 一覧画面
+│       │   │   │   │       ├── LicenseDetailScreen.kt  # 新規: 詳細画面 (WebView)
+│       │   │   │   │       └── LicenseDataProvider.kt
 │       │   │   └── util/
 │       │   ├── openapi/
 │       │   └── res/
@@ -38,7 +42,8 @@ SamplePandaAI/
 │   │   ├── 03_I18N.md
 │   │   ├── 04_CI_SETUP.md
 │   │   ├── 05_REPO_DETAIL.md
-│   │   └── 06_ENHANCE_DEV_FLOW.md  # NEW: 開発プロセスの強化
+│   │   ├── 06_ENHANCE_DEV_FLOW.md
+│   │   └── 07_LICENSE_SCREEN_WEBVIEW.md  # NEW: ライセンスWebView化
 │   ├── AGENTS.md
 │   ├── ARCHITECTURE_DESIGN.md
 │   ├── DESIGN_COST_VERIFICATION.md
