@@ -1,23 +1,19 @@
 # Current Status
 
-- **Task**: 06_ENHANCE_DEV_FLOW
-- **Branch**: feature/enhance-dev-flow
-- **Phase**: 6 (External Review Correspondence)
+- **Task**: TASK_SELECTION (Next Task Selection)
+- **Branch**: main
+- **Phase**: 1 (Pre-requisites)
 - **Status**:
-  - [x] 指摘 1-5 への対応完了。
-  - [x] 指摘 6 (NEXT_STEPS 運用負荷/Issue一元化) への対応完了。
-  - [x] 指摘 7 (調査工程の定義強化) への対応完了。
-  - [x] 指摘 8 (PR説明文生成タイミングの改善) への対応完了。
-  - [x] 指摘 9 (コミットゲートの網羅性・変更範囲の妥当性チェック強化) への対応完了。
-  - [x] 指摘 10 (AI Silence 解除後の「再開時動作 (Resumption Protocol)」の定義) への対応完了。
-  - [ ] **追加のレビュー指摘を待機中。**
+  - [x] 前回のタスク (06) の完了を確認。
+  - [x] `docs/ROADMAP.md` を作成し、今後のタスクを整理。
+  - [ ] 次に実施するタスクを ROADMAP から選定する。
 
 ## TODO (Next Actions)
 
-- 引き続き、外部レビュー指摘への対応（フェーズ 6）を継続する。
-- 全ての指摘対応が完了し、承認が得られたらフェーズ 7 (ドキュメント最終同期) へ移行する。
+1. `ROADMAP.md` の内容を確認し、着手するタスクを決定する。
+2. 選定したタスクのブランチを作成し、設計フェーズ (Standard Flow F2) を開始する。
 
 ## Technical Memo
 
-- AI は GitHub Issue を直接参照できないため、本ファイルを唯一の同期手段とする。
-- 更新負荷軽減のため、本ファイルはセッション維持に必要な最小限の記述に留める（運用ルール変更済み）。
+- ライセンス画面については、既存の `02_LICENSE_SCREEN.md` の「ダイアログ表示」という設計を「WebView
+  表示」にアップデートして進める予定。
