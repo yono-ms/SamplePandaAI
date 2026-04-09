@@ -14,7 +14,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class UserNameHistoryViewModel @Inject constructor(
-    private val getUserNameHistoryUseCase: GetUserNameHistoryUseCase,
+    getUserNameHistoryUseCase: GetUserNameHistoryUseCase,
     private val deleteUserNameFromHistoryUseCase: DeleteUserNameFromHistoryUseCase
 ) : ViewModel() {
     private val logger = LoggerFactory.getLogger(UserNameHistoryViewModel::class.java)

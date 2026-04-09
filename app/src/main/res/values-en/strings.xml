@@ -19,7 +19,6 @@
 
     <!-- License Screen -->
     <string name="license_title">Licenses</string>
-    <string name="license_dialog_close">Close</string>
     <string name="license_menu_item">License Information</string>
 
     <!-- Common -->

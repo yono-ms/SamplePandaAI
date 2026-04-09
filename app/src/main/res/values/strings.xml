@@ -19,7 +19,6 @@
 
     <!-- ライセンス画面 -->
     <string name="license_title">ライセンス</string>
-    <string name="license_dialog_close">閉じる</string>
     <string name="license_menu_item">ライセンス情報</string>
 
     <!-- 共通 -->

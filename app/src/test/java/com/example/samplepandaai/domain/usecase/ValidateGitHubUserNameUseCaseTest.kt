@@ -1,3 +1,5 @@
+@file:Suppress("NonAsciiCharacters")
+
 package com.example.samplepandaai.domain.usecase
 
 import org.junit.Assert.assertTrue

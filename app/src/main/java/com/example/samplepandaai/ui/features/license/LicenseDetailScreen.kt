@@ -98,12 +98,9 @@ fun LicenseDetailContent(
                             isSafeDomainUseCase = isSafeDomainUseCase
                         )
                         settings.apply {
-                            javaScriptEnabled = true
                             domStorageEnabled = true
                             allowFileAccess = false
                             allowContentAccess = false
-                            allowFileAccessFromFileURLs = false
-                            allowUniversalAccessFromFileURLs = false
                             loadWithOverviewMode = true
                             useWideViewPort = true
                         }

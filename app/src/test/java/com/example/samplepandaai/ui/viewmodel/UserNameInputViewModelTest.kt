@@ -1,3 +1,5 @@
+@file:Suppress("NonAsciiCharacters")
+
 package com.example.samplepandaai.ui.viewmodel
 
 import com.example.samplepandaai.domain.usecase.AddUserNameToHistoryUseCase

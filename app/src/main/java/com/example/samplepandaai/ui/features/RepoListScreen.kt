@@ -42,10 +42,10 @@ import kotlinx.datetime.Instant
 @Composable
 fun RepoListScreen(
     viewModel: GitHubRepoListViewModel,
+    modifier: Modifier = Modifier,
     username: String = "google",
     onBack: () -> Unit = {},
-    onRepoClick: (GitHubRepo) -> Unit = {},
-    modifier: Modifier = Modifier
+    onRepoClick: (GitHubRepo) -> Unit = {}
 ) {
     val uiState by viewModel.uiState.collectAsState()
 

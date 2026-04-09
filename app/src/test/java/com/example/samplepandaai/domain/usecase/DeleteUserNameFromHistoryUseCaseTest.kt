@@ -1,3 +1,5 @@
+@file:Suppress("NonAsciiCharacters")
+
 package com.example.samplepandaai.domain.usecase
 
 import com.example.samplepandaai.domain.repository.UserNameRepository
