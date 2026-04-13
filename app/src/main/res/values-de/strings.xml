@@ -19,7 +19,6 @@
 
     <!-- Lizenz-Bildschirm -->
     <string name="license_title">Lizenzen</string>
-    <string name="license_dialog_close">Schließen</string>
     <string name="license_menu_item">Lizenzinformationen</string>
 
     <!-- Allgemein -->

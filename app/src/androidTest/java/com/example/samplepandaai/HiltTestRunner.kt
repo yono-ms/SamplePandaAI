@@ -9,6 +9,7 @@ import dagger.hilt.android.testing.HiltTestApplication
  * Hilt を使用したインストゥルメントテスト用のカスタム TestRunner。
  * 常に HiltTestApplication を使用するように設定する。
  */
+@Suppress("unused")
 class HiltTestRunner : AndroidJUnitRunner() {
     override fun newApplication(
         cl: ClassLoader?,

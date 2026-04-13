@@ -19,7 +19,6 @@
 
     <!-- شاشة الترخيص -->
     <string name="license_title">التراخيص</string>
-    <string name="license_dialog_close">إغلاق</string>
     <string name="license_menu_item">معلومات الترخيص</string>
 
     <!-- عام -->

@@ -1,3 +1,5 @@
+@file:Suppress("NonAsciiCharacters")
+
 package com.example.samplepandaai.data.repository
 
 import androidx.datastore.core.DataStore

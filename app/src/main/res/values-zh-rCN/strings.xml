@@ -19,7 +19,6 @@
 
     <!-- 许可证页面 -->
     <string name="license_title">许可证</string>
-    <string name="license_dialog_close">关闭</string>
     <string name="license_menu_item">许可证信息</string>
 
     <!-- 通用 -->

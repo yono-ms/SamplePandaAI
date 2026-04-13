@@ -1,5 +1,6 @@
 package com.example.samplepandaai.ui.features
 
+import android.annotation.SuppressLint
 import android.webkit.WebView
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -92,6 +93,7 @@ fun RepoDetailContent(
                     .padding(innerPadding)
                     .fillMaxSize(),
                 factory = { ctx ->
+                    @SuppressLint("SetJavaScriptEnabled")
                     WebView(ctx).apply {
                         webViewClient = SafeWebViewClient(
                             context = ctx,
