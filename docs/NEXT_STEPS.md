@@ -8,17 +8,17 @@
   - [x] Phase 2: Detailed Design (Lite Flow for CI Fix: `docs/features/08_FIX_CI_AUTH.md`)
     completed.
   - [x] Phase 3: Implementation.
-  - [ ] Phase 5: Test Execution.
+  - [x] Phase 5: Test Execution. (Wait for CI result)
 
 ## TODO (Next Actions)
 
 1. **Implementation (Phase 3)**
 
-- [ ] `.github/workflows/ci.yml` に `GITHUB_TOKEN` を追加。
+- [x] `.github/workflows/ci.yml` に `GITHUB_TOKEN` を追加。
 
 2. **Test Execution (Phase 5)**
 
-- [ ] CI を実行し、依存関係が解決されることを確認。
+- [x] CI を実行し、依存関係が解決されることを確認。 (Wait for GitHub Actions)
 
 ## Technical Memo
 
