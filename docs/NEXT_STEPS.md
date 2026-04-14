@@ -2,22 +2,22 @@
 
 - **Task**: GITHUB_API_MODEL_MIGRATION (Migrate to external GitHub API model library)
 - **Branch**: feature/github-api-model-migration
-- **Phase**: 3 (Implementation) - COMPLETED
+- **Phase**: 4 (Test Code Review) - COMPLETED
 - **Status**:
   - [x] Phase 1: Pre-preparation completed.
   - [x] Phase 2: Detailed Design (Standard Flow) completed.
   - [x] Phase 3: Implementation.
-  - [ ] Phase 4: Test Code Review.
+  - [x] Phase 4: Test Code Review (No changes needed).
   - [ ] Phase 5: Test Execution.
   - [ ] Phase 6: External Review.
   - [ ] Phase 7: Final Documentation Sync.
 
 ## TODO (Next Actions)
 
-1. **Test Code Review (Phase 4)**
+1. **Test Execution (Phase 5)**
 
-- [ ] 既存のテストコードが新しい DTO で動作するか、デシリアライズ設定の妥当性を確認。
-- [ ] `OffsetDateTime` の変換ロジックが期待通り動作するか確認。
+- [ ] 全ユニットテストの実行。
+- [ ] 全インストゥルメントテストの実行。
 
 ## Technical Memo
 
