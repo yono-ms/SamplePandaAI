@@ -2,10 +2,10 @@
 
 - **Task**: GITHUB_API_MODEL_MIGRATION (Migrate to external GitHub API model library)
 - **Branch**: feature/github-api-model-migration
-- **Phase**: 2 (Detailed Design) - STARTING
+- **Phase**: 2 (Detailed Design) - COMPLETED
 - **Status**:
   - [x] Phase 1: Pre-preparation completed.
-  - [ ] Phase 2: Detailed Design (Standard Flow) starting.
+  - [x] Phase 2: Detailed Design (Standard Flow) completed.
   - [ ] Phase 3: Implementation.
   - [ ] Phase 4: Test Code Review.
   - [ ] Phase 5: Test Execution.
@@ -14,14 +14,16 @@
 
 ## TODO (Next Actions)
 
-1. **Detailed Design (Phase 2)**
+1. **Implementation (Phase 3)**
 
-- [ ] 既存コードの調査（DTO の使用箇所の特定）。
-- [ ] `github-api-model` の依存関係追加方法の検討（JitPack 等）。
-- [ ] 影響範囲の定義と設計書 (`docs/features/08_GITHUB_API_MODEL_MIGRATION.md`) の作成。
+- [ ] `settings.gradle.kts` への GitHub Packages 認証設定の追加。
+- [ ] `app/build.gradle.kts` への依存関係追加。
+- [ ] `GitHubApiService.kt` および `GitHubRepositoryImpl.kt` の DTO インポート先を外部ライブラリへ変更。
+- [ ] 独自生成 DTO 関連（`github_repos.yaml`, Gradle タスク）の削除。
 
 ## Technical Memo
 
-- `yono-ms/github-api-model` を調査し、現行の独自生成 DTO をこれに置き換える方針。
-- 標準フロー (Standard Flow) を適用し、慎重に移行を進める。
-- `app/build.gradle.kts` の `generateGitHubDto` タスクを最終的に削除することを目指す。
+- `yono-ms/github-api-model` の最新版において、`Long` 型の ID、`OffsetDateTime` 型の `updatedAt`
+  、および主要フィールドの非 Null 化が確認されたため、既存ロジックを維持したまま移行可能。
+- GitHub Packages の利用には `GITHUB_TOKEN` が必要。
+- 標準フロー (Standard Flow) を適用し、各修正を確実に行う。
