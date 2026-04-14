@@ -1,26 +1,22 @@
 # Current Status
 
-- **Task**: GITHUB_API_MODEL_MIGRATION (Migrate to external GitHub API model library) & FIX_CI_AUTH
-- **Branch**: main (Merged)
-- **Phase**: Done
+- **Task**: INSPECT_CODE_FIX (Fix issues found by static analysis)
+- **Branch**: feature/inspect-code-fix
+- **Phase**: Phase 2: Implementation (Pending)
 - **Status**:
-  - [x] Phase 1: Pre-preparation completed.
-  - [x] Phase 2: Detailed Design (Standard Flow for Migration / Lite Flow for CI Fix) completed.
-  - [x] Phase 3: Implementation completed.
-  - [x] Phase 4: Review completed.
-  - [x] Phase 5: Test Execution completed (CI passed).
-  - [x] Phase 6: External Review (Merged to main).
-  - [x] Phase 7: Final Documentation Sync (Completed).
+  - [x] Create branch `feature/inspect-code-fix`.
+  - [x] Commit leftover documentation from previous task.
+  - [x] Analyze inspection results in `inspections/202604150721`.
+  - [x] Create task document `docs/features/09_INSPECT_CODE_FIX.md`.
 
 ## TODO (Next Actions)
 
-1. **All tasks completed.**
-- [x] `docs/NEXT_STEPS.md` の最終更新。
-- [x] `docs/PROJECT_STRUCTURE.md` の更新 (OpenAPI 関連の削除反映)。
-- [x] `docs/features/08_GITHUB_API_MODEL_MIGRATION.md` を完了状態に更新。
+1. **Analyze inspection results.**
+- [ ] `inspections/202604150721` 配下の各 XML ファイルを確認。
+- [ ] 修正すべき優先度の高い項目（ERROR, WARNING）を抽出。
+- [ ] `docs/features/09_INSPECT_CODE_FIX.md` に修正計画を記載。
 
 ## Technical Memo
 
-- `yono-ms/github-api-model` への移行が完了。
-- GitHub Packages 認証のための `GITHUB_TOKEN` 設定を CI に導入済み。
-- OpenAPI Generator (gradle 連携) および `github_repos.yaml` は削除済み。
+- 前回のタスク `GITHUB_API_MODEL_MIGRATION` の完了に伴うドキュメント同期は完了済み。
+- Android Studio の "Inspect Code" 機能で生成されたレポートに基づき、コード品質の向上を図る。
