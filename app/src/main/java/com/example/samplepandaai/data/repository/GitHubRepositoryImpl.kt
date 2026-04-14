@@ -1,10 +1,10 @@
 package com.example.samplepandaai.data.repository
 
 import com.example.samplepandaai.data.remote.GitHubApiService
-import com.example.samplepandaai.data.remote.dto.Repository
 import com.example.samplepandaai.domain.model.AppException
 import com.example.samplepandaai.domain.model.GitHubRepo
 import com.example.samplepandaai.domain.repository.GitHubRepository
+import io.github.yono_ms.model.models.Repository
 import io.ktor.client.plugins.ResponseException
 import kotlinx.datetime.Instant
 import kotlinx.datetime.toKotlinInstant

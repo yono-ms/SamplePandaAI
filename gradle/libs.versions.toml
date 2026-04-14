@@ -24,6 +24,7 @@ androidxTestMonitor = "1.6.1"
 navigationCompose = "2.8.5"
 hiltNavigationCompose = "1.2.0"
 datastore = "1.1.1"
+githubApiModel = "0.0.4"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -71,6 +72,9 @@ okhttp-mockwebserver = { group = "com.squareup.okhttp3", name = "mockwebserver",
 
 # Datetime
 kotlinx-datetime = { group = "org.jetbrains.kotlinx", name = "kotlinx-datetime", version.ref = "kotlinxDatetime" }
+
+# GitHub API Model
+github-api-model = { group = "io.github.yono_ms", name = "github-api-model", version.ref = "githubApiModel" }
 
 # Hilt
 hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }

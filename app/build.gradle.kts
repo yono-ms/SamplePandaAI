@@ -1,12 +1,10 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-import org.openapitools.generator.gradle.plugin.tasks.GenerateTask
 
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlin.serialization)
-    alias(libs.plugins.openapi.generator)
     alias(libs.plugins.hilt)
     alias(libs.plugins.ksp)
 }
@@ -66,41 +64,11 @@ android {
         }
     }
 
-    sourceSets {
-        getByName("main") {
-            java.srcDir("$buildDir/generated/openapi/src/main/kotlin")
-        }
-    }
-
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1,LICENSE*,NOTICE*}"
         }
     }
-}
-
-val generateGitHubDto = tasks.register<GenerateTask>("generateGitHubDto") {
-    generatorName.set("kotlin")
-    inputSpec.set("$projectDir/src/main/openapi/github_repos.yaml")
-    outputDir.set("$buildDir/generated/openapi")
-    packageName.set("com.example.samplepandaai.data.remote.dto")
-    modelPackage.set("com.example.samplepandaai.data.remote.dto")
-    generateApiTests.set(false)
-    generateModelTests.set(false)
-    configOptions.set(
-        mapOf(
-            "serializationLibrary" to "kotlinx_serialization",
-            "enumPropertyNaming" to "UPPERCASE",
-            "collectionType" to "list",
-            "useContextualSerialization" to "true",
-            "interfaceOnly" to "true",
-            "omitGradleWrapper" to "true"
-        )
-    )
-}
-
-tasks.named("preBuild") {
-    dependsOn(generateGitHubDto)
 }
 
 configurations {
@@ -144,6 +112,8 @@ dependencies {
     implementation(libs.ktor.client.logging)
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.kotlinx.datetime)
+
+    implementation(libs.github.api.model)
 
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
