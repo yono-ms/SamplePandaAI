@@ -2,24 +2,23 @@
 
 - **Task**: GITHUB_API_MODEL_MIGRATION (Migrate to external GitHub API model library)
 - **Branch**: feature/github-api-model-migration
-- **Phase**: 4 (Test Code Review) - COMPLETED
+- **Phase**: 2 (Detailed Design - Lite Flow for CI Fix) - COMPLETED
 - **Status**:
   - [x] Phase 1: Pre-preparation completed.
-  - [x] Phase 2: Detailed Design (Standard Flow) completed.
-  - [x] Phase 3: Implementation.
-  - [x] Phase 4: Test Code Review (No changes needed).
-  - [x] Phase 5: Test Execution (Success)
-    - [x] 全ユニットテストの実行 (`./gradlew test`)
-    - [x] 全インストゥルメントテストの実行 (`./gradlew connectedAndroidTest`)
-  - [ ] Phase 6: External Review.
-  - [ ] Phase 7: Final Documentation Sync.
+  - [x] Phase 2: Detailed Design (Lite Flow for CI Fix: `docs/features/08_FIX_CI_AUTH.md`)
+    completed.
+  - [ ] Phase 3: Implementation.
+  - [ ] Phase 5: Test Execution.
 
 ## TODO (Next Actions)
 
-1. **Test Execution (Phase 5)**
+1. **Implementation (Phase 3)**
 
-- [ ] 全ユニットテストの実行。
-- [ ] 全インストゥルメントテストの実行。
+- [ ] `.github/workflows/ci.yml` に `GITHUB_TOKEN` を追加。
+
+2. **Test Execution (Phase 5)**
+
+- [ ] CI を実行し、依存関係が解決されることを確認。
 
 ## Technical Memo
 
