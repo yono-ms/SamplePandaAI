@@ -31,8 +31,7 @@ SamplePandaAI/
 │       │   │   │   │       ├── LicenseDetailScreen.kt  # 新規: 詳細画面 (WebView)
 │       │   │   │   │       └── LicenseDataProvider.kt
 │       │   │   └── util/
-│       │   ├── openapi/
-│       │   └── res/
+│       │   ├── res/
 │       ├── test/                       # ユニットテスト
 │       └── androidTest/                # インストゥルメントテスト
 ├── docs/
@@ -43,7 +42,8 @@ SamplePandaAI/
 │   │   ├── 04_CI_SETUP.md
 │   │   ├── 05_REPO_DETAIL.md
 │   │   ├── 06_ENHANCE_DEV_FLOW.md
-│   │   └── 07_LICENSE_SCREEN_WEBVIEW.md  # NEW: ライセンスWebView化
+│   │   ├── 07_LICENSE_SCREEN_WEBVIEW.md
+│   │   └── 08_GITHUB_API_MODEL_MIGRATION.md
 │   ├── AGENTS.md
 │   ├── ARCHITECTURE_DESIGN.md
 │   ├── DESIGN_COST_VERIFICATION.md
@@ -71,5 +71,5 @@ SamplePandaAI/
 - **Data Persistence**: Preferences DataStore
 - **Networking**: Ktor
 - **Testing**: JUnit4, MockK, Compose Test
-- **API Spec**: OpenAPI (DTO automated generation)
+- **External Library**: `yono-ms/github-api-model` (GitHub API DTOs)
 - **i18n**: Android String Resources (ja, en, zh, de, ar)
