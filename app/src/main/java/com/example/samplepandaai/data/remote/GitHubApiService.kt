@@ -1,6 +1,6 @@
 package com.example.samplepandaai.data.remote
 
-import com.example.samplepandaai.data.remote.dto.Repository
+import io.github.yono_ms.model.models.Repository
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get

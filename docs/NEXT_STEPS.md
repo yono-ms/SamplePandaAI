@@ -2,11 +2,11 @@
 
 - **Task**: GITHUB_API_MODEL_MIGRATION (Migrate to external GitHub API model library)
 - **Branch**: feature/github-api-model-migration
-- **Phase**: 2 (Detailed Design) - COMPLETED
+- **Phase**: 3 (Implementation) - COMPLETED
 - **Status**:
   - [x] Phase 1: Pre-preparation completed.
   - [x] Phase 2: Detailed Design (Standard Flow) completed.
-  - [ ] Phase 3: Implementation.
+  - [x] Phase 3: Implementation.
   - [ ] Phase 4: Test Code Review.
   - [ ] Phase 5: Test Execution.
   - [ ] Phase 6: External Review.
@@ -14,12 +14,10 @@
 
 ## TODO (Next Actions)
 
-1. **Implementation (Phase 3)**
+1. **Test Code Review (Phase 4)**
 
-- [ ] `settings.gradle.kts` への GitHub Packages 認証設定の追加。
-- [ ] `app/build.gradle.kts` への依存関係追加。
-- [ ] `GitHubApiService.kt` および `GitHubRepositoryImpl.kt` の DTO インポート先を外部ライブラリへ変更。
-- [ ] 独自生成 DTO 関連（`github_repos.yaml`, Gradle タスク）の削除。
+- [ ] 既存のテストコードが新しい DTO で動作するか、デシリアライズ設定の妥当性を確認。
+- [ ] `OffsetDateTime` の変換ロジックが期待通り動作するか確認。
 
 ## Technical Memo
 
