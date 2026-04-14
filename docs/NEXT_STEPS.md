@@ -8,7 +8,9 @@
   - [x] Phase 2: Detailed Design (Standard Flow) completed.
   - [x] Phase 3: Implementation.
   - [x] Phase 4: Test Code Review (No changes needed).
-  - [ ] Phase 5: Test Execution.
+  - [x] Phase 5: Test Execution (Success)
+    - [x] 全ユニットテストの実行 (`./gradlew test`)
+    - [x] 全インストゥルメントテストの実行 (`./gradlew connectedAndroidTest`)
   - [ ] Phase 6: External Review.
   - [ ] Phase 7: Final Documentation Sync.
 
