@@ -11,12 +11,12 @@ plugins {
 
 android {
     namespace = "com.example.samplepandaai"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.example.samplepandaai"
         minSdk = 33
-        targetSdk = 35
+        targetSdk = 36
         versionCode = 1
         versionName = "1.0"
         testInstrumentationRunner = "com.example.samplepandaai.HiltTestRunner"
@@ -78,8 +78,8 @@ configurations {
     // 全てのソースセットで、Hilt が強制する古い monitor/core を新しいバージョンで上書きする
     all {
         resolutionStrategy {
-            force("androidx.test:monitor:1.6.1")
-            force("androidx.test:core:1.5.0")
+            force("androidx.test:monitor:1.8.0")
+            force("androidx.test:core:1.7.0")
         }
     }
 }

@@ -14,9 +14,9 @@
 
 1. **Phase 1: ビルド基盤の更新 (High)**
 
-- [ ] `gradle/libs.versions.toml` の更新。
-- [ ] `app/build.gradle.kts` の `compileSdk` を 36 に更新。
-- [ ] `gradlew clean assembleDebug` の実行確認。
+- [x] `gradle/libs.versions.toml` の更新。
+- [x] `app/build.gradle.kts` の `compileSdk` を 36 に更新。
+- [x] `gradlew clean assembleDebug` の実行確認。
 
 2. **Phase 2: Gradle API 警告の解消 (Medium)**
 
