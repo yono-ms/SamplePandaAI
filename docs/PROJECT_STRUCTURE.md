@@ -43,7 +43,8 @@ SamplePandaAI/
 │   │   ├── 05_REPO_DETAIL.md
 │   │   ├── 06_ENHANCE_DEV_FLOW.md
 │   │   ├── 07_LICENSE_SCREEN_WEBVIEW.md
-│   │   └── 08_GITHUB_API_MODEL_MIGRATION.md
+│   │   ├── 08_GITHUB_API_MODEL_MIGRATION.md
+│   │   └── 09_INSPECT_CODE_FIX.md
 │   ├── AGENTS.md
 │   ├── ARCHITECTURE_DESIGN.md
 │   ├── DESIGN_COST_VERIFICATION.md

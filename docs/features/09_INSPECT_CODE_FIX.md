@@ -29,21 +29,45 @@ Android Studio の "Inspect Code" 機能によって検出された警告（WARN
 
 ## 3. 修正計画
 
-修正の優先順位と手順を以下のように定める。
-
-### フェーズ 1: ビルド基盤の更新 (High)
+### フェーズ 1: ビルド基盤の更新 [DONE]
 1. `gradle/libs.versions.toml` を更新。
 2. `app/build.gradle.kts` の `compileSdk` を 36 に更新。
 3. `gradlew clean` およびビルドが通ることを確認。
 
-### フェーズ 2: Gradle API 警告の解消 (Medium)
-1. `settings.gradle.kts` および `build.gradle.kts` の実験的 API 使用を最新の推奨形式に修正。
+### フェーズ 2: Gradle API 警告の解消 [DONE]
 
-### フェーズ 3: Lint 警告およびタイポの修正 (Low)
-1. XML の空タグ形式修正。
-2. タイポの修正または辞書への追加。
+1. `app/build.gradle.kts` の `exclude` 指定において、非推奨の multi-string notation (
+   `group = "...", module = "..."`) を single-string notation (`"group:module"`) にリファクタリング。
 
-## 4. 完了条件
-- [ ] すべての XML レポートに記載された WARNING が解消、または意図的な保留として整理されていること。
-- [ ] 修正後のプロジェクトが正常にビルド・テストをパスすること。
-- [ ] 再度 "Inspect Code" を実行し、新規の重大な警告が発生していないこと。
+### フェーズ 3: タイポの修正と辞書登録 [DONE]
+
+1. プロジェクト固有の用語（`zulu`, `ksp`, `hilt` 等）を `.idea/dictionaries/project.xml` に登録し、誤検知を抑制。
+
+### フェーズ 4: XML 空タグの検証 [DONE]
+
+1. `src/main/res` および `AndroidManifest.xml` を確認し、実コード内に問題がないことを確認（一部の警告はインスペクションレポート自体に含まれる
+   XML に対するものだった）。
+
+### フェーズ 5: 最終確認とドキュメント更新 [DONE]
+
+1. 修正結果を本ドキュメントに反映。
+
+## 4. 修正結果と残課題
+
+### 解決済みの事項
+
+- `compileSdk` および `targetSdk` を 36 に引き上げ。
+- Gradle の非推奨 API (multi-string notation) の排除。
+- スペルチェッカーのノイズ削減。
+
+### 保留・修正不可の事項
+
+- **AGP 内部の警告**: `com.android.tools.lint:lint-gradle` や `com.android.tools.build:aapt2`
+  の非推奨警告。これらは Android Gradle Plugin (8.9.1) の内部で発生しており、プロジェクト側での対応は不可。将来の
+  AGP アップデートで解消される見込み。
+
+## 5. 完了条件
+
+- [x] すべての XML レポートに記載された WARNING が解消、または意図的な保留として整理されていること。
+- [x] 修正後のプロジェクトが正常にビルド・テストをパスすること。
+- [x] 再度 "Inspect Code" を実行し、新規の重大な警告が発生していないこと。

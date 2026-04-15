@@ -59,9 +59,13 @@ android {
     }
 
     testOptions {
-        unitTests.all {
-            it.systemProperty("org.slf4j.simpleLogger.defaultLogLevel", "debug")
+        unitTests {
+            isIncludeAndroidResources = true
         }
+    }
+
+    tasks.withType<Test>().configureEach {
+        systemProperty("org.slf4j.simpleLogger.defaultLogLevel", "debug")
     }
 
     packaging {
@@ -72,8 +76,8 @@ android {
 }
 
 configurations {
-    testImplementation { exclude(group = "com.github.tony19", module = "logback-android") }
-    testRuntimeOnly { exclude(group = "com.github.tony19", module = "logback-android") }
+    testImplementation { exclude("com.github.tony19:logback-android") }
+    testRuntimeOnly { exclude("com.github.tony19:logback-android") }
 
     // 全てのソースセットで、Hilt が強制する古い monitor/core を新しいバージョンで上書きする
     all {
