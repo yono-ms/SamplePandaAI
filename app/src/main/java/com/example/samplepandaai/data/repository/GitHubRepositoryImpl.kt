@@ -6,10 +6,9 @@ import com.example.samplepandaai.domain.model.GitHubRepo
 import com.example.samplepandaai.domain.repository.GitHubRepository
 import io.github.yono_ms.model.models.Repository
 import io.ktor.client.plugins.ResponseException
-import kotlinx.datetime.Instant
-import kotlinx.datetime.toKotlinInstant
 import org.slf4j.LoggerFactory
 import java.io.IOException
+import kotlin.time.toKotlinInstant
 
 /**
  * GitHubRepository の実装クラス。
@@ -61,7 +60,7 @@ class GitHubRepositoryImpl(
                 this.updatedAt.toInstant().toKotlinInstant()
             } catch (e: Exception) {
                 logger.warn("Failed to parse updatedAt for repo {}: {}", this.name, e.message)
-                Instant.DISTANT_PAST
+                kotlin.time.Instant.DISTANT_PAST
             }
         )
     }
