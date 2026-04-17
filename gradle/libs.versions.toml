@@ -1,24 +1,23 @@
 [versions]
-agp = "8.9.1"
+agp = "9.1.1"
 coreKtx = "1.18.0"
 junit = "4.13.2"
 junitVersion = "1.3.0"
 espressoCore = "3.7.0"
 lifecycleRuntimeKtx = "2.10.0"
 activityCompose = "1.13.0"
-kotlin = "2.1.0"
+kotlin = "2.3.20"
 composeBom = "2026.03.01"
-slf4j = "2.0.12"
+slf4j = "2.0.17"
 logbackAndroid = "3.0.0"
 ktor = "2.3.12"
-kotlinxSerialization = "1.7.1"
-openapiGenerator = "7.4.0"
+kotlinxSerialization = "1.11.0"
 kotlinxDatetime = "0.6.1"
-hilt = "2.51.1"
-ksp = "2.1.0-1.0.29"
+hilt = "2.59.2"
+ksp = "2.3.6"
 okhttp = "4.12.0"
 mockk = "1.13.13"
-kotlinxCoroutines = "1.9.0"
+kotlinxCoroutines = "1.10.2"
 androidxTest = "1.7.0"
 androidxTestMonitor = "1.8.0"
 navigationCompose = "2.9.7"
@@ -93,6 +92,5 @@ android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
-openapi-generator = { id = "org.openapi.generator", version.ref = "openapiGenerator" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
