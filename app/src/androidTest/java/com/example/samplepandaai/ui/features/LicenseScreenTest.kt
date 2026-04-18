@@ -46,7 +46,7 @@ class LicenseScreenTest {
         // 3. アイテムタップでコールバックが呼ばれるか (旧ダイアログ検証からの変更)
         composeTestRule.onNodeWithText("Jetpack Compose").performClick()
         assertEquals("Jetpack Compose", clickedItem?.name)
-        assertEquals("https://www.apache.org/licenses/LICENSE-2.0", clickedItem?.url)
+        assertEquals("https://raw.githubusercontent.com/androidx/androidx/androidx-main/LICENSE.txt", clickedItem?.url)
 
         // 4. 戻るボタンの動作確認
         composeTestRule.onNodeWithContentDescription(context.getString(R.string.back_button_content_description))

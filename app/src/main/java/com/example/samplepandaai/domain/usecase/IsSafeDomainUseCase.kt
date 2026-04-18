@@ -9,10 +9,7 @@ class IsSafeDomainUseCase @Inject constructor() {
 
     private val allowedDomains = listOf(
         "github.com",
-        "www.apache.org",
-        "opensource.org",
-        "ktor.io",
-        "kotlinlang.org"
+        "raw.githubusercontent.com"
     )
 
     /**
@@ -35,7 +32,7 @@ class IsSafeDomainUseCase @Inject constructor() {
             allowedDomains.any { domain ->
                 host == domain || host.endsWith(".$domain")
             }
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             false
         }
     }

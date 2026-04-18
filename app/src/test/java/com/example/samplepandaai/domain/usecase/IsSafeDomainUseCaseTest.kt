@@ -18,10 +18,15 @@ class IsSafeDomainUseCaseTest {
     fun `invoke returns true for valid allowed domains`() {
         assertTrue(useCase("https://github.com/example/repo"))
         assertTrue(useCase("https://docs.github.com/en"))
-        assertTrue(useCase("https://www.apache.org/licenses/LICENSE-2.0"))
-        assertTrue(useCase("https://opensource.org/licenses/MIT"))
-        assertTrue(useCase("https://ktor.io/docs/welcome.html"))
-        assertTrue(useCase("https://kotlinlang.org/docs/home.html"))
+        assertTrue(useCase("https://raw.githubusercontent.com/androidx/androidx/androidx-main/LICENSE.txt"))
+    }
+
+    @Test
+    fun `invoke returns false for removed domains`() {
+        assertFalse(useCase("https://www.apache.org/licenses/LICENSE-2.0"))
+        assertFalse(useCase("https://opensource.org/licenses/MIT"))
+        assertFalse(useCase("https://ktor.io/docs/welcome.html"))
+        assertFalse(useCase("https://kotlinlang.org/docs/home.html"))
     }
 
     @Test
