@@ -1,73 +1,67 @@
 # Inspect Code 修正設計
 
 ## 1. 目的
-Android Studio の "Inspect Code" 機能によって検出された警告（WARNING）や修正推奨事項に対応し、プロジェクトの品質、安全性、およびメンテナンス性を向上させる。
+
+Android Studio の "Inspect Code"
+機能によって検出された警告（WARNING）や修正推奨事項に対応し、プロジェクトの品質、安全性、およびメンテナンス性を向上させる。あわせて、最新のビルド環境（AGP
+9.1.1 / SDK 37）への適合を行う。
 
 ## 2. 検出された主要な問題の分析
 
-`inspections/202604150721` のレポートに基づき、以下のカテゴリに分類。
+`inspections/202604150721` のレポートおよびビルド過程で判明した課題。
 
-### A. 依存関係と SDK の更新 (`AndroidLintGradleDependency.xml`)
-- **compileSdk の更新**: 35 から 36 へのアップデート推奨。
-- **ライブラリの更新**:
-  - `androidx.core:core-ktx`: 1.13.1 -> 1.18.0
-  - `androidx.lifecycle:lifecycle-runtime-ktx`: 2.8.4 -> 2.10.0
-  - `androidx.compose:compose-bom`: 2024.08.00 -> 2026.03.01
-  - `androidx.navigation:navigation-compose`: 2.8.5 -> 2.9.7
-  - その他、テストライブラリ、Dagger Hilt 関連、DataStore 等。
-- **KSP の更新**: 2.0.21-1.0.25 -> 2.1.0-1.0.29
+### A. ビルド基盤の更新
 
-### B. 不安定な API の使用 (`UnstableApiUsage.xml`)
-- `app/build.gradle.kts` および `settings.gradle.kts` における `@Incubating`（実験的）API の使用。
-  - `testOptions`, `repositoriesMode`, `FAIL_ON_PROJECT_REPOS` など。
-  - **対応方針**: Gradle 8.x 以降で推奨される記述への移行、または必要に応じた `@OptIn` の検討。
+- **SDK の更新**: `compileSdk` および `targetSdk` を 37 にアップデート。
+- **Gradle/AGP の更新**:
+  - AGP: 9.1.1
+  - Gradle: 9.4.1 (チェックサム検証済み)
+- **Kotlin の更新**: 2.3.20 (Built-in Kotlin サポートの有効化)
 
-### C. その他の Lint 警告
-- `CheckTagEmptyBody.xml`: XML 内の空タグの閉じ方。
-- `SpellCheckingInspection.xml`: タイポ（プロジェクト固有の用語は辞書登録）。
-- `AndroidLintOldTargetApi.xml`: Target API に関する警告。
+### B. API の非推奨化とパッケージ移動
 
-## 3. 修正計画
+- **hiltViewModel**: `androidx.hilt.navigation.compose` から
+  `androidx.hilt.lifecycle.viewmodel.compose` へ移動。
+- **Instant 型**: `kotlinx.datetime.Instant` が非推奨となり、Kotlin 2.x 以降の標準である
+  `kotlin.time.Instant` への移行が必要。
+
+### C. Gradle DSL 警告
+
+- `Suspicious receiver type`: `android` ブロック内の `kotlin` ブロックをトップレベルに移動。
+- `gradle.properties`: 非推奨フラグ（`builtInKotlin`, `enableAppCompileTimeRClass` 等）の整理。
+
+## 3. 修正結果
 
 ### フェーズ 1: ビルド基盤の更新 [DONE]
-1. `gradle/libs.versions.toml` を更新。
-2. `app/build.gradle.kts` の `compileSdk` を 36 に更新。
-3. `gradlew clean` およびビルドが通ることを確認。
 
-### フェーズ 2: Gradle API 警告の解消 [DONE]
+1. `gradle/libs.versions.toml` を更新し、AGP 9.1.1 / Kotlin 2.3.20 / SDK 37 を適用。
+2. Gradle Wrapper を 9.4.1 に更新し、SHA-256 チェックサムの不一致を修正。
 
-1. `app/build.gradle.kts` の `exclude` 指定において、非推奨の multi-string notation (
-   `group = "...", module = "..."`) を single-string notation (`"group:module"`) にリファクタリング。
+### フェーズ 2: Gradle API / DSL 警告の解消 [DONE]
 
-### フェーズ 3: タイポの修正と辞書登録 [DONE]
+1. `app/build.gradle.kts` の `kotlin` 設定ブロックをトップレベルへ移動。
+2. `gradle.properties` の不要な互換フラグを削除。
 
-1. プロジェクト固有の用語（`zulu`, `ksp`, `hilt` 等）を `.idea/dictionaries/project.xml` に登録し、誤検知を抑制。
+### フェーズ 3: コードの現代化 (Kotlin 2.x 対応) [DONE]
 
-### フェーズ 4: XML 空タグの検証 [DONE]
+1. `GitHubRepo.kt` 等のドメインモデルにおいて、`Instant` 型を `kotlin.time.Instant` へ移行。
+2. 各画面（`MainActivity`, `UserNameInputScreen` 等）の `hiltViewModel` インポートパスを修正。
 
-1. `src/main/res` および `AndroidManifest.xml` を確認し、実コード内に問題がないことを確認（一部の警告はインスペクションレポート自体に含まれる
-   XML に対するものだった）。
+### フェーズ 4: タイポの修正と辞書登録 [DONE]
 
-### フェーズ 5: 最終確認とドキュメント更新 [DONE]
+1. プロジェクト固有の用語（`zulu`, `ksp`, `hilt` 等）を `.idea/dictionaries/project.xml` に登録。
 
-1. 修正結果を本ドキュメントに反映。
+### フェーズ 5: 最終確認 [DONE]
 
-## 4. 修正結果と残課題
+1. 全 52 件のユニットテストおよび 19 件の Android Test がパスすることを確認。
 
-### 解決済みの事項
+## 4. 残課題
 
-- `compileSdk` および `targetSdk` を 36 に引き上げ。
-- Gradle の非推奨 API (multi-string notation) の排除。
-- スペルチェッカーのノイズ削減。
-
-### 保留・修正不可の事項
-
-- **AGP 内部の警告**: `com.android.tools.lint:lint-gradle` や `com.android.tools.build:aapt2`
-  の非推奨警告。これらは Android Gradle Plugin (8.9.1) の内部で発生しており、プロジェクト側での対応は不可。将来の
-  AGP アップデートで解消される見込み。
+- **AGP 内部の警告**: `lint-gradle` や `aapt2` の非推奨警告は AGP 内部に起因するため、将来の AGP
+  アップデートを待機。
 
 ## 5. 完了条件
 
-- [x] すべての XML レポートに記載された WARNING が解消、または意図的な保留として整理されていること。
+- [x] すべての主要な WARNING が解消されていること。
 - [x] 修正後のプロジェクトが正常にビルド・テストをパスすること。
-- [x] 再度 "Inspect Code" を実行し、新規の重大な警告が発生していないこと。
+- [x] ドキュメントが最終実装と一致していること。

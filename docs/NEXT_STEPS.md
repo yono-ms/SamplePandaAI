@@ -1,26 +1,29 @@
 # Current Status
 
-- **Task**: INSPECT_CODE_FIX (Fix issues found by static analysis)
+- **Task**: INSPECT_CODE_FIX (Fix issues found by static analysis & Modernize build) [DONE]
 - **Branch**: feature/inspect-code-fix
-- **Phase**: Phase 5: Verification & Documentation [DONE]
+- **Phase**: Phase 7: Final Documentation Sync [DONE]
 - **Status**:
   - [x] Create branch `feature/inspect-code-fix`.
-  - [x] Commit leftover documentation from previous task.
-  - [x] Analyze inspection results in `inspections/202604150721`.
-  - [x] Create task document `docs/features/09_INSPECT_CODE_FIX.md`.
-  - [x] Create PR draft and get approval.
-  - [x] Phase 1: Update Build Infrastructure (compileSdk 36, etc.).
-  - [x] Phase 2: Refactor Gradle API (multi-string to single-string notation).
-  - [x] Phase 3: Update project dictionaries for technical terms.
-  - [x] Phase 4: Verify XML empty tags.
-  - [x] Phase 5: Final Verification (Unit Tests & Android Tests).
+  - [x] Analyze inspection results and build errors.
+  - [x] Update AGP to 9.1.1, Gradle to 9.4.1, and SDK to 37.
+  - [x] Migrate to Kotlin 2.3.20 and resolve `Instant` type conflicts.
+  - [x] Update Hilt ViewModel imports and fix Gradle DSL receiver warnings.
+  - [x] Fix Gradle Wrapper checksum and cleanup `gradle.properties`.
+  - [x] Verify all Unit Tests and Android Tests pass.
+  - [x] Update `docs/features/09_INSPECT_CODE_FIX.md` with final implementation details.
 
 ## TODO (Next Actions)
 
 1. **Merge PR**: 修正内容を `develop` ブランチにマージする。
-2. **Post-Task**: `ROADMAP.md` の更新、または次の機能開発フェーズへ移行。
+2. **Task Transition**: `ROADMAP.md` の「2. ライセンスリンクの正確性向上」に着手する。
+    - `LicenseDataProvider.kt` の URL をリポジトリ内の `LICENSE` ファイル等へ更新。
+    - `IsSafeDomainUseCase.kt` の許可ドメインリストの再整理。
 
 ## Technical Memo
 
-- 全 52 件のユニットテストおよび 19 件の Android Test がパス。
-- AGP 内部に起因する警告（`lint-gradle`, `aapt2`）はプロジェクト側で対応不能であることを特定し、ドキュメントに明記。
+- Kotlin 2.3.20 移行に伴い、`kotlinx.datetime.Instant` よりも `kotlin.time.Instant`
+  が優先されるようになったため、ドメインモデルを更新。
+- AGP 9.1.1 では Kotlin サポートが内蔵されたため、`gradle.properties` の `android.builtInKotlin=true`
+  設定やプラグイン記述の整理が必要となった。
+- 全テスト（52 Unit Tests, 19 Android Tests）が最新環境でパスすることを確認済み。
