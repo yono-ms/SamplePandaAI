@@ -11,12 +11,13 @@
   - [x] Update URLs in `LicenseDataProvider.kt`. (F3)
   - [x] Re-organize allowed domains in `IsSafeDomainUseCase.kt`. (F3)
   - [x] Update `IsSafeDomainUseCaseTest.kt`. (F3)
-  - [ ] Run all tests (Unit & Instrumented). (F5)
+  - [x] Run all tests (Unit & Instrumented). (F5)
+- [x] Resolve code analysis warnings. (F5)
+- [x] Update documentation (`TEST_STRATEGY.md`, `10_IMPROVE_LICENSE_LINKS.md`). (F5)
 
 ## TODO (Next Actions)
 
-1. **Test Execution**: 関連するすべてのテストを実行し、正常動作を確認する。
-2. **Review & Merge**: テスト結果を報告し、承認を得る。
+1. **Review & Merge**: テスト結果と更新されたドキュメントを確認し、マージする。
 
 ## Technical Memo
 

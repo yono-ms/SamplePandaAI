@@ -32,7 +32,7 @@ class IsSafeDomainUseCase @Inject constructor() {
             allowedDomains.any { domain ->
                 host == domain || host.endsWith(".$domain")
             }
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             false
         }
     }

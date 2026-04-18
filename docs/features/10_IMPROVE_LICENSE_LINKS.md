@@ -28,14 +28,14 @@
 ## 4. テスト観点 (Test Cases)
 
 ### 4.1. Unit Test (`IsSafeDomainUseCaseTest`)
-- [ ] `raw.githubusercontent.com` の URL が許可されること。
-- [ ] 削除されたドメインの URL が拒否されること。
+- [x] `raw.githubusercontent.com` の URL が許可されること。
+- [x] 削除されたドメインの URL が拒否されること。
 
 ### 4.2. UI Test (`LicenseScreenTest`, `LicenseDetailScreenTest`)
-- [ ] 変更後の URL で `LicenseDetailScreen` (WebView) が正しく表示されること。
+- [x] 変更後の URL で `LicenseDetailScreen` (WebView) が正しく表示されること。
 
 ### 4.3. ドキュメント更新
-- [ ] `TEST_STRATEGY.md` の以下の項目のステータスを `✅` に更新。
+- [x] `TEST_STRATEGY.md` の以下の項目のステータスを `✅` に更新。
     - U-4: `IsSafeDomainUseCaseTest`
     - S-8: `SafeWebViewClientTest`
     - S-10: `LicenseScreenTest`
