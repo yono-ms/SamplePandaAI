@@ -9,10 +9,7 @@ class IsSafeDomainUseCase @Inject constructor() {
 
     private val allowedDomains = listOf(
         "github.com",
-        "www.apache.org",
-        "opensource.org",
-        "ktor.io",
-        "kotlinlang.org"
+        "raw.githubusercontent.com"
     )
 
     /**
