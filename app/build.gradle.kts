@@ -10,12 +10,12 @@ plugins {
 
 android {
     namespace = "com.example.samplepandaai"
-    compileSdk = 36
+    compileSdk = 37
 
     defaultConfig {
         applicationId = "com.example.samplepandaai"
         minSdk = 33
-        targetSdk = 36
+        targetSdk = 37
         versionCode = 1
         versionName = "1.0"
         testInstrumentationRunner = "com.example.samplepandaai.HiltTestRunner"
@@ -33,11 +33,6 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
-    }
-    kotlin {
-        compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_11)
-        }
     }
     buildFeatures {
         compose = true
@@ -71,6 +66,12 @@ android {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1,LICENSE*,NOTICE*}"
         }
+    }
+}
+
+kotlin {
+    compilerOptions {
+        jvmTarget.set(JvmTarget.JVM_11)
     }
 }
 
