@@ -53,3 +53,12 @@ URL:
 
 - 外部ライブラリ DTO を用いた `GitHubRepoIntegrationTest` の全件パス。
 - `OffsetDateTime` のデシリアライズ確認（既存のカスタムシリアライザーとの整合性）。
+
+---
+## 6. 完了確認 (Final Checklist)
+
+- [x] `app/build.gradle.kts` および `settings.gradle.kts` へのライブラリ導入と認証設定の完了。
+- [x] `GitHubApiService` 等のインポートパス修正完了。
+- [x] OpenAPI Generator 関連ファイル (`app/src/main/openapi`, `github_repos.yaml`) の削除完了。
+- [x] 全テストのパス確認。
+- [x] ドキュメント (`PROJECT_STRUCTURE.md`) への反映完了。

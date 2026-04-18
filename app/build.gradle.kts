@@ -2,7 +2,6 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     alias(libs.plugins.android.application)
-    alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.hilt)
@@ -11,12 +10,12 @@ plugins {
 
 android {
     namespace = "com.example.samplepandaai"
-    compileSdk = 35
+    compileSdk = 37
 
     defaultConfig {
         applicationId = "com.example.samplepandaai"
         minSdk = 33
-        targetSdk = 35
+        targetSdk = 37
         versionCode = 1
         versionName = "1.0"
         testInstrumentationRunner = "com.example.samplepandaai.HiltTestRunner"
@@ -34,11 +33,6 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
-    }
-    kotlin {
-        compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_11)
-        }
     }
     buildFeatures {
         compose = true
@@ -59,9 +53,13 @@ android {
     }
 
     testOptions {
-        unitTests.all {
-            it.systemProperty("org.slf4j.simpleLogger.defaultLogLevel", "debug")
+        unitTests {
+            isIncludeAndroidResources = true
         }
+    }
+
+    tasks.withType<Test>().configureEach {
+        systemProperty("org.slf4j.simpleLogger.defaultLogLevel", "debug")
     }
 
     packaging {
@@ -71,15 +69,21 @@ android {
     }
 }
 
+kotlin {
+    compilerOptions {
+        jvmTarget.set(JvmTarget.JVM_11)
+    }
+}
+
 configurations {
-    testImplementation { exclude(group = "com.github.tony19", module = "logback-android") }
-    testRuntimeOnly { exclude(group = "com.github.tony19", module = "logback-android") }
+    testImplementation { exclude("com.github.tony19:logback-android") }
+    testRuntimeOnly { exclude("com.github.tony19:logback-android") }
 
     // 全てのソースセットで、Hilt が強制する古い monitor/core を新しいバージョンで上書きする
     all {
         resolutionStrategy {
-            force("androidx.test:monitor:1.6.1")
-            force("androidx.test:core:1.5.0")
+            force("androidx.test:monitor:1.8.0")
+            force("androidx.test:core:1.7.0")
         }
     }
 }

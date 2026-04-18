@@ -1,6 +1,6 @@
 package com.example.samplepandaai.domain.model
 
-import kotlinx.datetime.Instant
+import kotlin.time.Instant
 
 /**
  * アプリケーション全体で扱うリポジトリのドメインモデル

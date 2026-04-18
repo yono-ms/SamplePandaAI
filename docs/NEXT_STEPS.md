@@ -1,28 +1,29 @@
 # Current Status
 
-- **Task**: GITHUB_API_MODEL_MIGRATION (Migrate to external GitHub API model library)
-- **Branch**: feature/github-api-model-migration
-- **Phase**: 2 (Detailed Design - Lite Flow for CI Fix) - COMPLETED
+- **Task**: INSPECT_CODE_FIX (Fix issues found by static analysis & Modernize build) [DONE]
+- **Branch**: feature/inspect-code-fix
+- **Phase**: Phase 7: Final Documentation Sync [DONE]
 - **Status**:
-  - [x] Phase 1: Pre-preparation completed.
-  - [x] Phase 2: Detailed Design (Lite Flow for CI Fix: `docs/features/08_FIX_CI_AUTH.md`)
-    completed.
-  - [x] Phase 3: Implementation.
-  - [x] Phase 5: Test Execution. (Wait for CI result)
+  - [x] Create branch `feature/inspect-code-fix`.
+  - [x] Analyze inspection results and build errors.
+  - [x] Update AGP to 9.1.1, Gradle to 9.4.1, and SDK to 37.
+  - [x] Migrate to Kotlin 2.3.20 and resolve `Instant` type conflicts.
+  - [x] Update Hilt ViewModel imports and fix Gradle DSL receiver warnings.
+  - [x] Fix Gradle Wrapper checksum and cleanup `gradle.properties`.
+  - [x] Verify all Unit Tests and Android Tests pass.
+  - [x] Update `docs/features/09_INSPECT_CODE_FIX.md` with final implementation details.
 
 ## TODO (Next Actions)
 
-1. **Implementation (Phase 3)**
-
-- [x] `.github/workflows/ci.yml` に `GITHUB_TOKEN` を追加。
-
-2. **Test Execution (Phase 5)**
-
-- [x] CI を実行し、依存関係が解決されることを確認。 (Wait for GitHub Actions)
+1. **Merge PR**: 修正内容を `develop` ブランチにマージする。
+2. **Task Transition**: `ROADMAP.md` の「2. ライセンスリンクの正確性向上」に着手する。
+    - `LicenseDataProvider.kt` の URL をリポジトリ内の `LICENSE` ファイル等へ更新。
+    - `IsSafeDomainUseCase.kt` の許可ドメインリストの再整理。
 
 ## Technical Memo
 
-- `yono-ms/github-api-model` の最新版において、`Long` 型の ID、`OffsetDateTime` 型の `updatedAt`
-  、および主要フィールドの非 Null 化が確認されたため、既存ロジックを維持したまま移行可能。
-- GitHub Packages の利用には `GITHUB_TOKEN` が必要。
-- 標準フロー (Standard Flow) を適用し、各修正を確実に行う。
+- Kotlin 2.3.20 移行に伴い、`kotlinx.datetime.Instant` よりも `kotlin.time.Instant`
+  が優先されるようになったため、ドメインモデルを更新。
+- AGP 9.1.1 では Kotlin サポートが内蔵されたため、`gradle.properties` の `android.builtInKotlin=true`
+  設定やプラグイン記述の整理が必要となった。
+- 全テスト（52 Unit Tests, 19 Android Tests）が最新環境でパスすることを確認済み。

@@ -33,7 +33,7 @@ import com.example.samplepandaai.ui.theme.MultiLanguagePreview
 import com.example.samplepandaai.ui.theme.SamplePandaAITheme
 import com.example.samplepandaai.ui.viewmodel.GitHubRepoListUiState
 import com.example.samplepandaai.ui.viewmodel.GitHubRepoListViewModel
-import kotlinx.datetime.Instant
+import kotlin.time.Instant
 
 /**
  * ViewModel に依存する Stateful な Composable。
